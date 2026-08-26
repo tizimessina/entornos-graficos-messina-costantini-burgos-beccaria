@@ -1,0 +1,96 @@
+# =====================================================
+#  SkyReserva — .gitignore
+#  TP Integrador · Entornos Gráficos · UTN FRR 2026
+# =====================================================
+
+# ---------- CREDENCIALES Y CONFIGURACIÓN SENSIBLE ----------
+config/config.php
+config/*.local.php
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+credentials.json
+
+# ---------- DEPENDENCIAS ----------
+/vendor/
+composer.lock
+node_modules/
+package-lock.json
+
+# ---------- CONTENIDO SUBIDO POR USUARIOS ----------
+public/uploads/*
+!public/uploads/.gitkeep
+!public/uploads/*/
+!public/uploads/**/.gitkeep
+
+# ---------- CACHÉ, SESIONES Y TEMPORALES ----------
+/cache/
+/tmp/
+/storage/cache/
+/storage/sessions/
+sess_*
+*.cache
+*.tmp
+
+# ---------- LOGS ----------
+/logs/
+*.log
+error_log
+php_errors.log
+debug.log
+
+# ---------- VOLCADOS DE BASE DE DATOS ----------
+*.sql.gz
+*.sql.zip
+dump*.sql
+backup*.sql
+*.sqlite
+*.db
+# El esquema y los datos semilla SÍ se versionan:
+!scripts/schema.sql
+!scripts/seed.sql
+!scripts/migrations/*.sql
+
+# ---------- ENTORNOS DE DESARROLLO LOCAL ----------
+.htaccess.local
+xampp-control.ini
+*.bak
+*.orig
+*.rej
+
+# ---------- EDITORES E IDEs ----------
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+nbproject/
+.phpstorm.meta.php
+_ide_helper.php
+
+# ---------- SISTEMA OPERATIVO ----------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------- HERRAMIENTAS DE CALIDAD ----------
+.phpunit.result.cache
+.php-cs-fixer.cache
+.phpcs-cache
+/coverage/
+
+# ---------- ARCHIVOS DE TRABAJO DEL INFORME ----------
+~$*.docx
+~$*.xlsx
+~$*.pptx
+docs/informe/borradores/

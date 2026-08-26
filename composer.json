@@ -1,0 +1,19 @@
+{
+    "name": "utn-frr/skyreserva",
+    "description": "SkyReserva - Plataforma de reserva de pasajes aereos. TP Integrador, Entornos Graficos, UTN FRR 2026.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.1",
+        "ext-pdo": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-fileinfo": "*",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
