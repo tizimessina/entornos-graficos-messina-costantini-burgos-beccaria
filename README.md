@@ -133,6 +133,7 @@ haya escrito. El detalle de qué se usó, para qué y qué se verificó está en
 - Diagramas y mapa del sitio: [`docs/diagramas/`](docs/diagramas/)
 - Bocetos de diseño: [`docs/bocetos/`](docs/bocetos/)
 - Checklist de entrega de la cátedra: [`docs/checklists/`](docs/checklists/)
+- Lista de tareas del proyecto: [`docs/tareas.md`](docs/tareas.md)
 
 ## Licencia
 
