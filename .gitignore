@@ -15,8 +15,9 @@ config/*.local.php
 credentials.json
 
 # ---------- DEPENDENCIAS ----------
+# composer.lock SÍ se versiona: asegura que todos instalen las mismas
+# versiones de las dependencias (PHPMailer, etc.)
 /vendor/
-composer.lock
 node_modules/
 package-lock.json
 

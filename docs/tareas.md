@@ -30,14 +30,14 @@ seguido, no dejar todo para el final.
 
 ## 2. Núcleo de la aplicación (`src/Core/`)
 
-- [ ] `Database.php` — conexión PDO
-- [ ] `Router.php` y `public/index.php` — front controller único
-- [ ] `Session.php` y `Auth.php` — login, logout, control de rol
-- [ ] `Csrf.php` — token en formularios
-- [ ] `Validator.php` — validación del lado del servidor
-- [ ] `Mailer.php` — envío de correo con PHPMailer
-- [ ] `Paginator.php` — paginación de listados
-- [ ] Layouts base y partials compartidos (`Views/layouts/`, `Views/partials/`:
+- [x] `Database.php` — conexión PDO
+- [x] `Router.php` y `public/index.php` — front controller único
+- [x] `Session.php` y `Auth.php` — login, logout, control de rol
+- [x] `Csrf.php` — token en formularios
+- [x] `Validator.php` — validación del lado del servidor
+- [x] `Mailer.php` — envío de correo con PHPMailer
+- [x] `Paginator.php` — paginación de listados
+- [x] Layouts base y partials compartidos (`Views/layouts/`, `Views/partials/`:
       header, nav, footer, breadcrumb)
 - [ ] Commit y push (podés ir subiendo de a partes, no hace falta terminar todo el
       núcleo en un solo commit)
