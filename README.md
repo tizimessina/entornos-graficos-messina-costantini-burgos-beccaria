@@ -53,7 +53,7 @@ provistas por la cátedra.
 
 ## 👥 Integrantes
 
-| Apellido y Nombre | Legajo | E-mail | Rol principal en el equipo |
+| Apellido y Nombre | Legajo | E-mail | 
 |---|---|---|---|
 | Messina, Tiziano | _(completar)_ | _(completar)_ | 
 | Costantini, Jeremias | _(completar)_ | _(completar)_ | 
