@@ -55,10 +55,10 @@ provistas por la cátedra.
 
 | Apellido y Nombre | Legajo | E-mail | Rol principal en el equipo |
 |---|---|---|---|
-| Messina, _(completar)_ | _(completar)_ | _(completar)_ | Líder de proyecto / Backend |
-| Costantini, _(completar)_ | _(completar)_ | _(completar)_ | Backend / Base de datos |
-| Burgos, _(completar)_ | _(completar)_ | _(completar)_ | Frontend / UX-UI |
-| Beccaria, _(completar)_ | _(completar)_ | _(completar)_ | Accesibilidad / QA |
+| Messina, Tiziano | _(completar)_ | _(completar)_ | 
+| Costantini, Jeremias | _(completar)_ | _(completar)_ | 
+| Burgos, Mateo | 52978 | mateoburgosrc22@gmail.com | 
+| Beccaria, Eugenia | _(completar)_ | _(completar)_ | 
 
 ---
 
