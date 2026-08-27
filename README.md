@@ -54,7 +54,7 @@ provistas por la cátedra.
 ## 👥 Integrantes
 
 | Apellido y Nombre | Legajo | E-mail | 
-|---|---|---|---|
+|---|---|---|
 | Messina, Tiziano | _(completar)_ | _(completar)_ | 
 | Costantini, Jeremias | _(completar)_ | _(completar)_ | 
 | Burgos, Mateo | 52978 | mateoburgosrc22@gmail.com | 
