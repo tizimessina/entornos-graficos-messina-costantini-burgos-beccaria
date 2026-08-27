@@ -1,9 +1,9 @@
 name: CI
 on:
-  pull_request:
-    branches: [develop, main]
   push:
-    branches: [develop]
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   php-lint:
