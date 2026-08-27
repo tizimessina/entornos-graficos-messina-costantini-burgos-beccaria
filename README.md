@@ -17,7 +17,6 @@ URL de producción: *(se agrega cuando el sitio esté desplegado)*
 - [Estructura del repositorio](#estructura-del-repositorio)
 - [Base de datos](#base-de-datos)
 - [Accesibilidad y estándares](#accesibilidad-y-estándares)
-- [Cómo trabajamos con Git](#cómo-trabajamos-con-git)
 - [Uso de herramientas de IA](#uso-de-herramientas-de-ia)
 - [Documentación del proyecto](#documentación-del-proyecto)
 - [Licencia](#licencia)
@@ -116,34 +115,6 @@ Algunas cosas que tenemos que tener en cuenta desde el principio, porque son muc
 fáciles de hacer bien desde el inicio que de arreglar después: que las imágenes tengan
 `alt`, que el sitio se pueda usar solo con el teclado, que el contraste de colores sea
 suficiente, y que los formularios avisen los errores de forma clara.
-
-## Cómo trabajamos con Git
-
-Para no complicarnos con ramas, todos trabajamos directo sobre `main`:
-
-```bash
-# clonar el repo (una sola vez)
-git clone https://github.com/tizimessina/entornos-graficos-messina-costantini-burgos-beccaria.git
-cd entornos-graficos-messina-costantini-burgos-beccaria
-
-# antes de ponerte a trabajar, siempre traé lo último
-git pull
-
-# ... hacés tus cambios ...
-
-git add .
-git commit -m "algo que explique qué cambiaste"
-git push
-```
-
-Si `git push` te rechaza porque alguien subió algo antes que vos, hacé `git pull` de
-nuevo (puede pedirte resolver algún conflicto si dos personas tocaron lo mismo) y
-volvé a hacer `push`.
-
-Un par de cosas para evitar líos:
-- Antes de tocar código, avisá en el grupo qué vas a hacer, para no pisarnos.
-- Hacé commits chicos y seguido, no un commit gigante al final del día.
-- Si vas a tocar un archivo grande que sabés que otro también está usando, coordinen antes.
 
 ## Uso de herramientas de IA
 
