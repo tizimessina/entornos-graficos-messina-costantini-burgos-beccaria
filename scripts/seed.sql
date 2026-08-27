@@ -5,9 +5,10 @@
 --  Ejecutar después de scripts/schema.sql. Estos datos son solo para
 --  desarrollo y prueba local: NO deben cargarse en producción.
 --
---  IMPORTANTE sobre las contraseñas: los hashes de abajo son placeholders,
---  no sirven para loguearse tal cual están. Antes de usarlos, generar el
---  hash real de cada contraseña con PHP y reemplazar el valor:
+--  Los hashes de abajo ya son reales (generados con password_hash() y
+--  verificados con password_verify()), corresponden a las contraseñas
+--  indicadas en el comentario de cada INSERT. Si alguna vez hay que
+--  regenerarlos:
 --
 --      php -r "echo password_hash('Admin2026!', PASSWORD_BCRYPT), PHP_EOL;"
 --      php -r "echo password_hash('Ceo2026!', PASSWORD_BCRYPT), PHP_EOL;"
@@ -31,7 +32,7 @@ INSERT INTO usuarios
     (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario, estadoCuenta, fechaValidacionEmail)
 VALUES
     ('Administrador del Sitio',
-     '$2y$10$ReemplazarPorHashRealGeneradoConPasswordHash000000000000', -- Admin2026!
+     '$2y$10$0x6yZ94n/nAbhZXHAGTqDuul4yZDcxEfSQxP9vkvfm2ZJ4yCyFMbe', -- Admin2026!
      'administrador',
      'admin@skyreserva.com',
      '+54 341 4000000',
@@ -43,7 +44,7 @@ INSERT INTO usuarios
     (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario, codAerolinea, estadoCuenta, fechaValidacionEmail)
 VALUES
     ('CEO de Prueba',
-     '$2y$10$ReemplazarPorHashRealGeneradoConPasswordHash111111111111', -- Ceo2026!
+     '$2y$10$JMfB4dqkohm2Yec1ykpB/ug4.7mdaLyKWiygSEPcL9lD.RhSstOja', -- Ceo2026!
      'ceo de aerolinea',
      'ceo@aerolinea-demo.com',
      '+54 341 4000001',
@@ -56,7 +57,7 @@ INSERT INTO usuarios
     (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario, estadoCuenta, fechaValidacionEmail)
 VALUES
     ('Pasajero de Prueba',
-     '$2y$10$ReemplazarPorHashRealGeneradoConPasswordHash222222222222', -- Pasajero2026!
+     '$2y$10$7by2kyCN4TwWBBmiuNDBtujgrTdhEoEsRBiksKwtylxZhls5BR2zm', -- Pasajero2026!
      'usuario',
      'pasajero@demo.com',
      '+54 341 4000002',

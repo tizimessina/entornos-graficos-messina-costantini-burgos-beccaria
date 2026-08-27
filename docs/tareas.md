@@ -20,13 +20,13 @@ seguido, no dejar todo para el final.
 - [x] Escribir `scripts/seed.sql` con datos de prueba y los 3 usuarios de prueba
       (admin, CEO, pasajero)
 - [x] Probar que ambos scripts corren sin error en MySQL/MariaDB
-- [ ] Reemplazar los hashes de contraseña placeholder de `seed.sql` por los reales
+- [x] Reemplazar los hashes de contraseña placeholder de `seed.sql` por los reales
       (el comando para generarlos está en el propio archivo)
-- [ ] Revisar el informe, sección 11.4: la política de la FK `usuarios.codAerolinea`
+- [x] Revisar el informe, sección 11.4: la política de la FK `usuarios.codAerolinea`
       quedó en `RESTRICT` en vez de `SET NULL` (MySQL/MariaDB no permite un CHECK
       sobre una columna con `SET NULL`/`CASCADE` en cascada). Hay que actualizar esa
       fila de la tabla para que el informe coincida con el DDL real
-- [ ] Commit y push
+- [x] Commit y push
 
 ## 2. Núcleo de la aplicación (`src/Core/`)
 
