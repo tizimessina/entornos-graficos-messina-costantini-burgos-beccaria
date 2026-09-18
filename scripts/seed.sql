@@ -63,3 +63,45 @@ VALUES
      '+54 341 4000002',
      'activo',
      NOW());
+
+-- Segunda aerolínea, para que el listado público no quede con una sola fila
+INSERT INTO aerolineas
+    (nombreAerolinea, codigoIATA, descripcionAerolinea, codPais, sitioWebAerolinea, activaAerolinea)
+VALUES
+    ('Andes Líneas Aéreas', 'AND', 'Aerolínea regional de prueba, con rutas de cabotaje.', 'ARG',
+     'https://example.com/andes', 1);
+
+-- Vuelos de prueba. Las fechas son relativas a hoy para que el seed no quede
+-- vencido: el sitio público solo muestra vuelos programados que todavía no salieron.
+INSERT INTO vuelos
+    (codAerolinea, numeroVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo, horaSalidaVuelo,
+     duracionMinutos, precioVuelo, capacidadTotal, asientosDisponibles, estadoVuelo)
+VALUES
+    ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'),
+     'DEM101', 'Rosario', 'Bariloche', DATE_ADD(CURDATE(), INTERVAL 7 DAY), '08:30:00',
+     180, 85000.00, 150, 150, 'programado'),
+
+    ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'),
+     'DEM202', 'Buenos Aires', 'Mendoza', DATE_ADD(CURDATE(), INTERVAL 10 DAY), '14:15:00',
+     120, 62000.00, 150, 148, 'programado'),
+
+    ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'AND'),
+     'AND305', 'Córdoba', 'Ushuaia', DATE_ADD(CURDATE(), INTERVAL 14 DAY), '06:45:00',
+     210, 110000.00, 120, 120, 'programado'),
+
+    -- Este queda sin asientos a propósito, para probar ese caso en el detalle del vuelo
+    ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'AND'),
+     'AND410', 'Rosario', 'Salta', DATE_ADD(CURDATE(), INTERVAL 3 DAY), '19:00:00',
+     105, 54000.00, 120, 0, 'programado');
+
+-- Novedades de prueba, vigentes a la fecha en que se corra el seed
+INSERT INTO novedades
+    (tituloNovedad, textoNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad, destacadaNovedad)
+VALUES
+    ('Nueva ruta Rosario - Bariloche',
+     'Aerolínea Demo suma vuelos directos de Rosario a Bariloche, con salidas semanales durante toda la temporada.',
+     DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 1),
+
+    ('Promociones de temporada',
+     'Las aerolíneas adheridas están cargando sus promociones. Consultá el buscador de vuelos para ver los precios vigentes.',
+     DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 20 DAY), 1);

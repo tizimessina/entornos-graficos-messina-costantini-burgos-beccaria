@@ -37,6 +37,9 @@ class Mailer
             $mail->Password   = $mailConfig['password'];
             $mail->SMTPSecure = $mailConfig['encryption'] ?? PHPMailer::ENCRYPTION_STARTTLS;
             $mail->CharSet    = 'UTF-8';
+            // Sin esto PHPMailer espera hasta 300 s: si el SMTP no responde,
+            // el usuario se queda mirando la página cargar.
+            $mail->Timeout    = 10;
 
             $mail->setFrom($mailConfig['from_email'], $mailConfig['from_name']);
             $mail->addAddress($paraEmail, $paraNombre);

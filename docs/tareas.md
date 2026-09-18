@@ -9,7 +9,7 @@ seguido, no dejar todo para el final.
 
 - [ ] Cada uno instala PHP 8.1+, MySQL/MariaDB y Composer (o XAMPP, que trae todo junto)
 - [ ] Cada uno clona el repo y confirma que puede hacer `git pull` y `git push`
-- [ ] Crear `config/config.example.php` (plantilla, se sube al repo) y que cada uno
+- [x] Crear `config/config.example.php` (plantilla, se sube al repo) y que cada uno
       copie su propio `config/config.php` local (ese no se sube, ya está en `.gitignore`)
 
 ## 1. Base de datos
@@ -39,18 +39,22 @@ seguido, no dejar todo para el final.
 - [x] `Paginator.php` — paginación de listados
 - [x] Layouts base y partials compartidos (`Views/layouts/`, `Views/partials/`:
       header, nav, footer, breadcrumb)
-- [ ] Commit y push (podés ir subiendo de a partes, no hace falta terminar todo el
+- [x] Commit y push (podés ir subiendo de a partes, no hace falta terminar todo el
       núcleo en un solo commit)
 
 ## 3. Sitio público (sin necesidad de estar logueado)
 
-- [ ] Portada con buscador
-- [ ] Listado y ficha de cada aerolínea
-- [ ] Buscador de vuelos, listado de resultados y detalle de vuelo
-- [ ] Novedades (listado y detalle)
-- [ ] Formulario de contacto
-- [ ] Mapa del sitio y buscador interno
-- [ ] Commit y push
+- [x] Portada con buscador
+- [x] Listado y ficha de cada aerolínea
+- [x] Buscador de vuelos, listado de resultados y detalle de vuelo
+- [x] Novedades (listado y detalle)
+- [x] Formulario de contacto
+- [x] Mapa del sitio y buscador interno
+- [x] Commit y push
+
+Pendiente para más adelante: todo esto es HTML sin estilos todavía. La maqueta
+con Bootstrap y la hoja de impresión (`@media print`) se hacen junto con el
+punto 8, cuando repasemos accesibilidad y diseño.
 
 ## 4. Cuentas de usuario
 
