@@ -50,8 +50,8 @@ enteras en cero, y está bien que así sea.
     documentados en el README; falta la sección 13 del informe.*
 - [x] Hay datos de prueba cargados: el sistema no debe abrirse vacío.
   - *El seed carga 2 aerolíneas, 4 vuelos y 2 novedades.*
-- [ ] El registro de un usuario nuevo funciona de punta a punta.
-  - *Punto 4 de `docs/tareas.md`.*
+- [x] El registro de un usuario nuevo funciona de punta a punta.
+  - *Probado: alta, correo de validación, activación por token e inicio de sesión.*
 - [ ] Cualquier flujo importante se puede completar sin que nadie te explique nada.
   - *El flujo principal es reservar un vuelo, y es el punto 5.*
 
@@ -64,10 +64,12 @@ enteras en cero, y está bien que así sea.
 - [ ] El contenido del email está en español y sin textos de plantilla sin reemplazar, como variables sin reemplazar o "Lorem ipsum".
 - [ ] El remitente es identificable (no "no-reply@algo-raro").
 
-> El envío ya está implementado (`src/Core/Mailer.php` con PHPMailer) y lo usa el formulario
-> de contacto, pero falta una cuenta SMTP real configurada y los correos de registro y
-> recuperación, que son el punto 4. Conviene probar el SMTP temprano: el informe lo marca
-> como el riesgo más probable de aparecer tarde.
+> Los tres correos ya están escritos y en español (validación de cuenta, recuperación de
+> contraseña y aviso de contacto a la administración), pero **todavía no hay una cuenta SMTP
+> configurada**, así que no llega ninguno. Hasta que la haya, en desarrollo el enlace de
+> validación se muestra en pantalla para poder probar el circuito. Falta configurar el SMTP
+> y recién ahí se puede tildar esta sección entera. Conviene hacerlo pronto: el informe lo
+> marca como el riesgo más probable de aparecer tarde.
 
 ## 5. Navegación y usabilidad
 
@@ -77,8 +79,8 @@ enteras en cero, y está bien que así sea.
   - *Breadcrumbs en las páginas interiores, el logo lleva a la portada y los detalles tienen
     enlace de vuelta al listado.*
 - [x] Los botones y links dicen qué hacen ("Guardar cambios", no "Enviar").
-- [ ] El estado actual es visible: se sabe si estás logueado, en qué sección estás y con qué usuario.
-  - *La sección actual sí se ve, con los breadcrumbs. Lo de la sesión depende del punto 4.*
+- [x] El estado actual es visible: se sabe si estás logueado, en qué sección estás y con qué usuario.
+  - *Breadcrumbs para la sección, y el menú muestra el nombre y el correo de quien inició sesión.*
 - [ ] Las acciones destructivas (borrar) piden confirmación.
   - *Todavía no hay ninguna acción destructiva. Aplica desde el punto 5 (cancelar reserva)
     y los puntos 6 y 7 (ABMC).*
@@ -114,18 +116,18 @@ enteras en cero, y está bien que así sea.
 
 - [x] Las contraseñas están hasheadas en la base de datos, nunca en texto plano.
   - *bcrypt con `password_hash()`: en la base queda el hash, nunca la contraseña.*
-- [ ] Las páginas privadas no se pueden abrir sin estar logueado (probá pegando la URL directa en una ventana de incógnito).
-  - *`Auth::requireLogin()` y `Auth::requireRole()` ya están escritos, pero todavía no hay
-    páginas privadas que proteger. Punto 4.*
+- [x] Las páginas privadas no se pueden abrir sin estar logueado (probá pegando la URL directa en una ventana de incógnito).
+  - *Probado: `/mi-cuenta` redirige al login si no hay sesión.*
 - [ ] Un usuario no puede ver ni editar datos de otro usuario cambiando el ID en la URL.
-  - *Aplica desde el punto 5, cuando cada pasajero tenga sus propias reservas.*
+  - *Por ahora no hay ningún ID de usuario en la URL: `/mi-cuenta` sale de la sesión. Hay que
+    volver a revisarlo en el punto 5, cuando cada pasajero tenga sus reservas.*
 - [x] Las consultas usan sentencias preparadas (nada de concatenar SQL).
   - *Verificado en todos los modelos. Además el criterio de orden del listado de vuelos sale
     de una lista blanca, así no se puede inyectar nada por la URL.*
 - [x] El contenido cargado por usuarios se escapa al mostrarlo (sin XSS).
   - *`htmlspecialchars()` en toda salida dinámica de las vistas.*
-- [ ] El logout funciona y cierra realmente la sesión.
-  - *`Auth::logout()` está escrito pero todavía no hay pantalla de login. Punto 4.*
+- [x] El logout funciona y cierra realmente la sesión.
+  - *Probado: después de cerrar sesión, `/mi-cuenta` vuelve a redirigir al login.*
 
 ## 9. Visual y responsive
 

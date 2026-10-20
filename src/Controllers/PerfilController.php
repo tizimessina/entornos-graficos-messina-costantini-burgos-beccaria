@@ -1,0 +1,122 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controllers;
+
+use App\Core\Auth;
+use App\Core\Csrf;
+use App\Core\Session;
+use App\Core\Validator;
+use App\Core\Vista;
+use App\Models\Usuario;
+
+class PerfilController
+{
+    private const CLAVE_MINIMA = 8;
+
+    public function mostrar(): void
+    {
+        Auth::requireLogin();
+
+        $usuario = Usuario::find((int) Auth::id());
+
+        $tituloPagina = 'Mi cuenta — SkyReserva';
+        $breadcrumbs = [
+            ['texto' => 'Inicio', 'url' => '/'],
+            ['texto' => 'Mi cuenta', 'url' => null],
+        ];
+        $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/perfil.php', [
+            'usuario'      => $usuario,
+            'exito'        => Session::getFlash('exito'),
+            'errores'      => Session::getFlash('errores', []),
+            'erroresClave' => Session::getFlash('erroresClave', []),
+            'datos'        => Session::getFlash('datos', []),
+        ]);
+
+        require dirname(__DIR__) . '/Views/layouts/base.php';
+    }
+
+    public function actualizar(): void
+    {
+        Auth::requireLogin();
+
+        if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
+            http_response_code(400);
+            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+        }
+
+        $datos = [
+            'nombre'   => trim((string) ($_POST['nombre'] ?? '')),
+            'telefono' => trim((string) ($_POST['telefono'] ?? '')),
+        ];
+
+        $validador = new Validator($datos);
+        $validador
+            ->required('nombre', 'El nombre')->maxLength('nombre', 100, 'El nombre')
+            ->maxLength('telefono', 20, 'El teléfono');
+
+        if ($validador->fails()) {
+            Session::flash('errores', $validador->errors());
+            Session::flash('datos', $datos);
+            header('Location: /mi-cuenta');
+            exit;
+        }
+
+        Usuario::actualizarPerfil(
+            (int) Auth::id(),
+            $datos['nombre'],
+            $datos['telefono'] !== '' ? $datos['telefono'] : null
+        );
+
+        // El nombre se muestra en el encabezado, así que hay que refrescar la sesión.
+        Auth::refrescar();
+
+        Session::flash('exito', 'Guardamos los cambios de tu perfil.');
+        header('Location: /mi-cuenta');
+        exit;
+    }
+
+    public function cambiarClave(): void
+    {
+        Auth::requireLogin();
+
+        if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
+            http_response_code(400);
+            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+        }
+
+        $datos = [
+            'claveActual' => (string) ($_POST['claveActual'] ?? ''),
+            'clave'       => (string) ($_POST['clave'] ?? ''),
+            'clave2'      => (string) ($_POST['clave2'] ?? ''),
+        ];
+
+        $validador = new Validator($datos);
+        $validador
+            ->required('claveActual', 'La contraseña actual')
+            ->required('clave', 'La contraseña nueva')
+            ->minLength('clave', self::CLAVE_MINIMA, 'La contraseña nueva')
+            ->matches('clave2', 'clave', 'La repetición de la contraseña');
+
+        $errores = $validador->errors();
+
+        $hashActual = Usuario::hashDe((int) Auth::id());
+
+        if (!isset($errores['claveActual']) && ($hashActual === null || !password_verify($datos['claveActual'], $hashActual))) {
+            $errores['claveActual'] = 'La contraseña actual no es correcta.';
+        }
+
+        if ($errores !== []) {
+            Session::flash('erroresClave', $errores);
+            header('Location: /mi-cuenta');
+            exit;
+        }
+
+        Usuario::actualizarClave((int) Auth::id(), password_hash($datos['clave'], PASSWORD_BCRYPT));
+
+        Session::flash('exito', 'Cambiamos tu contraseña.');
+        header('Location: /mi-cuenta');
+        exit;
+    }
+}

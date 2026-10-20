@@ -5,9 +5,11 @@ declare(strict_types=1);
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Controllers\AerolineaController;
+use App\Controllers\AuthController;
 use App\Controllers\ContactoController;
 use App\Controllers\HomeController;
 use App\Controllers\NovedadController;
+use App\Controllers\PerfilController;
 use App\Controllers\SitioController;
 use App\Controllers\VueloController;
 use App\Core\Router;
@@ -46,5 +48,23 @@ $router->post('/contacto', [ContactoController::class, 'enviar']);
 
 $router->get('/mapa-sitio', [SitioController::class, 'mapa']);
 $router->get('/buscar', [SitioController::class, 'buscar']);
+
+// Cuentas de usuario
+$router->get('/registro', [AuthController::class, 'mostrarRegistro']);
+$router->post('/registro', [AuthController::class, 'registrar']);
+$router->get('/validar-cuenta', [AuthController::class, 'validarCuenta']);
+
+$router->get('/login', [AuthController::class, 'mostrarLogin']);
+$router->post('/login', [AuthController::class, 'login']);
+$router->post('/logout', [AuthController::class, 'logout']);
+
+$router->get('/recuperar', [AuthController::class, 'mostrarRecuperar']);
+$router->post('/recuperar', [AuthController::class, 'enviarRecuperacion']);
+$router->get('/restablecer', [AuthController::class, 'mostrarRestablecer']);
+$router->post('/restablecer', [AuthController::class, 'restablecer']);
+
+$router->get('/mi-cuenta', [PerfilController::class, 'mostrar']);
+$router->post('/mi-cuenta/perfil', [PerfilController::class, 'actualizar']);
+$router->post('/mi-cuenta/password', [PerfilController::class, 'cambiarClave']);
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

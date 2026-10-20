@@ -58,11 +58,11 @@ punto 8, cuando repasemos accesibilidad y diseño.
 
 ## 4. Cuentas de usuario
 
-- [ ] Registro + validación de cuenta por correo (enlace con token)
-- [ ] Login y logout
-- [ ] Recuperar contraseña (token con vencimiento)
-- [ ] Perfil: ver/editar datos, cambiar contraseña
-- [ ] Commit y push
+- [x] Registro + validación de cuenta por correo (enlace con token)
+- [x] Login y logout
+- [x] Recuperar contraseña (token con vencimiento)
+- [x] Perfil: ver/editar datos, cambiar contraseña
+- [x] Commit y push
 
 ## 5. Reservas (el módulo más importante del sitio)
 

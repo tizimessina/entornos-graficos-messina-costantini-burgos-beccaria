@@ -41,7 +41,11 @@
 </dl>
 
 <?php if ((int) $vuelo['asientosDisponibles'] > 0): ?>
-    <p><a href="/login">Iniciá sesión para reservar este vuelo</a></p>
+    <?php if (\App\Core\Auth::check()): ?>
+        <p>La reserva de vuelos se habilita en el punto 5 de <code>docs/tareas.md</code>.</p>
+    <?php else: ?>
+        <p><a href="/login">Iniciá sesión para reservar este vuelo</a></p>
+    <?php endif; ?>
 <?php else: ?>
     <p>Este vuelo no tiene asientos disponibles.</p>
 <?php endif; ?>
