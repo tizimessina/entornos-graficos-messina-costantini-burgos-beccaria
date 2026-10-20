@@ -134,6 +134,142 @@ class Vuelo
         return $stmt->fetchAll();
     }
 
+    // --- Gestión del CEO --------------------------------------------------
+
+    /** Todos los vuelos de una aerolínea, incluidos los pasados y los cancelados. */
+    public static function todosDeAerolinea(int $codAerolinea, int $limite, int $offset): array
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT codVuelo, numeroVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo,
+                    horaSalidaVuelo, precioVuelo, capacidadTotal, asientosDisponibles, estadoVuelo
+               FROM vuelos
+              WHERE codAerolinea = :aerolinea
+              ORDER BY fechaSalidaVuelo DESC, horaSalidaVuelo DESC
+              LIMIT :limite OFFSET :offset'
+        );
+        $stmt->bindValue(':aerolinea', $codAerolinea, PDO::PARAM_INT);
+        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function contarDeAerolinea(int $codAerolinea): int
+    {
+        $stmt = Database::getInstance()->prepare('SELECT COUNT(*) FROM vuelos WHERE codAerolinea = :aerolinea');
+        $stmt->execute(['aerolinea' => $codAerolinea]);
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Busca un vuelo exigiendo que sea de esa aerolínea. Devuelve null si no lo
+     * es, así un CEO no puede editar vuelos de otra compañía cambiando el id.
+     */
+    public static function findDeAerolinea(int $codVuelo, int $codAerolinea): ?array
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT codVuelo, codAerolinea, numeroVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo,
+                    horaSalidaVuelo, duracionMinutos, precioVuelo, capacidadTotal, asientosDisponibles,
+                    estadoVuelo
+               FROM vuelos
+              WHERE codVuelo = :vuelo AND codAerolinea = :aerolinea'
+        );
+        $stmt->execute(['vuelo' => $codVuelo, 'aerolinea' => $codAerolinea]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    public static function crear(int $codAerolinea, array $datos): int
+    {
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare(
+            "INSERT INTO vuelos
+                (codAerolinea, numeroVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo,
+                 horaSalidaVuelo, duracionMinutos, precioVuelo, capacidadTotal,
+                 asientosDisponibles, estadoVuelo)
+             VALUES
+                (:aerolinea, :numero, :origen, :destino, :fecha,
+                 :hora, :duracion, :precio, :capacidad,
+                 :capacidad2, 'programado')"
+        );
+        $stmt->execute([
+            'aerolinea'  => $codAerolinea,
+            'numero'     => $datos['numeroVuelo'] !== '' ? $datos['numeroVuelo'] : null,
+            'origen'     => $datos['origenVuelo'],
+            'destino'    => $datos['destinoVuelo'],
+            'fecha'      => $datos['fechaSalidaVuelo'],
+            'hora'       => $datos['horaSalidaVuelo'],
+            'duracion'   => $datos['duracionMinutos'] !== '' ? (int) $datos['duracionMinutos'] : null,
+            'precio'     => $datos['precioVuelo'],
+            'capacidad'  => $datos['capacidadTotal'],
+            // Un vuelo nuevo arranca con todos los asientos libres.
+            'capacidad2' => $datos['capacidadTotal'],
+        ]);
+
+        return (int) $pdo->lastInsertId();
+    }
+
+    /**
+     * Actualiza un vuelo. Los asientos disponibles se recalculan a partir de los
+     * ya vendidos, para que cambiar la capacidad no pise las reservas hechas.
+     */
+    public static function actualizar(int $codVuelo, int $vendidos, array $datos): void
+    {
+        $stmt = Database::getInstance()->prepare(
+            'UPDATE vuelos
+                SET numeroVuelo = :numero,
+                    origenVuelo = :origen,
+                    destinoVuelo = :destino,
+                    fechaSalidaVuelo = :fecha,
+                    horaSalidaVuelo = :hora,
+                    duracionMinutos = :duracion,
+                    precioVuelo = :precio,
+                    capacidadTotal = :capacidad,
+                    asientosDisponibles = :disponibles
+              WHERE codVuelo = :vuelo'
+        );
+        $stmt->execute([
+            'vuelo'       => $codVuelo,
+            'numero'      => $datos['numeroVuelo'] !== '' ? $datos['numeroVuelo'] : null,
+            'origen'      => $datos['origenVuelo'],
+            'destino'     => $datos['destinoVuelo'],
+            'fecha'       => $datos['fechaSalidaVuelo'],
+            'hora'        => $datos['horaSalidaVuelo'],
+            'duracion'    => $datos['duracionMinutos'] !== '' ? (int) $datos['duracionMinutos'] : null,
+            'precio'      => $datos['precioVuelo'],
+            'capacidad'   => $datos['capacidadTotal'],
+            'disponibles' => (int) $datos['capacidadTotal'] - $vendidos,
+        ]);
+    }
+
+    /** Baja lógica: el vuelo queda cancelado y deja de aparecer en las búsquedas. */
+    public static function cancelar(int $codVuelo): bool
+    {
+        $stmt = Database::getInstance()->prepare(
+            "UPDATE vuelos SET estadoVuelo = 'cancelado'
+              WHERE codVuelo = :vuelo AND estadoVuelo <> 'cancelado'"
+        );
+        $stmt->execute(['vuelo' => $codVuelo]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    /** Pasajeros con reservas vivas en un vuelo, para avisarles si se cancela. */
+    public static function pasajerosConReserva(int $codVuelo): array
+    {
+        $stmt = Database::getInstance()->prepare(
+            "SELECT DISTINCT u.nombreUsuario, u.emailUsuario, r.codigoReserva
+               FROM reservas r
+               JOIN usuarios u ON u.codusuario = r.codusuario
+              WHERE r.codVuelo = :vuelo AND r.estadoReserva <> 'cancelada'"
+        );
+        $stmt->execute(['vuelo' => $codVuelo]);
+
+        return $stmt->fetchAll();
+    }
+
     /**
      * Usada por el buscador interno del sitio (por ruta o número de vuelo).
      * Cada LIKE lleva su propio placeholder porque, con sentencias preparadas

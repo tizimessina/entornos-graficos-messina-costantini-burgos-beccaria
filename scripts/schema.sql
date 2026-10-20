@@ -323,11 +323,13 @@ CREATE TABLE contacto (
 CREATE OR REPLACE VIEW v_ocupacion_vuelos AS
 SELECT
     v.codVuelo,
+    v.codAerolinea,
     a.nombreAerolinea,
     v.numeroVuelo,
     v.origenVuelo,
     v.destinoVuelo,
     v.fechaSalidaVuelo,
+    v.estadoVuelo,
     v.capacidadTotal,
     v.asientosDisponibles,
     (v.capacidadTotal - v.asientosDisponibles)                          AS asientosVendidos,

@@ -18,6 +18,9 @@
         </p>
         <ul>
             <li><a href="/mi-cuenta">Mi cuenta</a></li>
+            <?php if (\App\Core\Auth::hasRole('ceo de aerolinea')): ?>
+                <li><a href="/panel">Panel de aerolínea</a></li>
+            <?php endif; ?>
             <li>
                 <form method="post" action="/logout">
                     <?= \App\Core\Csrf::field() ?>

@@ -74,6 +74,42 @@ class Usuario
         return (int) $pdo->lastInsertId();
     }
 
+    /**
+     * Alta de un CEO de aerolínea. Primero valida el correo y después queda
+     * esperando que la administración lo autorice, así que pasa por dos
+     * filtros antes de poder entrar.
+     */
+    public static function crearCeo(
+        string $nombre,
+        string $email,
+        string $hashClave,
+        ?string $telefono,
+        int $codAerolinea,
+        string $tokenValidacion,
+        string $tokenExpira
+    ): int {
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare(
+            "INSERT INTO usuarios
+                (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario,
+                 codAerolinea, estadoCuenta, tokenValidacion, tokenValidacionExpira)
+             VALUES
+                (:nombre, :clave, 'ceo de aerolinea', :email, :telefono,
+                 :aerolinea, 'pendiente_email', :token, :expira)"
+        );
+        $stmt->execute([
+            'nombre'    => $nombre,
+            'clave'     => $hashClave,
+            'email'     => $email,
+            'telefono'  => $telefono,
+            'aerolinea' => $codAerolinea,
+            'token'     => $tokenValidacion,
+            'expira'    => $tokenExpira,
+        ]);
+
+        return (int) $pdo->lastInsertId();
+    }
+
     /** Devuelve el usuario solo si el token existe y todavía no venció. */
     public static function findPorTokenValidacion(string $token): ?array
     {
@@ -88,12 +124,19 @@ class Usuario
         return $stmt->fetch() ?: null;
     }
 
-    /** Marca la cuenta como activa y quema el token de validación. */
+    /**
+     * Quema el token de validación y define el estado siguiente: un pasajero
+     * queda activo, pero un CEO todavía tiene que esperar a que la
+     * administración autorice su cuenta.
+     */
     public static function activar(int $id): void
     {
         $stmt = Database::getInstance()->prepare(
             "UPDATE usuarios
-                SET estadoCuenta = 'activo',
+                SET estadoCuenta = CASE
+                                     WHEN tipoUsuario = 'ceo de aerolinea' THEN 'pendiente_autorizacion'
+                                     ELSE 'activo'
+                                   END,
                     fechaValidacionEmail = NOW(),
                     tokenValidacion = NULL,
                     tokenValidacionExpira = NULL

@@ -6,6 +6,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Controllers\AerolineaController;
 use App\Controllers\AuthController;
+use App\Controllers\CeoController;
 use App\Controllers\ContactoController;
 use App\Controllers\HomeController;
 use App\Controllers\NovedadController;
@@ -77,5 +78,21 @@ $router->get('/reservas/{id}/pago', [ReservaController::class, 'mostrarPago']);
 $router->post('/reservas/{id}/pago', [ReservaController::class, 'confirmarPago']);
 $router->get('/reservas/{id}/comprobante', [ReservaController::class, 'comprobante']);
 $router->post('/reservas/{id}/cancelar', [ReservaController::class, 'cancelar']);
+
+// Panel de la aerolínea (rol CEO)
+$router->get('/panel', [CeoController::class, 'panel']);
+
+$router->get('/panel/vuelos', [CeoController::class, 'vuelos']);
+$router->get('/panel/vuelos/nuevo', [CeoController::class, 'nuevoVuelo']);
+$router->post('/panel/vuelos/nuevo', [CeoController::class, 'crearVuelo']);
+$router->get('/panel/vuelos/{id}/editar', [CeoController::class, 'editarVuelo']);
+$router->post('/panel/vuelos/{id}/editar', [CeoController::class, 'actualizarVuelo']);
+$router->post('/panel/vuelos/{id}/cancelar', [CeoController::class, 'cancelarVuelo']);
+
+$router->get('/panel/promociones', [CeoController::class, 'promociones']);
+$router->get('/panel/promociones/nueva', [CeoController::class, 'nuevaPromocion']);
+$router->post('/panel/promociones/nueva', [CeoController::class, 'crearPromocion']);
+
+$router->get('/panel/reportes', [CeoController::class, 'reportes']);
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

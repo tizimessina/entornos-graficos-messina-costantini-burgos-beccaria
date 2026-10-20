@@ -83,11 +83,13 @@ punto 8, cuando repasemos accesibilidad y diseño.
 
 ## 6. Panel de la aerolínea (rol CEO)
 
-- [ ] Solicitud de cuenta CEO, bloqueada hasta que el administrador la autoriza
-- [ ] ABMC de los vuelos propios
-- [ ] Alta de promociones (quedan en estado pendiente)
-- [ ] Reportes de ocupación y ventas, solo de su propia aerolínea
-- [ ] Commit y push
+- [x] Solicitud de cuenta CEO, bloqueada hasta que el administrador la autoriza
+- [x] ABMC de los vuelos propios
+- [x] Alta de promociones (quedan en estado pendiente)
+- [x] Reportes de ocupación y ventas, solo de su propia aerolínea
+- [ ] Falta el otro lado del circuito: hoy nadie puede **autorizar** una cuenta de CEO ni
+      **aprobar** una promoción, así que esas solicitudes quedan trabadas hasta el punto 7
+- [x] Commit y push
 
 ## 7. Panel de administración
 

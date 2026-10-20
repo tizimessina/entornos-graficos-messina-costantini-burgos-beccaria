@@ -10,6 +10,7 @@ use App\Core\Mailer;
 use App\Core\Session;
 use App\Core\Validator;
 use App\Core\Vista;
+use App\Models\Aerolinea;
 use App\Models\Usuario;
 
 class AuthController
@@ -31,8 +32,9 @@ class AuthController
             ['texto' => 'Crear cuenta', 'url' => null],
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/registro.php', [
-            'errores' => Session::getFlash('errores', []),
-            'datos'   => Session::getFlash('datos', []),
+            'errores'    => Session::getFlash('errores', []),
+            'datos'      => Session::getFlash('datos', []),
+            'aerolineas' => Aerolinea::activas(100, 0),
         ]);
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
@@ -46,12 +48,16 @@ class AuthController
         }
 
         $datos = [
-            'nombre'   => trim((string) ($_POST['nombre'] ?? '')),
-            'email'    => trim((string) ($_POST['email'] ?? '')),
-            'telefono' => trim((string) ($_POST['telefono'] ?? '')),
-            'clave'    => (string) ($_POST['clave'] ?? ''),
-            'clave2'   => (string) ($_POST['clave2'] ?? ''),
+            'nombre'    => trim((string) ($_POST['nombre'] ?? '')),
+            'email'     => trim((string) ($_POST['email'] ?? '')),
+            'telefono'  => trim((string) ($_POST['telefono'] ?? '')),
+            'tipo'      => (string) ($_POST['tipo'] ?? 'pasajero'),
+            'aerolinea' => (string) ($_POST['aerolinea'] ?? ''),
+            'clave'     => (string) ($_POST['clave'] ?? ''),
+            'clave2'    => (string) ($_POST['clave2'] ?? ''),
         ];
+
+        $esCeo = $datos['tipo'] === 'ceo';
 
         $validador = new Validator($datos);
         $validador
@@ -63,6 +69,12 @@ class AuthController
             ->matches('clave2', 'clave', 'La repetición de la contraseña');
 
         $errores = $validador->errors();
+
+        // El CEO tiene que elegir a qué aerolínea pertenece: la base lo exige
+        // con un CHECK, y sin eso no se sabría qué vuelos puede administrar.
+        if ($esCeo && Aerolinea::find((int) $datos['aerolinea']) === null) {
+            $errores['aerolinea'] = 'Elegí la aerolínea que vas a administrar.';
+        }
 
         // El email tiene UNIQUE en la base, pero conviene avisarlo acá con un
         // mensaje claro en vez de dejar que explote la restricción.
@@ -78,17 +90,16 @@ class AuthController
             exit;
         }
 
-        $token  = bin2hex(random_bytes(32));
-        $expira = $this->vencimientoToken();
+        $token    = bin2hex(random_bytes(32));
+        $expira   = $this->vencimientoToken();
+        $hash     = password_hash($datos['clave'], PASSWORD_BCRYPT);
+        $telefono = $datos['telefono'] !== '' ? $datos['telefono'] : null;
 
-        Usuario::crearPasajero(
-            $datos['nombre'],
-            $datos['email'],
-            password_hash($datos['clave'], PASSWORD_BCRYPT),
-            $datos['telefono'] !== '' ? $datos['telefono'] : null,
-            $token,
-            $expira
-        );
+        if ($esCeo) {
+            Usuario::crearCeo($datos['nombre'], $datos['email'], $hash, $telefono, (int) $datos['aerolinea'], $token, $expira);
+        } else {
+            Usuario::crearPasajero($datos['nombre'], $datos['email'], $hash, $telefono, $token, $expira);
+        }
 
         $enlace = $this->urlBase() . '/validar-cuenta?token=' . $token;
         $seEnvio = Mailer::enviar(
@@ -122,7 +133,12 @@ class AuthController
             Session::flash('error', 'El enlace de validación no es válido o ya venció. Registrate de nuevo o pedí uno nuevo.');
         } else {
             Usuario::activar((int) $usuario['codusuario']);
-            Session::flash('exito', 'Listo, tu cuenta quedó validada. Ya podés iniciar sesión.');
+
+            // El pasajero ya puede entrar; el CEO todavía tiene que esperar a
+            // que la administración autorice su cuenta.
+            Session::flash('exito', $usuario['tipoUsuario'] === 'ceo de aerolinea'
+                ? 'Validamos tu correo. Tu cuenta de aerolínea queda a la espera de que la administración la autorice; te avisamos cuando esté habilitada.'
+                : 'Listo, tu cuenta quedó validada. Ya podés iniciar sesión.');
         }
 
         header('Location: /login');

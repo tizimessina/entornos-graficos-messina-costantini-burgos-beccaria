@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Core\Database;
+use PDO;
 
 class Promocion
 {
@@ -49,5 +50,73 @@ class Promocion
         Database::getInstance()
             ->prepare('UPDATE promociones SET usosRealizados = GREATEST(usosRealizados - 1, 0) WHERE codPromocion = :cod')
             ->execute(['cod' => $codPromocion]);
+    }
+
+    // --- Gestión del CEO --------------------------------------------------
+
+    public static function deAerolinea(int $codAerolinea, int $limite, int $offset): array
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT codPromocion, codigoPromocion, descripcionPromocion, descuentoPromocion,
+                    estadoPromocion, fechaInicioPromocion, fechaFinPromocion,
+                    usosMaximos, usosRealizados, fechaSolicitud, fechaResolucion, motivoResolucion
+               FROM promociones
+              WHERE codAerolinea = :aerolinea
+              ORDER BY fechaSolicitud DESC
+              LIMIT :limite OFFSET :offset'
+        );
+        $stmt->bindValue(':aerolinea', $codAerolinea, PDO::PARAM_INT);
+        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function contarDeAerolinea(int $codAerolinea): int
+    {
+        $stmt = Database::getInstance()->prepare('SELECT COUNT(*) FROM promociones WHERE codAerolinea = :aerolinea');
+        $stmt->execute(['aerolinea' => $codAerolinea]);
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    public static function existeCodigo(string $codigo): bool
+    {
+        $stmt = Database::getInstance()->prepare('SELECT 1 FROM promociones WHERE codigoPromocion = :codigo');
+        $stmt->execute(['codigo' => $codigo]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    /**
+     * El CEO propone la promoción: nace en estado 'pendiente' y no se puede
+     * usar hasta que la administración la apruebe.
+     */
+    public static function crear(int $codAerolinea, int $codUsuarioSolicita, array $datos): int
+    {
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare(
+            "INSERT INTO promociones
+                (codigoPromocion, descripcionPromocion, descuentoPromocion, codAerolinea,
+                 estadoPromocion, fechaInicioPromocion, fechaFinPromocion, usosMaximos,
+                 codUsuarioSolicita)
+             VALUES
+                (:codigo, :descripcion, :descuento, :aerolinea,
+                 'pendiente', :inicio, :fin, :usos,
+                 :solicita)"
+        );
+        $stmt->execute([
+            'codigo'      => $datos['codigoPromocion'],
+            'descripcion' => $datos['descripcionPromocion'],
+            'descuento'   => $datos['descuentoPromocion'],
+            'aerolinea'   => $codAerolinea,
+            'inicio'      => $datos['fechaInicioPromocion'],
+            'fin'         => $datos['fechaFinPromocion'],
+            'usos'        => $datos['usosMaximos'] !== '' ? (int) $datos['usosMaximos'] : null,
+            'solicita'    => $codUsuarioSolicita,
+        ]);
+
+        return (int) $pdo->lastInsertId();
     }
 }

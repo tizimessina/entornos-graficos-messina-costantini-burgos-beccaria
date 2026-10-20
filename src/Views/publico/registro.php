@@ -2,7 +2,9 @@
 /**
  * @var array $errores
  * @var array $datos
+ * @var array $aerolineas
  */
+$tipoElegido = $datos['tipo'] ?? 'pasajero';
 ?>
 <h1>Crear cuenta</h1>
 
@@ -45,6 +47,44 @@
                <?= isset($errores['telefono']) ? 'aria-invalid="true" aria-describedby="error-telefono"' : '' ?>>
         <?php if (isset($errores['telefono'])): ?>
             <p id="error-telefono" role="alert"><?= htmlspecialchars($errores['telefono'], ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
+    </div>
+
+    <fieldset>
+        <legend>Tipo de cuenta</legend>
+
+        <div>
+            <input type="radio" id="tipo-pasajero" name="tipo" value="pasajero"
+                   <?= $tipoElegido !== 'ceo' ? 'checked' : '' ?>>
+            <label for="tipo-pasajero">Pasajero: quiero buscar y reservar vuelos</label>
+        </div>
+
+        <div>
+            <input type="radio" id="tipo-ceo" name="tipo" value="ceo"
+                   <?= $tipoElegido === 'ceo' ? 'checked' : '' ?>>
+            <label for="tipo-ceo">Aerolínea: administro los vuelos de una compañía adherida</label>
+        </div>
+    </fieldset>
+
+    <div>
+        <label for="aerolinea">Aerolínea que vas a administrar</label>
+        <select id="aerolinea" name="aerolinea"
+                aria-describedby="ayuda-aerolinea<?= isset($errores['aerolinea']) ? ' error-aerolinea' : '' ?>"
+                <?= isset($errores['aerolinea']) ? 'aria-invalid="true"' : '' ?>>
+            <option value="">— Elegí una aerolínea —</option>
+            <?php foreach ($aerolineas as $aerolinea): ?>
+                <option value="<?= (int) $aerolinea['codAerolinea'] ?>"
+                    <?= ($datos['aerolinea'] ?? '') === (string) $aerolinea['codAerolinea'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <p id="ayuda-aerolinea">
+            Solo hace falta si pedís una cuenta de aerolínea. Esas cuentas quedan esperando
+            que la administración las autorice antes de poder entrar.
+        </p>
+        <?php if (isset($errores['aerolinea'])): ?>
+            <p id="error-aerolinea" role="alert"><?= htmlspecialchars($errores['aerolinea'], ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
     </div>
 
