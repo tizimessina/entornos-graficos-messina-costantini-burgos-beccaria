@@ -16,6 +16,7 @@ URL de producción: *(se agrega cuando el sitio esté desplegado)*
 - [Roles y funcionalidades](#roles-y-funcionalidades)
 - [Estructura del repositorio](#estructura-del-repositorio)
 - [Base de datos](#base-de-datos)
+- [Usuarios de prueba](#usuarios-de-prueba)
 - [Accesibilidad y estándares](#accesibilidad-y-estándares)
 - [Uso de herramientas de IA](#uso-de-herramientas-de-ia)
 - [Documentación del proyecto](#documentación-del-proyecto)
@@ -101,8 +102,22 @@ Siete tablas: `aerolineas`, `usuarios`, `vuelos`, `promociones`, `novedades`,
 precio, el descuento aplicado y el estado de la reserva.
 
 El modelo completo (diagrama entidad-relación, relaciones y las decisiones sobre cada
-FK) está en el informe, y el script `scripts/schema.sql` se va a agregar cuando
-empecemos con la base de datos.
+FK) está en el informe. El DDL está en `scripts/schema.sql` y los datos de prueba en
+`scripts/seed.sql`: se cargan en ese orden, primero el esquema y después el seed.
+
+## Usuarios de prueba
+
+Los carga `scripts/seed.sql`. Son solo para desarrollo y corrección: hay que borrarlos
+antes de cualquier uso real del sitio.
+
+| Rol | E-mail | Contraseña |
+|---|---|---|
+| Administrador | admin@skyreserva.com | Admin2026! |
+| CEO de aerolínea | ceo@aerolinea-demo.com | Ceo2026! |
+| Pasajero | pasajero@demo.com | Pasajero2026! |
+
+El seed también deja cargadas dos aerolíneas, cuatro vuelos y dos novedades, así el
+sitio no se abre vacío.
 
 ## Accesibilidad y estándares
 
