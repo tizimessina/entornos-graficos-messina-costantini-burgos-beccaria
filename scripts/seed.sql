@@ -105,3 +105,17 @@ VALUES
     ('Promociones de temporada',
      'Las aerolíneas adheridas están cargando sus promociones. Consultá el buscador de vuelos para ver los precios vigentes.',
      DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 20 DAY), 1);
+
+-- Promoción de prueba, aprobada y vigente, para probar el descuento en la reserva.
+-- El código que se ingresa al reservar es VERANO26.
+INSERT INTO promociones
+    (codigoPromocion, descripcionPromocion, descuentoPromocion, codAerolinea, estadoPromocion,
+     fechaInicioPromocion, fechaFinPromocion, usosMaximos,
+     codUsuarioSolicita, codUsuarioResuelve, fechaResolucion)
+VALUES
+    ('VERANO26', 'Descuento de temporada para vuelos de Aerolínea Demo', 15.00,
+     (SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'), 'aprobada',
+     DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 60 DAY), 100,
+     (SELECT codusuario FROM usuarios WHERE emailUsuario = 'ceo@aerolinea-demo.com'),
+     (SELECT codusuario FROM usuarios WHERE emailUsuario = 'admin@skyreserva.com'),
+     NOW());

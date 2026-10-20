@@ -66,14 +66,20 @@ punto 8, cuando repasemos accesibilidad y diseño.
 
 ## 5. Reservas (el módulo más importante del sitio)
 
-- [ ] Elegir cantidad de asientos y aplicar código de promoción
-- [ ] Motor de reserva con transacción y `SELECT ... FOR UPDATE` (evita que dos personas
+- [x] Elegir cantidad de asientos y aplicar código de promoción
+- [x] Motor de reserva con transacción y `SELECT ... FOR UPDATE` (evita que dos personas
       reserven el mismo asiento a la vez — detalle en el informe, sección 11.6)
-- [ ] Pantalla de pago simulado y confirmación
-- [ ] Envío del comprobante por correo
-- [ ] Historial de reservas del pasajero y comprobante imprimible
-- [ ] Cancelación con la regla de 72 horas y devolución del asiento al inventario
-- [ ] Commit y push
+- [x] Pantalla de pago simulado y confirmación
+- [x] Envío del comprobante por correo
+- [x] Historial de reservas del pasajero y comprobante imprimible
+- [x] Cancelación con la regla de 72 horas y devolución del asiento al inventario
+- [ ] Revisar el informe, punto 5.c y sección 11: el flujo documentado solo permite
+      cancelar reservas **confirmadas**. En el código también se puede cancelar una
+      `pendiente de pago` (sin la regla de 72 h), porque si no los asientos quedarían
+      bloqueados hasta que venza. Hay que actualizar el diagrama de flujo para que
+      coincida con el código
+- [ ] El comprobante imprimible todavía no tiene hoja `@media print`: va con el punto 8
+- [x] Commit y push
 
 ## 6. Panel de la aerolínea (rol CEO)
 

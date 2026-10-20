@@ -42,7 +42,7 @@
 
 <?php if ((int) $vuelo['asientosDisponibles'] > 0): ?>
     <?php if (\App\Core\Auth::check()): ?>
-        <p>La reserva de vuelos se habilita en el punto 5 de <code>docs/tareas.md</code>.</p>
+        <p><a href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>/reservar">Reservar este vuelo</a></p>
     <?php else: ?>
         <p><a href="/login">Iniciá sesión para reservar este vuelo</a></p>
     <?php endif; ?>

@@ -10,6 +10,7 @@ use App\Controllers\ContactoController;
 use App\Controllers\HomeController;
 use App\Controllers\NovedadController;
 use App\Controllers\PerfilController;
+use App\Controllers\ReservaController;
 use App\Controllers\SitioController;
 use App\Controllers\VueloController;
 use App\Core\Router;
@@ -66,5 +67,15 @@ $router->post('/restablecer', [AuthController::class, 'restablecer']);
 $router->get('/mi-cuenta', [PerfilController::class, 'mostrar']);
 $router->post('/mi-cuenta/perfil', [PerfilController::class, 'actualizar']);
 $router->post('/mi-cuenta/password', [PerfilController::class, 'cambiarClave']);
+
+// Reservas
+$router->get('/vuelos/{id}/reservar', [ReservaController::class, 'nueva']);
+$router->post('/reservas', [ReservaController::class, 'crear']);
+$router->get('/mi-cuenta/reservas', [ReservaController::class, 'misReservas']);
+$router->get('/reservas/{id}', [ReservaController::class, 'detalle']);
+$router->get('/reservas/{id}/pago', [ReservaController::class, 'mostrarPago']);
+$router->post('/reservas/{id}/pago', [ReservaController::class, 'confirmarPago']);
+$router->get('/reservas/{id}/comprobante', [ReservaController::class, 'comprobante']);
+$router->post('/reservas/{id}/cancelar', [ReservaController::class, 'cancelar']);
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
