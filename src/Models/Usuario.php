@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Core\Database;
+use PDO;
 
 class Usuario
 {
@@ -202,6 +203,87 @@ class Usuario
             'nombre'   => $nombre,
             'telefono' => $telefono,
         ]);
+    }
+
+    // --- Gestión del administrador ----------------------------------------
+
+    /** Listado filtrable por tipo y estado, para el panel de administración. */
+    public static function todos(?string $tipo, ?string $estado, int $limite, int $offset): array
+    {
+        [$where, $params] = self::filtros($tipo, $estado);
+
+        $stmt = Database::getInstance()->prepare(
+            "SELECT u.codusuario, u.nombreUsuario, u.emailUsuario, u.tipoUsuario, u.estadoCuenta,
+                    u.fechaAltaUsuario, a.nombreAerolinea
+               FROM usuarios u
+          LEFT JOIN aerolineas a ON a.codAerolinea = u.codAerolinea
+              WHERE $where
+              ORDER BY u.fechaAltaUsuario DESC
+              LIMIT :limite OFFSET :offset"
+        );
+
+        foreach ($params as $clave => $valor) {
+            $stmt->bindValue($clave, $valor);
+        }
+        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function contarTodos(?string $tipo, ?string $estado): int
+    {
+        [$where, $params] = self::filtros($tipo, $estado);
+
+        $stmt = Database::getInstance()->prepare("SELECT COUNT(*) FROM usuarios u WHERE $where");
+
+        foreach ($params as $clave => $valor) {
+            $stmt->bindValue($clave, $valor);
+        }
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    /** @return array{0: string, 1: array<string, mixed>} */
+    private static function filtros(?string $tipo, ?string $estado): array
+    {
+        $condiciones = ['1 = 1'];
+        $params = [];
+
+        if ($tipo !== null && $tipo !== '') {
+            $condiciones[] = 'u.tipoUsuario = :tipo';
+            $params[':tipo'] = $tipo;
+        }
+
+        if ($estado !== null && $estado !== '') {
+            $condiciones[] = 'u.estadoCuenta = :estado';
+            $params[':estado'] = $estado;
+        }
+
+        return [implode(' AND ', $condiciones), $params];
+    }
+
+    public static function contarPendientesDeAutorizacion(): int
+    {
+        return (int) Database::getInstance()
+            ->query("SELECT COUNT(*) FROM usuarios WHERE estadoCuenta = 'pendiente_autorizacion'")
+            ->fetchColumn();
+    }
+
+    /**
+     * Cambia el estado de la cuenta. Se usa para autorizar un CEO, rechazarlo,
+     * suspender a alguien o volver a habilitarlo.
+     */
+    public static function cambiarEstado(int $id, string $estado): bool
+    {
+        $stmt = Database::getInstance()->prepare(
+            'UPDATE usuarios SET estadoCuenta = :estado WHERE codusuario = :id AND estadoCuenta <> :estado2'
+        );
+        $stmt->execute(['id' => $id, 'estado' => $estado, 'estado2' => $estado]);
+
+        return $stmt->rowCount() > 0;
     }
 
     /** Hash guardado, para verificar la contraseña actual antes de cambiarla. */

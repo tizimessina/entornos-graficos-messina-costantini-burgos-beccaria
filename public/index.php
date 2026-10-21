@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+use App\Controllers\AdminController;
 use App\Controllers\AerolineaController;
 use App\Controllers\AuthController;
 use App\Controllers\CeoController;
@@ -94,5 +95,33 @@ $router->get('/panel/promociones/nueva', [CeoController::class, 'nuevaPromocion'
 $router->post('/panel/promociones/nueva', [CeoController::class, 'crearPromocion']);
 
 $router->get('/panel/reportes', [CeoController::class, 'reportes']);
+
+// Administración de la plataforma (rol administrador)
+$router->get('/admin', [AdminController::class, 'panel']);
+
+$router->get('/admin/aerolineas', [AdminController::class, 'aerolineas']);
+$router->get('/admin/aerolineas/nueva', [AdminController::class, 'nuevaAerolinea']);
+$router->post('/admin/aerolineas/nueva', [AdminController::class, 'crearAerolinea']);
+$router->get('/admin/aerolineas/{id}/editar', [AdminController::class, 'editarAerolinea']);
+$router->post('/admin/aerolineas/{id}/editar', [AdminController::class, 'actualizarAerolinea']);
+$router->post('/admin/aerolineas/{id}/estado', [AdminController::class, 'cambiarEstadoAerolinea']);
+
+$router->get('/admin/usuarios', [AdminController::class, 'usuarios']);
+$router->post('/admin/usuarios/{id}/estado', [AdminController::class, 'cambiarEstadoUsuario']);
+
+$router->get('/admin/promociones', [AdminController::class, 'promociones']);
+$router->post('/admin/promociones/{id}/resolver', [AdminController::class, 'resolverPromocion']);
+
+$router->get('/admin/novedades', [AdminController::class, 'novedades']);
+$router->get('/admin/novedades/nueva', [AdminController::class, 'nuevaNovedad']);
+$router->post('/admin/novedades/nueva', [AdminController::class, 'crearNovedad']);
+$router->get('/admin/novedades/{id}/editar', [AdminController::class, 'editarNovedad']);
+$router->post('/admin/novedades/{id}/editar', [AdminController::class, 'actualizarNovedad']);
+$router->post('/admin/novedades/{id}/eliminar', [AdminController::class, 'eliminarNovedad']);
+
+$router->get('/admin/mensajes', [AdminController::class, 'contactos']);
+$router->get('/admin/mensajes/{id}', [AdminController::class, 'verContacto']);
+
+$router->get('/admin/reportes', [AdminController::class, 'reportes']);
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

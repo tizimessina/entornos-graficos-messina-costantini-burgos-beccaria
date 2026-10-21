@@ -87,19 +87,33 @@ punto 8, cuando repasemos accesibilidad y diseño.
 - [x] ABMC de los vuelos propios
 - [x] Alta de promociones (quedan en estado pendiente)
 - [x] Reportes de ocupación y ventas, solo de su propia aerolínea
-- [ ] Falta el otro lado del circuito: hoy nadie puede **autorizar** una cuenta de CEO ni
-      **aprobar** una promoción, así que esas solicitudes quedan trabadas hasta el punto 7
+- [x] El otro lado del circuito quedó cerrado en el punto 7: desde `/admin/usuarios` se
+      autorizan las cuentas de CEO y desde `/admin/promociones` se aprueban o deniegan
+      las promociones
 - [x] Commit y push
 
 ## 7. Panel de administración
 
-- [ ] ABMC de aerolíneas
-- [ ] Autorizar o rechazar cuentas de CEO
-- [ ] Aprobar o denegar promociones
-- [ ] ABMC de novedades
-- [ ] Gestión de los mensajes del formulario de contacto
-- [ ] Reportes globales (ventas, vuelos, usuarios)
-- [ ] Commit y push
+- [x] ABMC de aerolíneas, con baja lógica (`activaAerolinea`): la aerolínea deja de
+      aparecer en el sitio público pero se conservan sus vuelos y reservas
+- [x] Autorizar o rechazar cuentas de CEO, suspender y reactivar cualquier cuenta
+      (un administrador no puede suspenderse a sí mismo y quedarse afuera)
+- [x] Aprobar o denegar promociones, con motivo obligatorio al denegar: ese motivo es
+      lo que después ve la aerolínea en su panel
+- [x] ABMC de novedades, con la imagen y su texto alternativo validados juntos
+- [x] Gestión de los mensajes del formulario de contacto (se marcan como leídos al abrirlos)
+- [x] Reportes globales (ventas por aerolínea, ocupación de los vuelos, usuarios por
+      tipo y estado)
+- [x] Commit y push
+
+Probado contra la base real: una cuenta de CEO nueva no puede entrar hasta que se la
+autoriza desde el panel, y un código de promoción no descuenta nada hasta que se lo
+aprueba. Después de probarlo borramos los datos de prueba, así la base vuelve a quedar
+igual que el `seed.sql`.
+
+Queda pendiente del punto 9 el aviso por correo de los cambios de estado de cuenta: el
+`Mailer` todavía no tiene SMTP configurado, así que el correo no sale, pero el cambio de
+estado se aplica igual y el panel lo confirma en pantalla.
 
 ## 8. Accesibilidad y validaciones
 

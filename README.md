@@ -57,8 +57,10 @@ y editar los vuelos de su aerolínea, crear promociones (quedan pendientes de ap
 y ver reportes de ocupación y ventas, pero solo de su propia aerolínea.
 
 **Administrador**
-Da de alta aerolíneas y novedades, autoriza o rechaza cuentas de CEO, aprueba o rechaza
-promociones, y tiene reportes globales de ventas, vuelos y usuarios.
+Da de alta, edita y da de baja aerolíneas y novedades, autoriza las cuentas de CEO y puede
+suspender o reactivar cualquier cuenta, aprueba o deniega las promociones que proponen las
+aerolíneas (si las deniega tiene que dejar el motivo), lee los mensajes del formulario de
+contacto y tiene reportes globales de ventas, vuelos y usuarios.
 
 ## Estructura del repositorio
 

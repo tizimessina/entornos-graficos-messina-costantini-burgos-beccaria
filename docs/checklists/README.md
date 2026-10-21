@@ -53,7 +53,10 @@ enteras en cero, y está bien que así sea.
 - [x] El registro de un usuario nuevo funciona de punta a punta.
   - *Probado: alta, correo de validación, activación por token e inicio de sesión.*
 - [x] Cualquier flujo importante se puede completar sin que nadie te explique nada.
-  - *Probado el circuito completo: buscar vuelo, reservar, pagar, ver el comprobante y cancelar.*
+  - *Probado el circuito completo del pasajero (buscar vuelo, reservar, pagar, ver el
+    comprobante y cancelar) y los dos circuitos que pasan por la administración: una cuenta
+    de CEO no entra hasta que se la autoriza, y un código de promoción no descuenta nada
+    hasta que se lo aprueba.*
 
 ## 4. Emails
 
@@ -82,8 +85,8 @@ enteras en cero, y está bien que así sea.
 - [x] El estado actual es visible: se sabe si estás logueado, en qué sección estás y con qué usuario.
   - *Breadcrumbs para la sección, y el menú muestra el nombre y el correo de quien inició sesión.*
 - [x] Las acciones destructivas (borrar) piden confirmación.
-  - *Cancelar una reserva pide confirmación. Falta revisarlo de nuevo en los puntos 6 y 7,
-    cuando existan los ABMC.*
+  - *Piden confirmación: cancelar una reserva, cancelar un vuelo, dar de baja una aerolínea
+    y borrar una novedad. Son las cuatro acciones destructivas del sitio.*
 - [x] Después de cada acción hay feedback: mensaje de éxito o de error.
 - [x] Las listas vacías muestran un mensaje ("Todavía no hay pedidos"), no una tabla en blanco.
 
@@ -120,7 +123,8 @@ enteras en cero, y está bien que así sea.
   - *Probado: `/mi-cuenta` redirige al login si no hay sesión.*
 - [x] Un usuario no puede ver ni editar datos de otro usuario cambiando el ID en la URL.
   - *Probado: entrando con otra cuenta a `/reservas/{id}` de una reserva ajena responde 404,
-    no 403, para no revelar siquiera que existe.*
+    no 403, para no revelar siquiera que existe. El panel de la aerolínea solo muestra los
+    vuelos y las promociones propias, y `/admin` responde 403 a un pasajero o a un CEO.*
 - [x] Las consultas usan sentencias preparadas (nada de concatenar SQL).
   - *Verificado en todos los modelos. Además el criterio de orden del listado de vuelos sale
     de una lista blanca, así no se puede inyectar nada por la URL.*

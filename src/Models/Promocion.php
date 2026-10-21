@@ -89,6 +89,54 @@ class Promocion
         return (bool) $stmt->fetchColumn();
     }
 
+    // --- Gestión del administrador ----------------------------------------
+
+    /** Promociones esperando resolución, con la aerolínea que las propuso. */
+    public static function pendientes(): array
+    {
+        return Database::getInstance()->query(
+            "SELECT p.codPromocion, p.codigoPromocion, p.descripcionPromocion, p.descuentoPromocion,
+                    p.fechaInicioPromocion, p.fechaFinPromocion, p.usosMaximos, p.fechaSolicitud,
+                    a.nombreAerolinea, u.nombreUsuario AS solicitante
+               FROM promociones p
+               JOIN aerolineas a ON a.codAerolinea = p.codAerolinea
+          LEFT JOIN usuarios u   ON u.codusuario = p.codUsuarioSolicita
+              WHERE p.estadoPromocion = 'pendiente'
+              ORDER BY p.fechaSolicitud"
+        )->fetchAll();
+    }
+
+    public static function contarPendientes(): int
+    {
+        return (int) Database::getInstance()
+            ->query("SELECT COUNT(*) FROM promociones WHERE estadoPromocion = 'pendiente'")
+            ->fetchColumn();
+    }
+
+    /**
+     * Aprueba o deniega una promoción pendiente, dejando registrado quién la
+     * resolvió, cuándo y por qué.
+     */
+    public static function resolver(int $codPromocion, string $estado, ?string $motivo, int $codUsuarioResuelve): bool
+    {
+        $stmt = Database::getInstance()->prepare(
+            "UPDATE promociones
+                SET estadoPromocion = :estado,
+                    motivoResolucion = :motivo,
+                    codUsuarioResuelve = :resuelve,
+                    fechaResolucion = NOW()
+              WHERE codPromocion = :cod AND estadoPromocion = 'pendiente'"
+        );
+        $stmt->execute([
+            'cod'      => $codPromocion,
+            'estado'   => $estado,
+            'motivo'   => $motivo,
+            'resuelve' => $codUsuarioResuelve,
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
     /**
      * El CEO propone la promoción: nace en estado 'pendiente' y no se puede
      * usar hasta que la administración la apruebe.
