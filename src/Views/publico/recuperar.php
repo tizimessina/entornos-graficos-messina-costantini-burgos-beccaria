@@ -25,15 +25,15 @@
     <?= \App\Core\Csrf::field() ?>
 
     <div>
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" maxlength="100" required
+        <label class="form-label" for="email">Correo electrónico</label>
+        <input class="form-control" type="email" id="email" name="email" maxlength="100" required
                <?= isset($errores['email']) ? 'aria-invalid="true" aria-describedby="error-email"' : '' ?>>
         <?php if (isset($errores['email'])): ?>
             <p id="error-email" role="alert"><?= htmlspecialchars($errores['email'], ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
     </div>
 
-    <button type="submit">Enviar enlace</button>
+    <button class="btn btn-primary" type="submit">Enviar enlace</button>
 </form>
 
 <p><a href="/login">Volver a iniciar sesión</a></p>

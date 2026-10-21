@@ -19,7 +19,8 @@
 <?php if (empty($mensajes)): ?>
     <p>Todavía no llegó ningún mensaje desde el formulario de contacto.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Mensajes recibidos (primero los que faltan leer)</caption>
         <thead>
             <tr>
@@ -46,6 +47,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

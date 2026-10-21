@@ -26,7 +26,8 @@
 <?php if (empty($aerolineas)): ?>
     <p>Todavía no hay aerolíneas cargadas. <a href="/admin/aerolineas/nueva">Cargá la primera</a>.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Aerolíneas registradas en la plataforma</caption>
         <thead>
             <tr>
@@ -63,7 +64,7 @@
                         <form method="post" action="/admin/aerolineas/<?= (int) $aerolinea['codAerolinea'] ?>/estado"
                               onsubmit="return confirm('<?= $activa ? '¿Dar de baja esta aerolínea? Deja de aparecer en el sitio público.' : '¿Reactivar esta aerolínea?' ?>');">
                             <?= \App\Core\Csrf::field() ?>
-                            <button type="submit">
+                            <button class="btn btn-primary" type="submit">
                                 <?= $activa ? 'Dar de baja' : 'Reactivar' ?>
                                 <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
                             </button>
@@ -73,6 +74,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

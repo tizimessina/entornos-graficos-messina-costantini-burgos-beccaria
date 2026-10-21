@@ -76,15 +76,19 @@ entornos-graficos-messina-costantini-burgos-beccaria/
 │   ├── diagramas/                # mapa del sitio, modelo de datos, diagramas de flujo
 │   ├── bocetos/                  # wireframes, bocetos, prototipo, maqueta
 │   ├── checklists/                # checklist de entrega de la cátedra
-│   └── validaciones/              # capturas de W3C, TAW, PageSpeed
+│   └── validaciones/              # reportes de W3C (HTML y CSS) y revisión de WCAG
 ├── public/                     # esto es lo único que queda expuesto al servidor
-│   ├── index.php
-│   └── assets/                 # css, js, imágenes
+│   ├── index.php               # front controller: rutas, sesión y manejo de errores
+│   ├── assets/
+│   │   ├── css/estilos.css     # hoja propia: paleta, foco visible, impresión
+│   │   ├── js/app.js           # evita el doble envío de los formularios
+│   │   └── vendor/bootstrap/   # Bootstrap 5.3.3, servido desde acá y no desde un CDN
+│   └── uploads/                # imágenes que se cargan desde el panel
 ├── src/
 │   ├── Core/                   # base de datos, sesión, login, validaciones, envío de mail
 │   ├── Models/
 │   ├── Controllers/
-│   ├── Views/
+│   ├── Views/                  # layouts, partials, publico, pasajero, ceo, admin, errores
 │   └── Helpers/
 ├── scripts/                    # schema.sql, seed.sql
 ├── tests/manual/                # casos de prueba probados a mano
@@ -93,9 +97,16 @@ entornos-graficos-messina-costantini-burgos-beccaria/
 └── README.md
 ```
 
-Por ahora el repositorio solo tiene esta estructura de carpetas y la configuración
-básica (`.gitignore`, plantillas de PR/issues, el chequeo de CI). El código todavía no
-está escrito, se va a ir agregando por módulos.
+El sitio está funcionando de punta a punta en local: sitio público, cuentas, motor de
+reservas, panel de la aerolínea y panel de administración. Lo que falta es el despliegue
+en un hosting, configurar el SMTP para que los correos salgan de verdad, y cerrar el
+informe. El avance se sigue en [`docs/tareas.md`](docs/tareas.md) y lo que pide la
+cátedra, en [`docs/checklists/README.md`](docs/checklists/README.md).
+
+No se usa framework: el MVC es propio y chico. El `index.php` recibe todo, el `Router`
+lo manda al controlador, el controlador habla con el modelo y arma la vista, y el
+`base.php` la envuelve en el layout. El autoload es el de Composer (PSR-4, `App\` →
+`src/`); Composer se usa para eso y para PHPMailer, nada más.
 
 ## Base de datos
 
@@ -124,14 +135,22 @@ sitio no se abre vacío.
 ## Accesibilidad y estándares
 
 La cátedra pide que el sitio valide en el W3C (HTML y CSS) y cumpla el nivel AA de
-WCAG 2.1. Eso se va a verificar sobre el sitio terminado y vamos a guardar las
-capturas de cada validación en `docs/validaciones/`. El detalle de qué se cumple y qué
-no (con su justificación) está en el checklist de `docs/checklists/`.
+WCAG 2.1.
 
-Algunas cosas que tenemos que tener en cuenta desde el principio, porque son mucho más
-fáciles de hacer bien desde el inicio que de arreglar después: que las imágenes tengan
-`alt`, que el sitio se pueda usar solo con el teclado, que el contraste de colores sea
-suficiente, y que los formularios avisen los errores de forma clara.
+Las dos validaciones del W3C ya están hechas: **37 páginas de HTML con 0 errores y 0
+advertencias**, y la hoja de estilos propia con 0 errores. Los reportes están en
+[`docs/validaciones/`](docs/validaciones/), con el detalle de cómo se corrieron.
+
+De accesibilidad falta pasar TAW, que valida contra una URL pública y por eso queda para
+cuando esté desplegado. Mientras tanto la revisión se hizo a mano, criterio por criterio
+de WCAG, y está documentada en el mismo lugar: imágenes con `alt` obligatorio, sitio
+operable solo con teclado, foco visible, enlace de salto al contenido, contraste medido
+(9,4:1 el azul de la marca, contra el 4,5:1 que pide AA), encabezados en orden, tablas
+con `caption` y `th scope`, y errores de formulario anunciados con `role="alert"` al lado
+del campo que falla.
+
+El detalle de qué se cumple y qué no, con su justificación, está en el checklist de
+[`docs/checklists/`](docs/checklists/README.md).
 
 ## Uso de herramientas de IA
 

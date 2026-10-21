@@ -21,7 +21,8 @@
 <?php if (empty($promociones)): ?>
     <p>Todavía no propusiste ninguna promoción.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Promociones de tu aerolínea</caption>
         <thead>
             <tr>
@@ -63,6 +64,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

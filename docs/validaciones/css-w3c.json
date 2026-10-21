@@ -1,0 +1,14 @@
+{
+  "cssvalidation" : {
+     "uri"       : "estilos.css",
+     "checkedby" : "http://www.w3.org/2005/07/css-validator",
+     "csslevel"  : "css3",
+     "date"      : "2026-10-21T11:18:30Z",
+     "timestamp" : "1792624710275",
+     "validity"  : true,
+     "result"    : {
+		"errorcount"   : 0,
+		"warningcount" : 0
+                   }
+    }
+}

@@ -21,7 +21,8 @@
 <?php if (empty($vuelos)): ?>
     <p>Todavía no cargaste ningún vuelo. <a href="/panel/vuelos/nuevo">Cargá el primero</a>.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Vuelos de tu aerolínea</caption>
         <thead>
             <tr>
@@ -56,7 +57,7 @@
                             <form method="post" action="/panel/vuelos/<?= (int) $vuelo['codVuelo'] ?>/cancelar"
                                   onsubmit="return confirm('¿Cancelar este vuelo? Se avisa por correo a los pasajeros con reserva.');">
                                 <?= \App\Core\Csrf::field() ?>
-                                <button type="submit">
+                                <button class="btn btn-primary" type="submit">
                                     Cancelar vuelo <?= htmlspecialchars($vuelo['origenVuelo'] . ' a ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>
                                 </button>
                             </form>
@@ -66,6 +67,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

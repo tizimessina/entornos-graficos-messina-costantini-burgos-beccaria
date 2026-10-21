@@ -21,8 +21,8 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
     <?= \App\Core\Csrf::field() ?>
 
     <div>
-        <label for="nombre">Nombre y apellido</label>
-        <input type="text" id="nombre" name="nombre" maxlength="100" required
+        <label class="form-label" for="nombre">Nombre y apellido</label>
+        <input class="form-control" type="text" id="nombre" name="nombre" maxlength="100" required
                value="<?= htmlspecialchars($datos['nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['nombre']) ? 'aria-invalid="true" aria-describedby="error-nombre"' : '' ?>>
         <?php if (isset($errores['nombre'])): ?>
@@ -31,8 +31,8 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
     </div>
 
     <div>
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" maxlength="100" required
+        <label class="form-label" for="email">Correo electrónico</label>
+        <input class="form-control" type="email" id="email" name="email" maxlength="100" required
                value="<?= htmlspecialchars($datos['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['email']) ? 'aria-invalid="true" aria-describedby="error-email"' : '' ?>>
         <?php if (isset($errores['email'])): ?>
@@ -41,8 +41,8 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
     </div>
 
     <div>
-        <label for="telefono">Teléfono (opcional)</label>
-        <input type="tel" id="telefono" name="telefono" maxlength="20"
+        <label class="form-label" for="telefono">Teléfono (opcional)</label>
+        <input class="form-control" type="tel" id="telefono" name="telefono" maxlength="20"
                value="<?= htmlspecialchars($datos['telefono'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['telefono']) ? 'aria-invalid="true" aria-describedby="error-telefono"' : '' ?>>
         <?php if (isset($errores['telefono'])): ?>
@@ -53,22 +53,22 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
     <fieldset>
         <legend>Tipo de cuenta</legend>
 
-        <div>
-            <input type="radio" id="tipo-pasajero" name="tipo" value="pasajero"
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="tipo-pasajero" name="tipo" value="pasajero"
                    <?= $tipoElegido !== 'ceo' ? 'checked' : '' ?>>
-            <label for="tipo-pasajero">Pasajero: quiero buscar y reservar vuelos</label>
+            <label class="form-check-label" for="tipo-pasajero">Pasajero: quiero buscar y reservar vuelos</label>
         </div>
 
-        <div>
-            <input type="radio" id="tipo-ceo" name="tipo" value="ceo"
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="tipo-ceo" name="tipo" value="ceo"
                    <?= $tipoElegido === 'ceo' ? 'checked' : '' ?>>
-            <label for="tipo-ceo">Aerolínea: administro los vuelos de una compañía adherida</label>
+            <label class="form-check-label" for="tipo-ceo">Aerolínea: administro los vuelos de una compañía adherida</label>
         </div>
     </fieldset>
 
     <div>
-        <label for="aerolinea">Aerolínea que vas a administrar</label>
-        <select id="aerolinea" name="aerolinea"
+        <label class="form-label" for="aerolinea">Aerolínea que vas a administrar</label>
+        <select class="form-select" id="aerolinea" name="aerolinea"
                 aria-describedby="ayuda-aerolinea<?= isset($errores['aerolinea']) ? ' error-aerolinea' : '' ?>"
                 <?= isset($errores['aerolinea']) ? 'aria-invalid="true"' : '' ?>>
             <option value="">— Elegí una aerolínea —</option>
@@ -89,8 +89,8 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
     </div>
 
     <div>
-        <label for="clave">Contraseña</label>
-        <input type="password" id="clave" name="clave" minlength="8" required
+        <label class="form-label" for="clave">Contraseña</label>
+        <input class="form-control" type="password" id="clave" name="clave" minlength="8" required
                aria-describedby="ayuda-clave<?= isset($errores['clave']) ? ' error-clave' : '' ?>"
                <?= isset($errores['clave']) ? 'aria-invalid="true"' : '' ?>>
         <p id="ayuda-clave">Tiene que tener al menos 8 caracteres.</p>
@@ -100,15 +100,15 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
     </div>
 
     <div>
-        <label for="clave2">Repetir contraseña</label>
-        <input type="password" id="clave2" name="clave2" minlength="8" required
+        <label class="form-label" for="clave2">Repetir contraseña</label>
+        <input class="form-control" type="password" id="clave2" name="clave2" minlength="8" required
                <?= isset($errores['clave2']) ? 'aria-invalid="true" aria-describedby="error-clave2"' : '' ?>>
         <?php if (isset($errores['clave2'])): ?>
             <p id="error-clave2" role="alert"><?= htmlspecialchars($errores['clave2'], ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
     </div>
 
-    <button type="submit">Crear cuenta</button>
+    <button class="btn btn-primary" type="submit">Crear cuenta</button>
 </form>
 
 <p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a>.</p>

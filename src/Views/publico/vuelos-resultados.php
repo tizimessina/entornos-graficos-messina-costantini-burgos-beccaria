@@ -10,39 +10,39 @@
 
 <form role="search" method="get" action="/vuelos">
     <div>
-        <label for="origen">Origen</label>
-        <input type="text" id="origen" name="origen" maxlength="50"
+        <label class="form-label" for="origen">Origen</label>
+        <input class="form-control" type="text" id="origen" name="origen" maxlength="50"
                value="<?= htmlspecialchars($filtros['origen'], ENT_QUOTES, 'UTF-8') ?>">
     </div>
 
     <div>
-        <label for="destino">Destino</label>
-        <input type="text" id="destino" name="destino" maxlength="50"
+        <label class="form-label" for="destino">Destino</label>
+        <input class="form-control" type="text" id="destino" name="destino" maxlength="50"
                value="<?= htmlspecialchars($filtros['destino'], ENT_QUOTES, 'UTF-8') ?>">
     </div>
 
     <div>
-        <label for="fecha">Fecha de salida</label>
-        <input type="date" id="fecha" name="fecha"
+        <label class="form-label" for="fecha">Fecha de salida</label>
+        <input class="form-control" type="date" id="fecha" name="fecha"
                value="<?= htmlspecialchars($filtros['fecha'], ENT_QUOTES, 'UTF-8') ?>">
     </div>
 
     <div>
-        <label for="precioMax">Precio máximo</label>
-        <input type="number" id="precioMax" name="precioMax" min="0" step="0.01"
+        <label class="form-label" for="precioMax">Precio máximo</label>
+        <input class="form-control" type="number" id="precioMax" name="precioMax" min="0" step="0.01"
                value="<?= htmlspecialchars($filtros['precioMax'], ENT_QUOTES, 'UTF-8') ?>">
     </div>
 
     <div>
-        <label for="orden">Ordenar por</label>
-        <select id="orden" name="orden">
+        <label class="form-label" for="orden">Ordenar por</label>
+        <select class="form-select" id="orden" name="orden">
             <option value="horario" <?= $filtros['orden'] === 'horario' ? 'selected' : '' ?>>Fecha y horario</option>
             <option value="precio" <?= $filtros['orden'] === 'precio' ? 'selected' : '' ?>>Precio</option>
             <option value="aerolinea" <?= $filtros['orden'] === 'aerolinea' ? 'selected' : '' ?>>Aerolínea</option>
         </select>
     </div>
 
-    <button type="submit">Buscar</button>
+    <button class="btn btn-primary" type="submit">Buscar</button>
 </form>
 
 <?php if (empty($vuelos)): ?>
@@ -54,7 +54,8 @@
 <?php else: ?>
     <p><?= $paginador->totalRegistros ?> vuelo(s) encontrado(s).</p>
 
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Vuelos disponibles</caption>
         <thead>
             <tr>
@@ -93,6 +94,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

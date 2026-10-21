@@ -90,7 +90,7 @@
     <form method="post" action="/reservas/<?= (int) $reserva['codReserva'] ?>/cancelar"
           onsubmit="return confirm('¿Seguro que querés cancelar esta reserva? No se puede deshacer.');">
         <?= \App\Core\Csrf::field() ?>
-        <button type="submit">Cancelar la reserva <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?></button>
+        <button class="btn btn-primary" type="submit">Cancelar la reserva <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?></button>
     </form>
 <?php elseif ($reserva['estadoReserva'] === 'confirmada'): ?>
     <p>

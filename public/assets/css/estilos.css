@@ -1,0 +1,245 @@
+/* =====================================================================
+   SkyReserva — hoja de estilos propia
+   Se carga DESPUÉS de Bootstrap, así que lo que está acá lo sobrescribe.
+   Solo tiene lo que Bootstrap no resuelve: la paleta del sitio, el foco
+   visible, el enlace de salto y la hoja de impresión del comprobante.
+   ===================================================================== */
+
+:root {
+    /* Azul de la marca. Contraste 9,4:1 sobre blanco (WCAG AA pide 4,5:1). */
+    --sky-azul: #0b4a6f;
+    --sky-azul-claro: #e7f1f7;
+    --sky-exito: #1b5e20;   /* 7,9:1 sobre blanco */
+    --sky-error: #8a1c1c;   /* 9,3:1 sobre blanco */
+    --sky-borde: #c9d6de;
+}
+
+body {
+    /* Empuja el pie de página al fondo aunque la página tenga poco contenido. */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* --- Foco visible -----------------------------------------------------
+   WCAG 2.4.7. Bootstrap ya marca el foco, pero con un color celeste que
+   sobre fondo blanco queda flojo. Lo reforzamos para todo lo navegable. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--sky-azul);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* --- Enlace de salto al contenido -------------------------------------
+   WCAG 2.4.1. Está fuera de la pantalla hasta que recibe el foco con Tab,
+   que es cuando le sirve a quien navega con teclado o lector de pantalla. */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1100;
+    padding: 0.75rem 1.25rem;
+    background: var(--sky-azul);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* --- Encabezado y marca ---------------------------------------------- */
+.sky-marca {
+    color: var(--sky-azul);
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.sky-marca:hover,
+.sky-marca:focus {
+    color: var(--sky-azul);
+    text-decoration: underline;
+}
+
+/* --- Mensajes de estado ----------------------------------------------
+   Los controladores emiten role="status" para el éxito y role="alert"
+   para el error. Les damos aspecto de alerta sin tocar las vistas. */
+main [role="status"] {
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--sky-exito);
+    background: #edf7ee;
+    color: var(--sky-exito);
+    border-radius: 0.25rem;
+}
+
+main [role="alert"] {
+    padding: 0.75rem 1rem;
+    border-left: 4px solid var(--sky-error);
+    background: #fdeeee;
+    color: var(--sky-error);
+    border-radius: 0.25rem;
+}
+
+/* El mensaje de error que va pegado a un campo no necesita el recuadro:
+   iría dos veces, porque el campo ya se marca en rojo. */
+main form [role="alert"] {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 0.9rem;
+}
+
+/* --- Tablas -----------------------------------------------------------
+   El caption es parte de la accesibilidad (dice de qué es la tabla), así
+   que se muestra, no se esconde. */
+caption {
+    caption-side: top;
+    padding-bottom: 0.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+/* --- Imágenes ---------------------------------------------------------
+   Que nunca desborden su contenedor en pantallas chicas. */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* --- Hoja de impresión -----------------------------------------------
+   Pensada para el comprobante de la reserva: se imprime solo el
+   contenido, sin menús, botones ni formularios. */
+@media print {
+    @page {
+        margin: 1.5cm;
+    }
+
+    body {
+        display: block;
+        background: #fff;
+        color: #000;
+        font-size: 12pt;
+    }
+
+    /* Nada de esto sirve en papel. */
+    .skip-link,
+    header form[role="search"],
+    nav,
+    footer,
+    form,
+    .no-imprimir {
+        display: none !important;
+    }
+
+    main {
+        padding: 0 !important;
+    }
+
+    /* El contenedor con scroll de las tablas no tiene sentido en papel:
+       si lo dejamos, recorta las columnas que no entran. */
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    /* Los enlaces en papel no se pueden clickear: se escribe la dirección. */
+    main a[href^="/"]::after {
+        content: " (skyreserva.com" attr(href) ")";
+        font-size: 10pt;
+    }
+
+    /* Que no se corte una fila ni un bloque de datos a mitad de hoja. */
+    tr,
+    dl,
+    .sky-comprobante {
+        page-break-inside: avoid;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #000;
+        padding: 0.3rem;
+    }
+}
+
+/* --- Formularios ------------------------------------------------------
+   Cada campo va envuelto en un div en todas las vistas, así que el aire
+   entre campos se resuelve acá y no repitiendo una clase 42 veces. */
+main form > div,
+main form > fieldset {
+    margin-bottom: 1rem;
+}
+
+main form > fieldset > legend {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* El texto de ayuda que va debajo de un campo (aria-describedby). */
+main form div > p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Campo con error. Las vistas ya marcan aria-invalid="true" para el lector
+   de pantalla; esto es el equivalente visual, para no depender solo del
+   color del mensaje (WCAG 1.4.1: el color no puede ser el único indicio). */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: var(--sky-error);
+    border-width: 2px;
+}
+
+/* --- Botones dentro de tablas ----------------------------------------
+   En las columnas de acciones los botones del tamaño normal ocupan
+   demasiado y empujan la tabla a scroll horizontal. */
+td .btn,
+td form {
+    margin-top: 0.25rem;
+}
+
+td .btn {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* --- Tablas en pantalla chica ----------------------------------------
+   Las tablas con muchas columnas van envueltas en .table-responsive, que
+   es lo que recomienda Bootstrap: el scroll queda en el div de alrededor
+   y la tabla sigue siendo una tabla. Poner display:block en el <table>
+   le saca la semántica de tabla a varios lectores de pantalla, así que no
+   se usa. Acá solo apretamos un poco el texto en celulares. */
+@media (max-width: 575.98px) {
+    main table {
+        font-size: 0.85rem;
+    }
+
+    main th,
+    main td {
+        padding: 0.35rem;
+    }
+}
+
+/* Que una palabra larga (un correo, una URL) no estire la celda. */
+main td,
+main th {
+    overflow-wrap: anywhere;
+}

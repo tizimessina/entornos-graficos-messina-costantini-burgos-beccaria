@@ -28,17 +28,17 @@
     <?= \App\Core\Csrf::field() ?>
 
     <div>
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" maxlength="100" required
+        <label class="form-label" for="email">Correo electrónico</label>
+        <input class="form-control" type="email" id="email" name="email" maxlength="100" required
                value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>">
     </div>
 
     <div>
-        <label for="clave">Contraseña</label>
-        <input type="password" id="clave" name="clave" required>
+        <label class="form-label" for="clave">Contraseña</label>
+        <input class="form-control" type="password" id="clave" name="clave" required>
     </div>
 
-    <button type="submit">Iniciar sesión</button>
+    <button class="btn btn-primary" type="submit">Iniciar sesión</button>
 </form>
 
 <p><a href="/recuperar">¿Olvidaste tu contraseña?</a></p>

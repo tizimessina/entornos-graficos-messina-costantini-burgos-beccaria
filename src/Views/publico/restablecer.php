@@ -15,8 +15,8 @@
     <input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES, 'UTF-8') ?>">
 
     <div>
-        <label for="clave">Contraseña nueva</label>
-        <input type="password" id="clave" name="clave" minlength="8" required
+        <label class="form-label" for="clave">Contraseña nueva</label>
+        <input class="form-control" type="password" id="clave" name="clave" minlength="8" required
                aria-describedby="ayuda-clave<?= isset($errores['clave']) ? ' error-clave' : '' ?>"
                <?= isset($errores['clave']) ? 'aria-invalid="true"' : '' ?>>
         <p id="ayuda-clave">Tiene que tener al menos 8 caracteres.</p>
@@ -26,13 +26,13 @@
     </div>
 
     <div>
-        <label for="clave2">Repetir contraseña nueva</label>
-        <input type="password" id="clave2" name="clave2" minlength="8" required
+        <label class="form-label" for="clave2">Repetir contraseña nueva</label>
+        <input class="form-control" type="password" id="clave2" name="clave2" minlength="8" required
                <?= isset($errores['clave2']) ? 'aria-invalid="true" aria-describedby="error-clave2"' : '' ?>>
         <?php if (isset($errores['clave2'])): ?>
             <p id="error-clave2" role="alert"><?= htmlspecialchars($errores['clave2'], ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
     </div>
 
-    <button type="submit">Guardar contraseña</button>
+    <button class="btn btn-primary" type="submit">Guardar contraseña</button>
 </form>

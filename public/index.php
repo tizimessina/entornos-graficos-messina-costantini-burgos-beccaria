@@ -2,6 +2,21 @@
 
 declare(strict_types=1);
 
+/*
+ * Con el servidor embebido de PHP (php -S) este archivo hace de router, así
+ * que también le llegan los pedidos de CSS, JS e imágenes. Devolver false
+ * le dice al servidor "serví vos este archivo". Con Apache no hace falta:
+ * public/.htaccess ya deja pasar los archivos que existen.
+ */
+if (PHP_SAPI === 'cli-server') {
+    $rutaPedida = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $archivo = realpath(__DIR__ . $rutaPedida);
+
+    if ($archivo !== false && is_file($archivo) && str_starts_with($archivo, realpath(__DIR__))) {
+        return false;
+    }
+}
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Controllers\AdminController;
@@ -30,6 +45,45 @@ $config = require $rutaConfig;
 date_default_timezone_set($config['app']['timezone'] ?? 'America/Argentina/Buenos_Aires');
 ini_set('display_errors', $config['app']['env'] === 'development' ? '1' : '0');
 error_reporting(E_ALL);
+
+/*
+ * Todo se escribe en un buffer. Si algo explota a mitad de una vista, se
+ * descarta lo que se alcanzó a imprimir y se muestra la página de error
+ * completa, en vez de media página cortada.
+ */
+ob_start();
+
+$mostrarError500 = static function (string $detalle) use ($config): void {
+    error_log('SkyReserva: ' . $detalle);
+
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+
+    if (!headers_sent()) {
+        http_response_code(500);
+    }
+
+    // El detalle solo se muestra en desarrollo: un mensaje de la base puede
+    // filtrar nombres de tablas o datos de otra persona.
+    $detalleError = ($config['app']['env'] ?? 'production') === 'development' ? $detalle : null;
+
+    require dirname(__DIR__) . '/src/Views/errores/500.php';
+};
+
+set_exception_handler(static function (Throwable $e) use ($mostrarError500): void {
+    $mostrarError500($e->getMessage() . ' en ' . $e->getFile() . ':' . $e->getLine());
+});
+
+// set_exception_handler no atrapa los errores fatales de PHP, así que los
+// miramos al cerrar el script.
+register_shutdown_function(static function () use ($mostrarError500): void {
+    $error = error_get_last();
+
+    if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        $mostrarError500($error['message'] . ' en ' . $error['file'] . ':' . $error['line']);
+    }
+});
 
 Session::start();
 

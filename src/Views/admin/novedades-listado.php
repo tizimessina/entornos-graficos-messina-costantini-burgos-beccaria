@@ -27,7 +27,8 @@ $hoy = date('Y-m-d');
 <?php if (empty($novedades)): ?>
     <p>Todavía no hay novedades cargadas. <a href="/admin/novedades/nueva">Publicá la primera</a>.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Novedades del sitio</caption>
         <thead>
             <tr>
@@ -61,7 +62,7 @@ $hoy = date('Y-m-d');
                         <form method="post" action="/admin/novedades/<?= (int) $novedad['codNovedad'] ?>/eliminar"
                               onsubmit="return confirm('¿Borrar esta novedad? No se puede deshacer.');">
                             <?= \App\Core\Csrf::field() ?>
-                            <button type="submit">
+                            <button class="btn btn-primary" type="submit">
                                 Borrar <?= htmlspecialchars($novedad['tituloNovedad'], ENT_QUOTES, 'UTF-8') ?>
                             </button>
                         </form>
@@ -70,6 +71,7 @@ $hoy = date('Y-m-d');
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

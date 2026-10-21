@@ -31,7 +31,8 @@
 <?php if (empty($vuelos)): ?>
     <p>Esta aerolínea todavía no tiene vuelos programados.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>
             Vuelos programados de <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
         </caption>
@@ -64,4 +65,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 <?php endif; ?>

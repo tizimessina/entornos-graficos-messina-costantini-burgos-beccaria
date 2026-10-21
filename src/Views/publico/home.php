@@ -13,21 +13,21 @@
 
     <form role="search" method="get" action="/vuelos">
         <div>
-            <label for="origen">Origen</label>
-            <input type="text" id="origen" name="origen" maxlength="50" placeholder="Ej.: Rosario">
+            <label class="form-label" for="origen">Origen</label>
+            <input class="form-control" type="text" id="origen" name="origen" maxlength="50" placeholder="Ej.: Rosario">
         </div>
 
         <div>
-            <label for="destino">Destino</label>
-            <input type="text" id="destino" name="destino" maxlength="50" placeholder="Ej.: Bariloche">
+            <label class="form-label" for="destino">Destino</label>
+            <input class="form-control" type="text" id="destino" name="destino" maxlength="50" placeholder="Ej.: Bariloche">
         </div>
 
         <div>
-            <label for="fecha">Fecha de salida</label>
-            <input type="date" id="fecha" name="fecha">
+            <label class="form-label" for="fecha">Fecha de salida</label>
+            <input class="form-control" type="date" id="fecha" name="fecha">
         </div>
 
-        <button type="submit">Buscar vuelos</button>
+        <button class="btn btn-primary" type="submit">Buscar vuelos</button>
     </form>
 </section>
 

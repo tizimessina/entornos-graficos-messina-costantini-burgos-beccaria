@@ -48,22 +48,22 @@
         <input type="hidden" name="codVuelo" value="<?= (int) $vuelo['codVuelo'] ?>">
 
         <div>
-            <label for="cantidad">Cantidad de asientos</label>
-            <input type="number" id="cantidad" name="cantidad" min="1" max="<?= $maxAsientos ?>" required
+            <label class="form-label" for="cantidad">Cantidad de asientos</label>
+            <input class="form-control" type="number" id="cantidad" name="cantidad" min="1" max="<?= $maxAsientos ?>" required
                    aria-describedby="ayuda-cantidad"
                    value="<?= htmlspecialchars((string) ($datos['cantidad'] ?? 1), ENT_QUOTES, 'UTF-8') ?>">
             <p id="ayuda-cantidad">Podés reservar hasta <?= $maxAsientos ?> asiento(s) en esta operación.</p>
         </div>
 
         <div>
-            <label for="codigoPromo">Código de promoción (opcional)</label>
-            <input type="text" id="codigoPromo" name="codigoPromo" maxlength="20"
+            <label class="form-label" for="codigoPromo">Código de promoción (opcional)</label>
+            <input class="form-control" type="text" id="codigoPromo" name="codigoPromo" maxlength="20"
                    aria-describedby="ayuda-promo"
                    value="<?= htmlspecialchars($datos['codigoPromo'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
             <p id="ayuda-promo">Si tenés un código vigente de esta aerolínea, el descuento se aplica al total.</p>
         </div>
 
-        <button type="submit">Reservar asientos</button>
+        <button class="btn btn-primary" type="submit">Reservar asientos</button>
     </form>
 
     <p>La reserva queda pendiente de pago: en el paso siguiente confirmás el pago.</p>

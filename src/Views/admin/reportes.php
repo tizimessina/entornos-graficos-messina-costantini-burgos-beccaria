@@ -25,22 +25,23 @@ foreach ($ventas as $fila) {
 
     <form method="get" action="/admin/reportes">
         <div>
-            <label for="desde">Desde</label>
-            <input type="date" id="desde" name="desde" value="<?= htmlspecialchars($desde, ENT_QUOTES, 'UTF-8') ?>">
+            <label class="form-label" for="desde">Desde</label>
+            <input class="form-control" type="date" id="desde" name="desde" value="<?= htmlspecialchars($desde, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <div>
-            <label for="hasta">Hasta</label>
-            <input type="date" id="hasta" name="hasta" value="<?= htmlspecialchars($hasta, ENT_QUOTES, 'UTF-8') ?>">
+            <label class="form-label" for="hasta">Hasta</label>
+            <input class="form-control" type="date" id="hasta" name="hasta" value="<?= htmlspecialchars($hasta, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
-        <button type="submit">Ver período</button>
+        <button class="btn btn-primary" type="submit">Ver período</button>
     </form>
 
     <?php if (empty($ventas)): ?>
         <p>No hay reservas confirmadas en el período elegido.</p>
     <?php else: ?>
-        <table>
+        <div class="table-responsive">
+    <table class="table table-striped align-middle">
             <caption>
                 Ventas confirmadas entre el
                 <?= htmlspecialchars(date('d/m/Y', strtotime($desde)), ENT_QUOTES, 'UTF-8') ?>
@@ -74,6 +75,7 @@ foreach ($ventas as $fila) {
                 </tr>
             </tfoot>
         </table>
+    </div>
     <?php endif; ?>
 </section>
 
@@ -83,7 +85,8 @@ foreach ($ventas as $fila) {
     <?php if (empty($ocupacion)): ?>
         <p>Todavía no hay vuelos cargados.</p>
     <?php else: ?>
-        <table>
+        <div class="table-responsive">
+    <table class="table table-striped align-middle">
             <caption>Últimos vuelos de todas las aerolíneas</caption>
             <thead>
                 <tr>
@@ -112,13 +115,15 @@ foreach ($ventas as $fila) {
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
     <?php endif; ?>
 </section>
 
 <section aria-labelledby="titulo-usuarios">
     <h2 id="titulo-usuarios">Usuarios por tipo y estado</h2>
 
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Cuentas registradas, agrupadas</caption>
         <thead>
             <tr>
@@ -137,6 +142,7 @@ foreach ($ventas as $fila) {
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </section>
 
 <p><a href="/admin">Volver al panel de administración</a></p>

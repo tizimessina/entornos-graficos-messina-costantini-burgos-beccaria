@@ -13,12 +13,12 @@
 ?>
 <?php if (!empty($breadcrumbs)): ?>
 <nav aria-label="Ruta de acceso">
-    <ol>
+    <ol class="breadcrumb">
         <?php foreach ($breadcrumbs as $item): ?>
             <?php if ($item['url'] !== null): ?>
-                <li><a href="<?= htmlspecialchars($item['url'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($item['texto'], ENT_QUOTES, 'UTF-8') ?></a></li>
+                <li class="breadcrumb-item"><a href="<?= htmlspecialchars($item['url'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($item['texto'], ENT_QUOTES, 'UTF-8') ?></a></li>
             <?php else: ?>
-                <li aria-current="page"><?= htmlspecialchars($item['texto'], ENT_QUOTES, 'UTF-8') ?></li>
+                <li class="breadcrumb-item active" aria-current="page"><?= htmlspecialchars($item['texto'], ENT_QUOTES, 'UTF-8') ?></li>
             <?php endif; ?>
         <?php endforeach; ?>
     </ol>

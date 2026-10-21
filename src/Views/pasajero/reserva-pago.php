@@ -54,7 +54,7 @@
 
 <form method="post" action="/reservas/<?= (int) $reserva['codReserva'] ?>/pago">
     <?= \App\Core\Csrf::field() ?>
-    <button type="submit">Confirmar pago de $<?= number_format((float) $reserva['montoTotal'], 2, ',', '.') ?></button>
+    <button class="btn btn-primary" type="submit">Confirmar pago de $<?= number_format((float) $reserva['montoTotal'], 2, ',', '.') ?></button>
 </form>
 
 <p><a href="/reservas/<?= (int) $reserva['codReserva'] ?>">Ver la reserva sin pagar todavía</a></p>

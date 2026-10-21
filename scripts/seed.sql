@@ -78,20 +78,20 @@ INSERT INTO vuelos
      duracionMinutos, precioVuelo, capacidadTotal, asientosDisponibles, estadoVuelo)
 VALUES
     ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'),
-     'DEM101', 'Rosario', 'Bariloche', DATE_ADD(CURDATE(), INTERVAL 7 DAY), '08:30:00',
+     'DEM101', 'Rosario', 'Bariloche', DATE_ADD(CURDATE(), INTERVAL 45 DAY), '08:30:00',
      180, 85000.00, 150, 150, 'programado'),
 
     ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'),
-     'DEM202', 'Buenos Aires', 'Mendoza', DATE_ADD(CURDATE(), INTERVAL 10 DAY), '14:15:00',
+     'DEM202', 'Buenos Aires', 'Mendoza', DATE_ADD(CURDATE(), INTERVAL 60 DAY), '14:15:00',
      120, 62000.00, 150, 148, 'programado'),
 
     ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'AND'),
-     'AND305', 'Córdoba', 'Ushuaia', DATE_ADD(CURDATE(), INTERVAL 14 DAY), '06:45:00',
+     'AND305', 'Córdoba', 'Ushuaia', DATE_ADD(CURDATE(), INTERVAL 90 DAY), '06:45:00',
      210, 110000.00, 120, 120, 'programado'),
 
     -- Este queda sin asientos a propósito, para probar ese caso en el detalle del vuelo
     ((SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'AND'),
-     'AND410', 'Rosario', 'Salta', DATE_ADD(CURDATE(), INTERVAL 3 DAY), '19:00:00',
+     'AND410', 'Rosario', 'Salta', DATE_ADD(CURDATE(), INTERVAL 30 DAY), '19:00:00',
      105, 54000.00, 120, 0, 'programado');
 
 -- Novedades de prueba, vigentes a la fecha en que se corra el seed
@@ -100,11 +100,11 @@ INSERT INTO novedades
 VALUES
     ('Nueva ruta Rosario - Bariloche',
      'Aerolínea Demo suma vuelos directos de Rosario a Bariloche, con salidas semanales durante toda la temporada.',
-     DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 1),
+     DATE_SUB(CURDATE(), INTERVAL 2 DAY), DATE_ADD(CURDATE(), INTERVAL 180 DAY), 1),
 
     ('Promociones de temporada',
      'Las aerolíneas adheridas están cargando sus promociones. Consultá el buscador de vuelos para ver los precios vigentes.',
-     DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 20 DAY), 1);
+     DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 180 DAY), 1);
 
 -- Promoción de prueba, aprobada y vigente, para probar el descuento en la reserva.
 -- El código que se ingresa al reservar es VERANO26.
@@ -115,7 +115,7 @@ INSERT INTO promociones
 VALUES
     ('VERANO26', 'Descuento de temporada para vuelos de Aerolínea Demo', 15.00,
      (SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'), 'aprobada',
-     DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 60 DAY), 100,
+     DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 180 DAY), 100,
      (SELECT codusuario FROM usuarios WHERE emailUsuario = 'ceo@aerolinea-demo.com'),
      (SELECT codusuario FROM usuarios WHERE emailUsuario = 'admin@skyreserva.com'),
      NOW());

@@ -117,13 +117,32 @@ estado se aplica igual y el panel lo confirma en pantalla.
 
 ## 8. Accesibilidad y validaciones
 
-- [ ] Repasar cada página: `alt` en imágenes, formularios con `label`, navegación
+- [x] Bootstrap 5.3.3 servido desde `public/assets/vendor/`, no desde un CDN, así el
+      sitio se ve igual sin internet. Arriba va `public/assets/css/estilos.css` con la
+      paleta, el foco visible, el enlace de salto y los formularios
+- [x] Repasar cada página: `alt` en imágenes, formularios con `label`, navegación
       completa por teclado, foco visible, enlace de salto al contenido
-- [ ] Validar HTML y CSS en el W3C y guardar las capturas en `docs/validaciones/`
+- [x] Hoja de impresión (`@media print`) y botón de imprimir en el comprobante: en papel
+      sale solo el comprobante, sin menús ni botones
+- [x] Páginas de error propias, 404 y 500. El 500 atrapa toda excepción y todo error
+      fatal, y el detalle solo se muestra si `app.env` es `development`
+- [x] Evitar el doble envío por doble clic (`public/assets/js/app.js`)
+- [x] Validar HTML y CSS en el W3C: **37 páginas, 0 errores y 0 advertencias** en HTML, y
+      0 errores en CSS. Los reportes quedaron en `docs/validaciones/`
 - [ ] Pasar TAW y guardar las capturas
+      → bloqueado hasta el punto 9: TAW valida contra una URL pública y el sitio todavía
+      corre solo en local. La revisión manual de WCAG ya está en `docs/validaciones/README.md`
+- [ ] Mirarlo en un celular de verdad y revisar que la consola del navegador esté limpia
+      → son las dos cosas de esta lista que no se pueden comprobar sin abrir un navegador
 - [ ] Completar los checklists de usabilidad, accesibilidad y rapidez en el informe
-- [ ] Ir tildando lo que corresponda en `docs/checklists/`
-- [ ] Commit y push
+      → es trabajo del informe, va en el punto 10
+- [x] Ir tildando lo que corresponda en `docs/checklists/` (pasó de 45 a 55 de 101)
+- [x] Commit y push
+
+De paso se arregló el `seed.sql`: las novedades, la promoción y los vuelos usaban fechas
+relativas a `CURDATE()` con ventanas de 20 a 30 días, así que a las tres semanas de cargar
+los datos el sitio se veía vacío. Ahora las ventanas son de 180 días y los vuelos salen
+entre 30 y 90 días después de la carga.
 
 ## 9. Despliegue
 

@@ -36,8 +36,8 @@ $estados = [
 
 <form method="get" action="/admin/usuarios">
     <div>
-        <label for="tipo">Tipo de cuenta</label>
-        <select id="tipo" name="tipo">
+        <label class="form-label" for="tipo">Tipo de cuenta</label>
+        <select class="form-select" id="tipo" name="tipo">
             <option value="">Todos</option>
             <?php foreach ($tipos as $clave => $etiqueta): ?>
                 <option value="<?= htmlspecialchars($clave, ENT_QUOTES, 'UTF-8') ?>"
@@ -49,8 +49,8 @@ $estados = [
     </div>
 
     <div>
-        <label for="estado">Estado</label>
-        <select id="estado" name="estado">
+        <label class="form-label" for="estado">Estado</label>
+        <select class="form-select" id="estado" name="estado">
             <option value="">Todos</option>
             <?php foreach ($estados as $clave => $etiqueta): ?>
                 <option value="<?= htmlspecialchars($clave, ENT_QUOTES, 'UTF-8') ?>"
@@ -61,14 +61,15 @@ $estados = [
         </select>
     </div>
 
-    <button type="submit">Filtrar</button>
+    <button class="btn btn-primary" type="submit">Filtrar</button>
     <a href="/admin/usuarios">Quitar filtros</a>
 </form>
 
 <?php if (empty($usuarios)): ?>
     <p>No hay cuentas que coincidan con el filtro.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Cuentas registradas (<?= (int) $paginador->totalRegistros ?> en total)</caption>
         <thead>
             <tr>
@@ -102,7 +103,7 @@ $estados = [
                                 <form method="post" action="/admin/usuarios/<?= (int) $usuario['codusuario'] ?>/estado">
                                     <?= \App\Core\Csrf::field() ?>
                                     <input type="hidden" name="estado" value="activo">
-                                    <button type="submit">
+                                    <button class="btn btn-primary" type="submit">
                                         <?= $estadoCuenta === 'pendiente_autorizacion' ? 'Autorizar' : 'Habilitar' ?>
                                         la cuenta de <?= htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') ?>
                                     </button>
@@ -114,7 +115,7 @@ $estados = [
                                       onsubmit="return confirm('¿Suspender esta cuenta? No va a poder iniciar sesión.');">
                                     <?= \App\Core\Csrf::field() ?>
                                     <input type="hidden" name="estado" value="suspendido">
-                                    <button type="submit">
+                                    <button class="btn btn-primary" type="submit">
                                         Suspender la cuenta de <?= htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') ?>
                                     </button>
                                 </form>
@@ -125,6 +126,7 @@ $estados = [
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

@@ -16,16 +16,16 @@
 
     <form method="get" action="/panel/reportes">
         <div>
-            <label for="desde">Desde</label>
-            <input type="date" id="desde" name="desde" value="<?= htmlspecialchars($desde, ENT_QUOTES, 'UTF-8') ?>">
+            <label class="form-label" for="desde">Desde</label>
+            <input class="form-control" type="date" id="desde" name="desde" value="<?= htmlspecialchars($desde, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <div>
-            <label for="hasta">Hasta</label>
-            <input type="date" id="hasta" name="hasta" value="<?= htmlspecialchars($hasta, ENT_QUOTES, 'UTF-8') ?>">
+            <label class="form-label" for="hasta">Hasta</label>
+            <input class="form-control" type="date" id="hasta" name="hasta" value="<?= htmlspecialchars($hasta, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
-        <button type="submit">Ver período</button>
+        <button class="btn btn-primary" type="submit">Ver período</button>
     </form>
 
     <dl>
@@ -46,7 +46,8 @@
     <?php if (empty($ventasMensuales)): ?>
         <p>Todavía no hay reservas confirmadas de tu aerolínea.</p>
     <?php else: ?>
-        <table>
+        <div class="table-responsive">
+    <table class="table table-striped align-middle">
             <caption>Ventas confirmadas por mes</caption>
             <thead>
                 <tr>
@@ -67,6 +68,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
     <?php endif; ?>
 </section>
 
@@ -76,7 +78,8 @@
     <?php if (empty($ocupacion)): ?>
         <p>Todavía no cargaste vuelos.</p>
     <?php else: ?>
-        <table>
+        <div class="table-responsive">
+    <table class="table table-striped align-middle">
             <caption>Ocupación y recaudación de cada vuelo</caption>
             <thead>
                 <tr>
@@ -105,5 +108,6 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
     <?php endif; ?>
 </section>

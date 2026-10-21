@@ -59,20 +59,20 @@
                 <?= \App\Core\Csrf::field() ?>
 
                 <div>
-                    <label for="motivo-<?= $cod ?>">
+                    <label class="form-label" for="motivo-<?= $cod ?>">
                         Motivo (obligatorio si la denegás)
                     </label>
-                    <textarea id="motivo-<?= $cod ?>" name="motivo" rows="2" maxlength="200"
+                    <textarea class="form-control" id="motivo-<?= $cod ?>" name="motivo" rows="2" maxlength="200"
                               <?= isset($errores[$cod]) ? 'aria-invalid="true" aria-describedby="error-' . $cod . '"' : '' ?>></textarea>
                     <?php if (isset($errores[$cod])): ?>
                         <p id="error-<?= $cod ?>" role="alert"><?= htmlspecialchars($errores[$cod], ENT_QUOTES, 'UTF-8') ?></p>
                     <?php endif; ?>
                 </div>
 
-                <button type="submit" name="decision" value="aprobada">
+                <button class="btn btn-primary" type="submit" name="decision" value="aprobada">
                     Aprobar <?= htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8') ?>
                 </button>
-                <button type="submit" name="decision" value="denegada">
+                <button class="btn btn-primary" type="submit" name="decision" value="denegada">
                     Denegar <?= htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8') ?>
                 </button>
             </form>

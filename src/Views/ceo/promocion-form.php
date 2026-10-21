@@ -16,8 +16,8 @@
     <?= \App\Core\Csrf::field() ?>
 
     <div>
-        <label for="codigoPromocion">Código que ingresa el pasajero</label>
-        <input type="text" id="codigoPromocion" name="codigoPromocion" maxlength="20" required
+        <label class="form-label" for="codigoPromocion">Código que ingresa el pasajero</label>
+        <input class="form-control" type="text" id="codigoPromocion" name="codigoPromocion" maxlength="20" required
                aria-describedby="ayuda-codigo<?= isset($errores['codigoPromocion']) ? ' error-codigo' : '' ?>"
                value="<?= htmlspecialchars($datos['codigoPromocion'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['codigoPromocion']) ? 'aria-invalid="true"' : '' ?>>
@@ -28,8 +28,8 @@
     </div>
 
     <div>
-        <label for="descripcionPromocion">Descripción</label>
-        <input type="text" id="descripcionPromocion" name="descripcionPromocion" maxlength="200" required
+        <label class="form-label" for="descripcionPromocion">Descripción</label>
+        <input class="form-control" type="text" id="descripcionPromocion" name="descripcionPromocion" maxlength="200" required
                value="<?= htmlspecialchars($datos['descripcionPromocion'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['descripcionPromocion']) ? 'aria-invalid="true" aria-describedby="error-descripcion"' : '' ?>>
         <?php if (isset($errores['descripcionPromocion'])): ?>
@@ -38,8 +38,8 @@
     </div>
 
     <div>
-        <label for="descuentoPromocion">Descuento (%)</label>
-        <input type="number" id="descuentoPromocion" name="descuentoPromocion" min="0.01" max="100" step="0.01" required
+        <label class="form-label" for="descuentoPromocion">Descuento (%)</label>
+        <input class="form-control" type="number" id="descuentoPromocion" name="descuentoPromocion" min="0.01" max="100" step="0.01" required
                value="<?= htmlspecialchars($datos['descuentoPromocion'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['descuentoPromocion']) ? 'aria-invalid="true" aria-describedby="error-descuento"' : '' ?>>
         <?php if (isset($errores['descuentoPromocion'])): ?>
@@ -48,8 +48,8 @@
     </div>
 
     <div>
-        <label for="fechaInicioPromocion">Vigente desde</label>
-        <input type="date" id="fechaInicioPromocion" name="fechaInicioPromocion" required
+        <label class="form-label" for="fechaInicioPromocion">Vigente desde</label>
+        <input class="form-control" type="date" id="fechaInicioPromocion" name="fechaInicioPromocion" required
                value="<?= htmlspecialchars($datos['fechaInicioPromocion'] ?? date('Y-m-d'), ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['fechaInicioPromocion']) ? 'aria-invalid="true" aria-describedby="error-inicio"' : '' ?>>
         <?php if (isset($errores['fechaInicioPromocion'])): ?>
@@ -58,8 +58,8 @@
     </div>
 
     <div>
-        <label for="fechaFinPromocion">Vigente hasta</label>
-        <input type="date" id="fechaFinPromocion" name="fechaFinPromocion" required
+        <label class="form-label" for="fechaFinPromocion">Vigente hasta</label>
+        <input class="form-control" type="date" id="fechaFinPromocion" name="fechaFinPromocion" required
                value="<?= htmlspecialchars($datos['fechaFinPromocion'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['fechaFinPromocion']) ? 'aria-invalid="true" aria-describedby="error-fin"' : '' ?>>
         <?php if (isset($errores['fechaFinPromocion'])): ?>
@@ -68,8 +68,8 @@
     </div>
 
     <div>
-        <label for="usosMaximos">Tope de usos (opcional)</label>
-        <input type="number" id="usosMaximos" name="usosMaximos" min="1"
+        <label class="form-label" for="usosMaximos">Tope de usos (opcional)</label>
+        <input class="form-control" type="number" id="usosMaximos" name="usosMaximos" min="1"
                aria-describedby="ayuda-usos<?= isset($errores['usosMaximos']) ? ' error-usos' : '' ?>"
                value="<?= htmlspecialchars($datos['usosMaximos'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['usosMaximos']) ? 'aria-invalid="true"' : '' ?>>
@@ -79,7 +79,7 @@
         <?php endif; ?>
     </div>
 
-    <button type="submit">Proponer promoción</button>
+    <button class="btn btn-primary" type="submit">Proponer promoción</button>
 </form>
 
 <p><a href="/panel/promociones">Volver a mis promociones</a></p>

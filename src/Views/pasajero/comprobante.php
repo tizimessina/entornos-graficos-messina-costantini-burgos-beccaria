@@ -1,7 +1,7 @@
 <?php
 /** @var array $reserva */
 ?>
-<article>
+<article class="sky-comprobante">
     <h1>Comprobante de reserva</h1>
 
     <p>
@@ -9,7 +9,8 @@
         — Estado: <?= htmlspecialchars(ucfirst($reserva['estadoReserva']), ENT_QUOTES, 'UTF-8') ?>
     </p>
 
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Detalle de la reserva</caption>
         <tbody>
             <tr>
@@ -61,6 +62,7 @@
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 
     <p>
         SkyReserva no opera vuelos: intermedia entre las aerolíneas adheridas y los pasajeros.
@@ -68,4 +70,7 @@
     </p>
 </article>
 
-<p><a href="/reservas/<?= (int) $reserva['codReserva'] ?>">Volver a la reserva</a></p>
+<p class="no-imprimir">
+    <button class="btn btn-primary" type="button" onclick="window.print()">Imprimir el comprobante</button>
+    <a class="btn btn-outline-secondary" href="/reservas/<?= (int) $reserva['codReserva'] ?>">Volver a la reserva</a>
+</p>

@@ -27,8 +27,8 @@ $valor = static function (string $campo) use ($datos, $aerolinea) {
     <?= \App\Core\Csrf::field() ?>
 
     <div>
-        <label for="nombreAerolinea">Nombre</label>
-        <input type="text" id="nombreAerolinea" name="nombreAerolinea" maxlength="100" required
+        <label class="form-label" for="nombreAerolinea">Nombre</label>
+        <input class="form-control" type="text" id="nombreAerolinea" name="nombreAerolinea" maxlength="100" required
                value="<?= htmlspecialchars($valor('nombreAerolinea'), ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['nombreAerolinea']) ? 'aria-invalid="true" aria-describedby="error-nombre"' : '' ?>>
         <?php if (isset($errores['nombreAerolinea'])): ?>
@@ -37,8 +37,8 @@ $valor = static function (string $campo) use ($datos, $aerolinea) {
     </div>
 
     <div>
-        <label for="codigoIATA">Código IATA</label>
-        <input type="text" id="codigoIATA" name="codigoIATA" maxlength="3" required
+        <label class="form-label" for="codigoIATA">Código IATA</label>
+        <input class="form-control" type="text" id="codigoIATA" name="codigoIATA" maxlength="3" required
                aria-describedby="ayuda-iata<?= isset($errores['codigoIATA']) ? ' error-iata' : '' ?>"
                value="<?= htmlspecialchars($valor('codigoIATA'), ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['codigoIATA']) ? 'aria-invalid="true"' : '' ?>>
@@ -49,8 +49,8 @@ $valor = static function (string $campo) use ($datos, $aerolinea) {
     </div>
 
     <div>
-        <label for="codPais">País</label>
-        <input type="text" id="codPais" name="codPais" maxlength="3" required
+        <label class="form-label" for="codPais">País</label>
+        <input class="form-control" type="text" id="codPais" name="codPais" maxlength="3" required
                aria-describedby="ayuda-pais<?= isset($errores['codPais']) ? ' error-pais' : '' ?>"
                value="<?= htmlspecialchars($valor('codPais'), ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['codPais']) ? 'aria-invalid="true"' : '' ?>>
@@ -61,8 +61,8 @@ $valor = static function (string $campo) use ($datos, $aerolinea) {
     </div>
 
     <div>
-        <label for="descripcionAerolinea">Descripción</label>
-        <textarea id="descripcionAerolinea" name="descripcionAerolinea" rows="3" maxlength="200"
+        <label class="form-label" for="descripcionAerolinea">Descripción</label>
+        <textarea class="form-control" id="descripcionAerolinea" name="descripcionAerolinea" rows="3" maxlength="200"
                   <?= isset($errores['descripcionAerolinea']) ? 'aria-invalid="true" aria-describedby="error-descripcion"' : '' ?>><?= htmlspecialchars($valor('descripcionAerolinea'), ENT_QUOTES, 'UTF-8') ?></textarea>
         <?php if (isset($errores['descripcionAerolinea'])): ?>
             <p id="error-descripcion" role="alert"><?= htmlspecialchars($errores['descripcionAerolinea'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -70,8 +70,8 @@ $valor = static function (string $campo) use ($datos, $aerolinea) {
     </div>
 
     <div>
-        <label for="sitioWebAerolinea">Sitio web (opcional)</label>
-        <input type="url" id="sitioWebAerolinea" name="sitioWebAerolinea" maxlength="255"
+        <label class="form-label" for="sitioWebAerolinea">Sitio web (opcional)</label>
+        <input class="form-control" type="url" id="sitioWebAerolinea" name="sitioWebAerolinea" maxlength="255"
                value="<?= htmlspecialchars($valor('sitioWebAerolinea'), ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['sitioWebAerolinea']) ? 'aria-invalid="true" aria-describedby="error-sitio"' : '' ?>>
         <?php if (isset($errores['sitioWebAerolinea'])): ?>
@@ -79,7 +79,7 @@ $valor = static function (string $campo) use ($datos, $aerolinea) {
         <?php endif; ?>
     </div>
 
-    <button type="submit"><?= $esEdicion ? 'Guardar cambios' : 'Dar de alta' ?></button>
+    <button class="btn btn-primary" type="submit"><?= $esEdicion ? 'Guardar cambios' : 'Dar de alta' ?></button>
 </form>
 
 <p><a href="/admin/aerolineas">Volver al listado de aerolíneas</a></p>

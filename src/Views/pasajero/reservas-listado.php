@@ -19,7 +19,8 @@
 <?php if (empty($reservas)): ?>
     <p>Todavía no hiciste ninguna reserva. <a href="/vuelos">Buscá un vuelo</a> para empezar.</p>
 <?php else: ?>
-    <table>
+    <div class="table-responsive">
+    <table class="table table-striped align-middle">
         <caption>Historial de tus reservas</caption>
         <thead>
             <tr>
@@ -55,6 +56,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>
 <?php endif; ?>

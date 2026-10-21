@@ -29,8 +29,8 @@
         <?= \App\Core\Csrf::field() ?>
 
         <div>
-            <label for="nombre">Nombre y apellido</label>
-            <input type="text" id="nombre" name="nombre" maxlength="100" required
+            <label class="form-label" for="nombre">Nombre y apellido</label>
+            <input class="form-control" type="text" id="nombre" name="nombre" maxlength="100" required
                    value="<?= htmlspecialchars($datos['nombre'] ?? $usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') ?>"
                    <?= isset($errores['nombre']) ? 'aria-invalid="true" aria-describedby="error-nombre"' : '' ?>>
             <?php if (isset($errores['nombre'])): ?>
@@ -39,8 +39,8 @@
         </div>
 
         <div>
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" maxlength="20"
+            <label class="form-label" for="telefono">Teléfono</label>
+            <input class="form-control" type="tel" id="telefono" name="telefono" maxlength="20"
                    value="<?= htmlspecialchars($datos['telefono'] ?? $usuario['telefonoUsuario'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                    <?= isset($errores['telefono']) ? 'aria-invalid="true" aria-describedby="error-telefono"' : '' ?>>
             <?php if (isset($errores['telefono'])): ?>
@@ -48,7 +48,7 @@
             <?php endif; ?>
         </div>
 
-        <button type="submit">Guardar cambios</button>
+        <button class="btn btn-primary" type="submit">Guardar cambios</button>
     </form>
 </section>
 
@@ -63,8 +63,8 @@
         <?= \App\Core\Csrf::field() ?>
 
         <div>
-            <label for="claveActual">Contraseña actual</label>
-            <input type="password" id="claveActual" name="claveActual" required
+            <label class="form-label" for="claveActual">Contraseña actual</label>
+            <input class="form-control" type="password" id="claveActual" name="claveActual" required
                    <?= isset($erroresClave['claveActual']) ? 'aria-invalid="true" aria-describedby="error-clave-actual"' : '' ?>>
             <?php if (isset($erroresClave['claveActual'])): ?>
                 <p id="error-clave-actual" role="alert"><?= htmlspecialchars($erroresClave['claveActual'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -72,8 +72,8 @@
         </div>
 
         <div>
-            <label for="clave">Contraseña nueva</label>
-            <input type="password" id="clave" name="clave" minlength="8" required
+            <label class="form-label" for="clave">Contraseña nueva</label>
+            <input class="form-control" type="password" id="clave" name="clave" minlength="8" required
                    aria-describedby="ayuda-clave<?= isset($erroresClave['clave']) ? ' error-clave' : '' ?>"
                    <?= isset($erroresClave['clave']) ? 'aria-invalid="true"' : '' ?>>
             <p id="ayuda-clave">Tiene que tener al menos 8 caracteres.</p>
@@ -83,15 +83,15 @@
         </div>
 
         <div>
-            <label for="clave2">Repetir contraseña nueva</label>
-            <input type="password" id="clave2" name="clave2" minlength="8" required
+            <label class="form-label" for="clave2">Repetir contraseña nueva</label>
+            <input class="form-control" type="password" id="clave2" name="clave2" minlength="8" required
                    <?= isset($erroresClave['clave2']) ? 'aria-invalid="true" aria-describedby="error-clave2"' : '' ?>>
             <?php if (isset($erroresClave['clave2'])): ?>
                 <p id="error-clave2" role="alert"><?= htmlspecialchars($erroresClave['clave2'], ENT_QUOTES, 'UTF-8') ?></p>
             <?php endif; ?>
         </div>
 
-        <button type="submit">Cambiar contraseña</button>
+        <button class="btn btn-primary" type="submit">Cambiar contraseña</button>
     </form>
 </section>
 

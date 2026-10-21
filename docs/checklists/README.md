@@ -96,9 +96,10 @@ enteras en cero, y está bien que así sea.
 - [x] Los mensajes de validación están en español ("El email es obligatorio", no "This field is required").
 - [x] Las alertas y mensajes de error del framework están traducidos o interceptados.
   - *No se usa framework: los mensajes son propios y están escritos en español.*
-- [ ] Los mensajes de error de la base de datos nunca se muestran crudos al usuario.
-  - *En producción `display_errors` queda apagado, pero falta una página de error 500 propia
-    para que el usuario no vea una pantalla en blanco. Va en el punto 8.*
+- [x] Los mensajes de error de la base de datos nunca se muestran crudos al usuario.
+  - *`public/index.php` atrapa toda excepción y todo error fatal y muestra la página 500 del
+    sitio. El detalle va al log del servidor y solo se imprime en pantalla si `app.env` es
+    `development`. Probado forzando un error real: responde 500 con la página propia.*
 - [x] Sin faltas de ortografía ni textos de prueba ("asdasd", "probando 123").
 - [x] Fechas, números y moneda en formato local.
   - *Fechas en dd/mm/aaaa y montos con punto de miles y coma decimal.*
@@ -111,9 +112,10 @@ enteras en cero, y está bien que así sea.
 - [x] Emails, números y fechas se validan con su formato.
 - [x] No se puede romper el sistema mandando datos vacíos, muy largos o con caracteres raros.
   - *Largos acotados con `maxLength`, sentencias preparadas y escape en toda la salida.*
-- [ ] No se puede enviar el mismo formulario dos veces por doble clic.
-  - *El patrón POST/Redirect/GET evita el reenvío al recargar la página, pero falta
-    deshabilitar el botón al enviar. Eso es JavaScript y va en el punto 8.*
+- [x] No se puede enviar el mismo formulario dos veces por doble clic.
+  - *`public/assets/js/app.js` bloquea el segundo envío y deshabilita el botón. Además, sin
+    JavaScript sigue cubierto: el patrón POST/Redirect/GET evita el reenvío al recargar y la
+    reserva se crea en una transacción con `SELECT ... FOR UPDATE`.*
 
 ## 8. Seguridad mínima
 
@@ -136,20 +138,34 @@ enteras en cero, y está bien que así sea.
 ## 9. Visual y responsive
 
 - [ ] Se ve bien en celular, tablet y escritorio.
+  - *Está hecho para eso: Bootstrap 5.3.3, menú que se colapsa en pantalla chica y tablas
+    envueltas en `.table-responsive`. Pero nadie lo abrió todavía en un celular de verdad,
+    así que no se tilda. Hay que mirarlo cuando esté desplegado (punto 9).*
 - [ ] Nada se superpone, se corta ni requiere scroll horizontal.
-- [ ] Estilo consistente entre pantallas (colores, tipografías, botones).
-- [ ] Las imágenes tienen tamaño razonable y `alt`.
-- [ ] Las imágenes tiene título visible al pasar mouse sobre las mismas.
-- [ ] Contraste suficiente para leer los textos.
+  - *Mismo motivo que el anterior: falta la prueba en pantalla real.*
+- [x] Estilo consistente entre pantallas (colores, tipografías, botones).
+  - *Una sola hoja propia (`public/assets/css/estilos.css`) sobre Bootstrap, y las clases se
+    aplicaron de una pasada sobre las 42 vistas, así que no hay dos formularios ni dos
+    tablas con aspecto distinto.*
+- [x] Las imágenes tienen tamaño razonable y `alt`.
+  - *La única imagen del sitio es la de la novedad: lleva `img-fluid` para no desbordar y el
+    `alt` es obligatorio al cargarla desde el panel.*
+- [x] Las imágenes tiene título visible al pasar mouse sobre las mismas.
+  - *`title` con el mismo texto del `alt`.*
+- [x] Contraste suficiente para leer los textos.
+  - *Los colores se eligieron midiendo el contraste sobre blanco: azul de la marca 9,4:1,
+    verde de éxito 7,9:1, rojo de error 9,3:1. WCAG AA pide 4,5:1.*
 
-> El sitio todavía no tiene una sola línea de CSS: es HTML semántico sin estilos. Bootstrap,
-> el diseño responsive y la hoja de impresión van en el punto 8.
+> Ya hay CSS: Bootstrap 5.3.3 servido desde `public/assets/vendor/` (no desde un CDN, así
+> funciona sin internet) más la hoja propia con la paleta, el foco visible, el enlace de
+> salto y la hoja de impresión del comprobante (`@media print`).
 
 ## 10. Última pasada antes de entregar
 
 - [ ] La consola del navegador no muestra errores en rojo.
-  - *Sin verificar todavía. No hay JavaScript propio, así que debería estar limpia, pero hay
-    que mirarlo con el sitio terminado.*
+  - *Sin verificar: hace falta abrir el navegador y mirar. El JavaScript propio son 50 líneas
+    en `app.js` y el resto es Bootstrap, así que no debería haber nada, pero hasta que alguien
+    lo mire no se tilda.*
 - [x] No quedan `var_dump`, `console.log`, `dd()` ni mensajes de debug visibles.
 - [x] El modo debug está apagado en producción.
   - *`public/index.php` prende `display_errors` solo si `app.env` es `development`.*
@@ -252,14 +268,31 @@ enteras en cero, y está bien que así sea.
 
 ## 20. Test de Validación de Estándares
 
-- [ ] Realizó los test de validación de HTML.
-- [ ] Realizó los test de validación de CSS.
+- [x] Realizó los test de validación de HTML.
+  - *37 páginas pasadas por el W3C Nu Html Checker, que es el sitio completo: público,
+    reservas, panel de aerolínea, administración y las dos páginas de error. **0 errores y 0
+    advertencias.** Reportes en `docs/validaciones/html-w3c/`.*
+- [x] Realizó los test de validación de CSS.
+  - *`estilos.css` pasado por el validador de CSS del W3C, perfil CSS3+SVG: **0 errores, 0
+    advertencias.** Reporte en `docs/validaciones/css-w3c.json`. Bootstrap no se valida
+    porque es dependencia de terceros sin modificar.*
 - [ ] Realizó los test de validación de ACCESIBLIDAD.
+  - *TAW valida contra una URL pública y el sitio todavía corre solo en local, así que queda
+    bloqueado hasta el despliegue (punto 9). Mientras tanto se revisó a mano criterio por
+    criterio de WCAG; está documentado en `docs/validaciones/README.md`.*
 - [ ] Pegó reportes de cada uno de los test de validación en el informe
+  - *Los reportes están en el repo, pero falta pegar las capturas en el informe (sección 17).*
 - [ ] Explicó lo mostrado en los reportes.
-- [ ] Realizó los cambios sugeridos por los test de validación.
+  - *Va en el informe, junto con las capturas.*
+- [x] Realizó los cambios sugeridos por los test de validación.
+  - *Los test no sugirieron cambios: dieron cero errores en las dos pasadas. Sí hubo un cambio
+    que salió de la revisión manual de accesibilidad: las tablas anchas se habían resuelto con
+    `display: block`, que les saca la semántica de tabla a varios lectores de pantalla, y se
+    reemplazó por el envoltorio `.table-responsive`.*
 - [ ] Fundamentó los cambios realizados según lo solicitado por los test de validación.
-- [ ] En caso de haber tenido que realizar modificaciones, volvió a pasar los test, y pegó cada reporte.
+  - *Va en el informe.*
+- [x] En caso de haber tenido que realizar modificaciones, volvió a pasar los test, y pegó cada reporte.
+  - *Los reportes guardados son de la última pasada, ya con todos los cambios aplicados.*
 
 > Punto 8 de `docs/tareas.md`. Conviene no dejarlo para el final: validar cada página en la
 > semana en que se construye sale mucho más barato que corregir todo junto al cierre.

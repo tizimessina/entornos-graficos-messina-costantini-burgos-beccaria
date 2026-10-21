@@ -8,10 +8,10 @@
 <h1>Buscar en el sitio</h1>
 
 <form role="search" method="get" action="/buscar">
-    <label for="q">Buscar vuelos, aerolíneas o novedades</label>
-    <input type="search" id="q" name="q" maxlength="100"
+    <label class="form-label" for="q">Buscar vuelos, aerolíneas o novedades</label>
+    <input class="form-control" type="search" id="q" name="q" maxlength="100"
            value="<?= htmlspecialchars($termino, ENT_QUOTES, 'UTF-8') ?>">
-    <button type="submit">Buscar</button>
+    <button class="btn btn-primary" type="submit">Buscar</button>
 </form>
 
 <?php if ($termino === ''): ?>

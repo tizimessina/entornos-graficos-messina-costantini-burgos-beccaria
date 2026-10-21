@@ -11,8 +11,16 @@
     </p>
 
     <?php if (!empty($novedad['imagenNovedad'])): ?>
-        <img src="<?= htmlspecialchars($novedad['imagenNovedad'], ENT_QUOTES, 'UTF-8') ?>"
-             alt="<?= htmlspecialchars($novedad['textoAlternativoImagen'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+        <?php
+        // El alt es obligatorio desde el panel cuando hay imagen, así que acá
+        // siempre llega con texto. El title repite ese texto para que también
+        // se vea al pasar el mouse.
+        $textoImagen = (string) ($novedad['textoAlternativoImagen'] ?? '');
+        ?>
+        <img class="img-fluid rounded mb-3"
+             src="<?= htmlspecialchars($novedad['imagenNovedad'], ENT_QUOTES, 'UTF-8') ?>"
+             alt="<?= htmlspecialchars($textoImagen, ENT_QUOTES, 'UTF-8') ?>"
+             title="<?= htmlspecialchars($textoImagen, ENT_QUOTES, 'UTF-8') ?>">
     <?php endif; ?>
 
     <p><?= nl2br(htmlspecialchars($novedad['textoNovedad'], ENT_QUOTES, 'UTF-8')) ?></p>
