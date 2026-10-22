@@ -1,8 +1,8 @@
-# SkyReserva
+# Aeroeb
 
 Trabajo Práctico Integrador de la materia Entornos Gráficos (UTN FRR, 2026).
 
-SkyReserva es un sitio donde varias aerolíneas publican sus vuelos y los pasajeros
+Aeroeb es un sitio donde varias aerolíneas publican sus vuelos y los pasajeros
 pueden buscarlos, compararlos y reservarlos desde un solo lugar. La idea es que cada
 aerolínea administre su propia oferta (vuelos, promociones) y que la administración de
 la plataforma modere ese contenido antes de que se publique.
@@ -35,7 +35,7 @@ URL de producción: *(se agrega cuando el sitio esté desplegado)*
 
 - PHP 8.2, sin frameworks (pedido por la cátedra)
 - MySQL / MariaDB con PDO y sentencias preparadas
-- HTML5, CSS3 y Bootstrap 5
+- HTML5, CSS3 y Bootstrap 5.3.3 (servido desde el propio sitio, no desde un CDN)
 - JavaScript sin librerías, solo para mejorar la experiencia (el sitio tiene que andar sin JS)
 - PHPMailer para el envío de correos
 - Git y GitHub para versionar el proyecto
@@ -80,7 +80,7 @@ entornos-graficos-messina-costantini-burgos-beccaria/
 ├── public/                     # esto es lo único que queda expuesto al servidor
 │   ├── index.php               # front controller: rutas, sesión y manejo de errores
 │   ├── assets/
-│   │   ├── css/estilos.css     # hoja propia: paleta, foco visible, impresión
+│   │   ├── css/estilos.css     # sistema de diseño propio sobre Bootstrap
 │   │   ├── js/app.js           # evita el doble envío de los formularios
 │   │   └── vendor/bootstrap/   # Bootstrap 5.3.3, servido desde acá y no desde un CDN
 │   └── uploads/                # imágenes que se cargan desde el panel
@@ -125,7 +125,7 @@ antes de cualquier uso real del sitio.
 
 | Rol | E-mail | Contraseña |
 |---|---|---|
-| Administrador | admin@skyreserva.com | Admin2026! |
+| Administrador | admin@aeroeb.com.ar | Admin2026! |
 | CEO de aerolínea | ceo@aerolinea-demo.com | Ceo2026! |
 | Pasajero | pasajero@demo.com | Pasajero2026! |
 

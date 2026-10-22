@@ -6,6 +6,8 @@
  * @var string $desde
  * @var string $hasta
  */
+
+use App\Helpers\Formato;
 ?>
 <h1>Reportes</h1>
 
@@ -99,7 +101,7 @@
                         <td><?= htmlspecialchars($vuelo['numeroVuelo'] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= htmlspecialchars($vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= htmlspecialchars(date('d/m/Y', strtotime($vuelo['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars(ucfirst($vuelo['estadoVuelo']), ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= Formato::estadoVuelo((string) $vuelo['estadoVuelo']) ?></td>
                         <td><?= (int) $vuelo['asientosVendidos'] ?></td>
                         <td><?= (int) $vuelo['capacidadTotal'] ?></td>
                         <td><?= number_format((float) $vuelo['porcentajeOcupacion'], 2, ',', '.') ?> %</td>

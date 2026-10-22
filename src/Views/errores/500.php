@@ -5,9 +5,9 @@
  * ese queda en el log del servidor, porque un mensaje de la base de datos
  * puede filtrar nombres de tablas o datos de otra persona.
  */
-$tituloPagina = 'Error del sistema — SkyReserva';
+$tituloPagina = 'Error del sistema — Aeroeb';
 $contenidoHtml = <<<'HTML'
-<h1>Algo falló de nuestro lado</h1>
+<div class="ae-vacio"><p class="ae-vacio-icono" aria-hidden="true">500</p><h1>Algo falló de nuestro lado</h1>
 
 <p>
     Hubo un problema al procesar lo que pediste. No es algo que hayas hecho mal.
@@ -23,7 +23,7 @@ $contenidoHtml = <<<'HTML'
 <ul>
     <li><a href="/">Volver a la portada</a></li>
     <li><a href="/contacto">Contarnos qué pasó</a></li>
-</ul>
+</ul></div>
 HTML;
 
 /*

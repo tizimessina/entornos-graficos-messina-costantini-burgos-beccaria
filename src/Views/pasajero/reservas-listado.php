@@ -5,6 +5,8 @@
  * @var string|null $exito
  * @var string|null $error
  */
+
+use App\Helpers\Formato;
 ?>
 <h1>Mis reservas</h1>
 
@@ -17,45 +19,81 @@
 <?php endif; ?>
 
 <?php if (empty($reservas)): ?>
-    <p>Todavía no hiciste ninguna reserva. <a href="/vuelos">Buscá un vuelo</a> para empezar.</p>
+    <div class="ae-vacio">
+        <p class="ae-vacio-icono" aria-hidden="true">✈</p>
+        <h2>Todavía no hiciste ninguna reserva</h2>
+        <p>
+            Cuando reserves un vuelo, acá vas a tener el historial completo con el
+            localizador, el comprobante y la opción de cancelar.
+        </p>
+        <a class="btn btn-primary" href="/vuelos">Buscar un vuelo</a>
+    </div>
 <?php else: ?>
+    <p class="ae-entrada">
+        El estado se indica con un símbolo y la palabra, nunca solo con el color.
+    </p>
+
     <div class="table-responsive">
-    <table class="table table-striped align-middle">
-        <caption>Historial de tus reservas</caption>
-        <thead>
-            <tr>
-                <th scope="col">Localizador</th>
-                <th scope="col">Vuelo</th>
-                <th scope="col">Aerolínea</th>
-                <th scope="col">Salida</th>
-                <th scope="col">Asientos</th>
-                <th scope="col">Total</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Detalle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($reservas as $reserva): ?>
+        <table class="table table-striped align-middle">
+            <caption>Historial de tus reservas</caption>
+            <thead>
                 <tr>
-                    <td><?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($reserva['origenVuelo'] . ' → ' . $reserva['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($reserva['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?></td>
-                    <td>
-                        <?= htmlspecialchars(date('d/m/Y', strtotime($reserva['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') ?>
-                        <?= htmlspecialchars(substr($reserva['horaSalidaVuelo'], 0, 5), ENT_QUOTES, 'UTF-8') ?>
-                    </td>
-                    <td><?= (int) $reserva['cantidadAsientos'] ?></td>
-                    <td>$<?= number_format((float) $reserva['montoTotal'], 2, ',', '.') ?></td>
-                    <td><?= htmlspecialchars(ucfirst($reserva['estadoReserva']), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td>
-                        <a href="/reservas/<?= (int) $reserva['codReserva'] ?>">
-                            Ver reserva <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?>
-                        </a>
-                    </td>
+                    <th scope="col">Localizador</th>
+                    <th scope="col">Vuelo</th>
+                    <th scope="col">Salida</th>
+                    <th scope="col">Asientos</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($reservas as $reserva): ?>
+                    <tr>
+                        <th scope="row" class="ae-dato">
+                            <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?>
+                        </th>
+                        <td>
+                            <?= htmlspecialchars($reserva['origenVuelo'] . ' → ' . $reserva['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>
+                            <br>
+                            <span class="ae-apagado"><?= htmlspecialchars($reserva['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?></span>
+                        </td>
+                        <td class="ae-dato">
+                            <?= htmlspecialchars(Formato::fecha($reserva['fechaSalidaVuelo']), ENT_QUOTES, 'UTF-8') ?>
+                            <br>
+                            <span class="ae-apagado"><?= htmlspecialchars(Formato::hora($reserva['horaSalidaVuelo']), ENT_QUOTES, 'UTF-8') ?></span>
+                        </td>
+                        <td><?= (int) $reserva['cantidadAsientos'] ?></td>
+                        <td class="ae-dato"><?= htmlspecialchars(Formato::pesos($reserva['montoTotal']), ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= Formato::estadoReserva((string) $reserva['estadoReserva']) ?></td>
+                        <td>
+                            <a class="btn btn-outline-secondary" href="/reservas/<?= (int) $reserva['codReserva'] ?>">
+                                Ver
+                                <span class="visually-hidden">
+                                    la reserva <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?>
+                                </span>
+                            </a>
+
+                            <?php if ($reserva['estadoReserva'] === 'pendiente de pago'): ?>
+                                <a class="btn btn-primary" href="/reservas/<?= (int) $reserva['codReserva'] ?>/pago">
+                                    Pagar
+                                    <span class="visually-hidden">
+                                        la reserva <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                </a>
+                            <?php elseif ($reserva['estadoReserva'] === 'confirmada'): ?>
+                                <a class="btn btn-outline-secondary" href="/reservas/<?= (int) $reserva['codReserva'] ?>/comprobante">
+                                    Comprobante
+                                    <span class="visually-hidden">
+                                        de la reserva <?= htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 
     <?php require __DIR__ . '/../partials/paginacion.php'; ?>

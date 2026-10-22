@@ -15,7 +15,7 @@ class ContactoController
 {
     public function mostrar(): void
     {
-        $tituloPagina = 'Contacto — SkyReserva';
+        $tituloPagina = 'Contacto — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Contacto', 'url' => null],
@@ -88,8 +88,8 @@ class ContactoController
         $mensaje = nl2br(htmlspecialchars($datos['mensaje'], ENT_QUOTES, 'UTF-8'));
 
         Mailer::enviar(
-            'admin@skyreserva.com',
-            'Administración de SkyReserva',
+            'admin@aeroeb.com.ar',
+            'Administración de Aeroeb',
             'Nuevo mensaje de contacto: ' . $datos['asunto'],
             "<p><strong>De:</strong> $nombre ($email)</p><p>$mensaje</p>"
         );

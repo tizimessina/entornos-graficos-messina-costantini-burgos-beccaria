@@ -4,6 +4,8 @@
  * @var \App\Core\Paginator $paginador
  * @var string|null $exito
  */
+
+use App\Helpers\Formato;
 ?>
 <h1>Mis promociones</h1>
 
@@ -13,7 +15,7 @@
 
 <p>
     Las promociones que proponés quedan pendientes hasta que la administración de
-    SkyReserva las apruebe. Recién ahí los pasajeros pueden usar el código.
+    Aeroeb las apruebe. Recién ahí los pasajeros pueden usar el código.
 </p>
 
 <p><a href="/panel/promociones/nueva">Proponer una promoción</a></p>
@@ -50,7 +52,7 @@
                         <?= (int) $promocion['usosRealizados'] ?>
                         <?= $promocion['usosMaximos'] !== null ? ' / ' . (int) $promocion['usosMaximos'] : ' (sin tope)' ?>
                     </td>
-                    <td><?= htmlspecialchars(ucfirst($promocion['estadoPromocion']), ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?= Formato::estadoPromocion((string) $promocion['estadoPromocion']) ?></td>
                     <td>
                         <?php if (!empty($promocion['motivoResolucion'])): ?>
                             <?= htmlspecialchars($promocion['motivoResolucion'], ENT_QUOTES, 'UTF-8') ?>

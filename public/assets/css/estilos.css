@@ -1,33 +1,143 @@
 /* =====================================================================
-   SkyReserva — hoja de estilos propia
-   Se carga DESPUÉS de Bootstrap, así que lo que está acá lo sobrescribe.
-   Solo tiene lo que Bootstrap no resuelve: la paleta del sitio, el foco
-   visible, el enlace de salto y la hoja de impresión del comprobante.
+   Aeroeb — sistema de diseño
+   Se carga después de Bootstrap. La mayor parte del trabajo se hace
+   redefiniendo las variables --bs-* que Bootstrap 5.3 expone, así el
+   HTML de las vistas queda limpio y el aspecto del sitio sale de acá.
    ===================================================================== */
 
+/* ---------------------------------------------------------------------
+   1. Tokens
+   --------------------------------------------------------------------- */
 :root {
-    /* Azul de la marca. Contraste 9,4:1 sobre blanco (WCAG AA pide 4,5:1). */
-    --sky-azul: #0b4a6f;
-    --sky-azul-claro: #e7f1f7;
-    --sky-exito: #1b5e20;   /* 7,9:1 sobre blanco */
-    --sky-error: #8a1c1c;   /* 9,3:1 sobre blanco */
-    --sky-borde: #c9d6de;
+    /* Neutros. Nada de negro puro: la escala zinc cansa menos la vista. */
+    --ae-zinc-50:  #fafafa;
+    --ae-zinc-100: #f4f4f5;
+    --ae-zinc-200: #e4e4e7;
+    --ae-zinc-300: #d4d4d8;
+    --ae-zinc-400: #a1a1aa;
+    --ae-zinc-500: #71717a;
+    --ae-zinc-600: #52525b;
+    --ae-zinc-700: #3f3f46;
+    --ae-zinc-800: #27272a;
+    --ae-zinc-900: #18181b;
+
+    /* Acento principal: rosa profundo. 6,0:1 sobre blanco, así que sirve
+       para texto y para botones con texto blanco (WCAG AA pide 4,5:1). */
+    --ae-rosa:        #be185d;
+    --ae-rosa-fuerte: #9f1239;
+    --ae-rosa-suave:  #fdf2f8;
+    --ae-rosa-borde:  #fbcfe8;
+
+    /* Secundario: tinta azulada muy oscura. Es el fondo del encabezado y
+       del pie, y es lo que hace que el rosa se lea premium y no chillón. */
+    --ae-tinta:       #1e1b4b;
+    --ae-tinta-clara: #312e81;
+
+    /* Estados. Todos medidos sobre blanco. */
+    --ae-exito:       #15803d;
+    --ae-exito-suave: #f0fdf4;
+    --ae-error:       #b91c1c;
+    --ae-error-suave: #fef2f2;
+    --ae-aviso:       #a16207;
+    --ae-aviso-suave: #fefce8;
+
+    /* Ritmo vertical, escala de 4 px. */
+    --ae-1: 0.25rem;
+    --ae-2: 0.5rem;
+    --ae-3: 0.75rem;
+    --ae-4: 1rem;
+    --ae-6: 1.5rem;
+    --ae-8: 2rem;
+    --ae-12: 3rem;
+    --ae-16: 4rem;
+
+    --ae-radio:        0.75rem;
+    --ae-radio-chico:  0.5rem;
+    --ae-radio-grande: 1rem;
+
+    /* Sombras suaves, de dos capas: una de contacto y otra de difusión. */
+    --ae-sombra-1: 0 1px 2px rgba(24, 24, 27, 0.04), 0 1px 3px rgba(24, 24, 27, 0.06);
+    --ae-sombra-2: 0 2px 4px rgba(24, 24, 27, 0.04), 0 4px 12px rgba(24, 24, 27, 0.08);
+    --ae-sombra-3: 0 4px 8px rgba(24, 24, 27, 0.04), 0 12px 28px rgba(24, 24, 27, 0.10);
+
+    --ae-transicion: 200ms ease-out;
+
+    /* Variables de Bootstrap redefinidas. */
+    --bs-primary: #be185d;
+    --bs-primary-rgb: 190, 24, 93;
+    --bs-body-bg: #fafafa;
+    --bs-body-color: #27272a;
+    --bs-border-color: #e4e4e7;
+    --bs-border-radius: 0.75rem;
+    --bs-border-radius-sm: 0.5rem;
+    --bs-border-radius-lg: 1rem;
+    --bs-link-color: #be185d;
+    --bs-link-hover-color: #9f1239;
+    --bs-link-color-rgb: 190, 24, 93;
+    --bs-font-sans-serif: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --bs-body-font-size: 1rem;
+    --bs-body-line-height: 1.6;
 }
 
+/* ---------------------------------------------------------------------
+   2. Base
+   --------------------------------------------------------------------- */
 body {
-    /* Empuja el pie de página al fondo aunque la página tenga poco contenido. */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: var(--ae-zinc-50);
+    /* Dos halos muy tenues detrás del contenido. Son decorativos: si el
+       navegador no los dibuja, el fondo liso se ve igual de bien. */
+    background-image:
+        radial-gradient(60rem 30rem at 85% -8%, rgba(190, 24, 93, 0.06), rgba(190, 24, 93, 0)),
+        radial-gradient(50rem 28rem at 5% 2%, rgba(30, 27, 75, 0.05), rgba(30, 27, 75, 0));
+    background-repeat: no-repeat;
+    color: var(--ae-zinc-800);
 }
 
 main {
     flex: 1 0 auto;
 }
 
-/* --- Foco visible -----------------------------------------------------
-   WCAG 2.4.7. Bootstrap ya marca el foco, pero con un color celeste que
-   sobre fondo blanco queda flojo. Lo reforzamos para todo lo navegable. */
+/* La jerarquía se marca con el peso, no solo con el tamaño. */
+h1, h2, h3, h4 {
+    color: var(--ae-zinc-900);
+    letter-spacing: -0.02em;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.25rem;
+    margin-bottom: var(--ae-2);
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-top: var(--ae-8);
+    margin-bottom: var(--ae-4);
+}
+
+h3 {
+    font-size: 1.1rem;
+}
+
+/* El primer encabezado de la página no necesita aire arriba. */
+main > h1:first-child,
+main > section:first-child > h2:first-child,
+main > article:first-child > h1:first-child {
+    margin-top: 0;
+}
+
+a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color var(--ae-transicion);
+}
+
+/* ---------------------------------------------------------------------
+   3. Foco visible (WCAG 2.4.7)
+   --------------------------------------------------------------------- */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -35,92 +145,978 @@ select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-    outline: 3px solid var(--sky-azul);
+    outline: 2px solid var(--ae-rosa);
     outline-offset: 2px;
+    border-radius: var(--ae-radio-chico);
     box-shadow: none;
 }
 
-/* --- Enlace de salto al contenido -------------------------------------
-   WCAG 2.4.1. Está fuera de la pantalla hasta que recibe el foco con Tab,
-   que es cuando le sirve a quien navega con teclado o lector de pantalla. */
+/* Sobre fondo oscuro el rosa no contrasta: ahí el anillo va en blanco. */
+.ae-encabezado a:focus-visible,
+.ae-encabezado button:focus-visible,
+.ae-encabezado input:focus-visible,
+.ae-pie a:focus-visible {
+    outline-color: #ffffff;
+}
+
+/* ---------------------------------------------------------------------
+   4. Enlace de salto (WCAG 2.4.1)
+   --------------------------------------------------------------------- */
 .skip-link {
     position: absolute;
     left: -9999px;
     top: 0;
     z-index: 1100;
-    padding: 0.75rem 1.25rem;
-    background: var(--sky-azul);
-    color: #fff;
+    padding: var(--ae-3) var(--ae-6);
+    background: var(--ae-rosa);
+    color: #ffffff;
     font-weight: 600;
     text-decoration: none;
+    border-bottom-right-radius: var(--ae-radio);
 }
 
 .skip-link:focus {
     left: 0;
+    color: #ffffff;
 }
 
-/* --- Encabezado y marca ---------------------------------------------- */
-.sky-marca {
-    color: var(--sky-azul);
-    font-size: 1.6rem;
+/* ---------------------------------------------------------------------
+   5. Encabezado
+   --------------------------------------------------------------------- */
+.ae-encabezado {
+    background-color: var(--ae-tinta);
+    background-image: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%);
+    color: #ffffff;
+}
+
+.ae-marca {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ae-2);
+    color: #ffffff;
+    font-size: 1.35rem;
     font-weight: 700;
+    letter-spacing: -0.03em;
     text-decoration: none;
 }
 
-.sky-marca:hover,
-.sky-marca:focus {
-    color: var(--sky-azul);
+.ae-marca:hover,
+.ae-marca:focus {
+    color: #ffffff;
+}
+
+.ae-marca-punto {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--ae-rosa);
+    box-shadow: 0 0 0 4px rgba(190, 24, 93, 0.25);
+}
+
+.ae-bajada {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Buscador del encabezado, sobre fondo oscuro. */
+.ae-buscador .form-control {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    min-width: 13rem;
+}
+
+.ae-buscador .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.60);
+}
+
+.ae-buscador .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #ffffff;
+    box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------
+   6. Barra de secciones
+   --------------------------------------------------------------------- */
+.ae-nav {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--ae-zinc-200);
+    box-shadow: var(--ae-sombra-1);
+}
+
+.ae-nav .nav-link {
+    position: relative;
+    padding: var(--ae-4) var(--ae-3);
+    color: var(--ae-zinc-600);
+    font-weight: 600;
+    transition: color var(--ae-transicion);
+}
+
+.ae-nav .nav-link:hover,
+.ae-nav .nav-link:focus {
+    color: var(--ae-rosa);
+}
+
+/* Subrayado de la sección activa. Va acompañado de aria-current. */
+.ae-nav .nav-link[aria-current="page"] {
+    color: var(--ae-zinc-900);
+}
+
+.ae-nav .nav-link[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    left: var(--ae-3);
+    right: var(--ae-3);
+    bottom: -1px;
+    height: 2px;
+    background: var(--ae-rosa);
+    border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   7. Ruta de acceso
+   --------------------------------------------------------------------- */
+.breadcrumb {
+    --bs-breadcrumb-divider: "\203A";
+    font-size: 0.875rem;
+    margin-bottom: var(--ae-4);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--ae-zinc-400);
+}
+
+.breadcrumb-item a {
+    color: var(--ae-zinc-500);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--ae-rosa);
     text-decoration: underline;
 }
 
-/* --- Mensajes de estado ----------------------------------------------
-   Los controladores emiten role="status" para el éxito y role="alert"
-   para el error. Les damos aspecto de alerta sin tocar las vistas. */
-main [role="status"] {
-    padding: 0.75rem 1rem;
-    border-left: 4px solid var(--sky-exito);
-    background: #edf7ee;
-    color: var(--sky-exito);
-    border-radius: 0.25rem;
-}
-
-main [role="alert"] {
-    padding: 0.75rem 1rem;
-    border-left: 4px solid var(--sky-error);
-    background: #fdeeee;
-    color: var(--sky-error);
-    border-radius: 0.25rem;
-}
-
-/* El mensaje de error que va pegado a un campo no necesita el recuadro:
-   iría dos veces, porque el campo ya se marca en rojo. */
-main form [role="alert"] {
-    padding: 0;
-    border: 0;
-    background: none;
-    font-size: 0.9rem;
-}
-
-/* --- Tablas -----------------------------------------------------------
-   El caption es parte de la accesibilidad (dice de qué es la tabla), así
-   que se muestra, no se esconde. */
-caption {
-    caption-side: top;
-    padding-bottom: 0.5rem;
-    color: #333;
+.breadcrumb-item.active {
+    color: var(--ae-zinc-700);
     font-weight: 600;
 }
 
-/* --- Imágenes ---------------------------------------------------------
-   Que nunca desborden su contenedor en pantallas chicas. */
+/* ---------------------------------------------------------------------
+   8. Tarjetas y superficies
+   --------------------------------------------------------------------- */
+.ae-tarjeta {
+    background: #ffffff;
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-1);
+    padding: var(--ae-6);
+    height: 100%;
+    transition: box-shadow var(--ae-transicion), border-color var(--ae-transicion), transform var(--ae-transicion);
+}
+
+/* Solo las tarjetas que llevan a algún lado reaccionan al mouse. */
+.ae-tarjeta-enlace:hover {
+    border-color: var(--ae-rosa-borde);
+    box-shadow: var(--ae-sombra-2);
+    transform: translateY(-2px);
+}
+
+.ae-panel {
+    background: #ffffff;
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio-grande);
+    box-shadow: var(--ae-sombra-1);
+    padding: var(--ae-6);
+}
+
+/* ---------------------------------------------------------------------
+   9. Portada
+   --------------------------------------------------------------------- */
+.ae-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--ae-radio-grande);
+    background-color: var(--ae-tinta);
+    background-image: linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #6d28d9 100%);
+    color: #ffffff;
+    padding: var(--ae-12) var(--ae-8);
+    box-shadow: var(--ae-sombra-3);
+}
+
+.ae-hero::after {
+    /* Halo rosa decorativo, sin contenido. */
+    content: "";
+    position: absolute;
+    right: -6rem;
+    top: -8rem;
+    width: 26rem;
+    height: 26rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(190, 24, 93, 0.45), rgba(190, 24, 93, 0));
+    pointer-events: none;
+}
+
+.ae-hero h1 {
+    position: relative;
+    color: #ffffff;
+    max-width: 20ch;
+}
+
+.ae-hero p {
+    position: relative;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 58ch;
+    margin-bottom: 0;
+}
+
+/* La caja del buscador, montada sobre el hero. */
+.ae-buscador-vuelos {
+    position: relative;
+    background: #ffffff;
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-3);
+    padding: var(--ae-6);
+    margin-top: var(--ae-8);
+}
+
+.ae-buscador-vuelos .form-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ae-zinc-500);
+}
+
+.ae-nota {
+    font-size: 0.85rem;
+    color: var(--ae-zinc-500);
+    margin: var(--ae-3) 0 0;
+}
+
+/* ---------------------------------------------------------------------
+   10. Formularios
+   --------------------------------------------------------------------- */
+main form > div,
+main form > fieldset {
+    margin-bottom: var(--ae-4);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--ae-zinc-700);
+    margin-bottom: var(--ae-1);
+}
+
+.form-control,
+.form-select {
+    border-color: var(--ae-zinc-300);
+    border-radius: var(--ae-radio-chico);
+    padding: 0.6rem 0.85rem;
+    transition: border-color var(--ae-transicion), box-shadow var(--ae-transicion);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--ae-rosa);
+    box-shadow: 0 0 0 4px rgba(190, 24, 93, 0.12);
+}
+
+.form-control::placeholder {
+    color: var(--ae-zinc-400);
+}
+
+fieldset {
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio);
+    padding: var(--ae-4) var(--ae-6) var(--ae-2);
+    background: #ffffff;
+}
+
+legend {
+    float: none;
+    width: auto;
+    padding: 0 var(--ae-2);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ae-zinc-800);
+}
+
+/* Texto de ayuda debajo de un campo (lo referencia aria-describedby). */
+main form div > p {
+    margin: var(--ae-1) 0 0;
+    font-size: 0.85rem;
+    color: var(--ae-zinc-500);
+}
+
+/* Campo con error. El color no es el único indicio (WCAG 1.4.1): también
+   cambia el grosor del borde y aparece el mensaje al lado. */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: var(--ae-error);
+    border-width: 2px;
+}
+
+input[aria-invalid="true"]:focus,
+select[aria-invalid="true"]:focus,
+textarea[aria-invalid="true"]:focus {
+    box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.12);
+}
+
+.form-check-input:checked {
+    background-color: var(--ae-rosa);
+    border-color: var(--ae-rosa);
+}
+
+.form-check-input:focus {
+    border-color: var(--ae-rosa);
+    box-shadow: 0 0 0 4px rgba(190, 24, 93, 0.12);
+}
+
+/* ---------------------------------------------------------------------
+   11. Botones
+   --------------------------------------------------------------------- */
+.btn {
+    --bs-btn-padding-y: 0.6rem;
+    --bs-btn-padding-x: 1.1rem;
+    --bs-btn-border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color var(--ae-transicion), border-color var(--ae-transicion),
+                color var(--ae-transicion), box-shadow var(--ae-transicion), transform var(--ae-transicion);
+}
+
+.btn-primary {
+    --bs-btn-bg: #be185d;
+    --bs-btn-border-color: #be185d;
+    --bs-btn-hover-bg: #9f1239;
+    --bs-btn-hover-border-color: #9f1239;
+    --bs-btn-active-bg: #9f1239;
+    --bs-btn-active-border-color: #9f1239;
+    --bs-btn-disabled-bg: #a1a1aa;
+    --bs-btn-disabled-border-color: #a1a1aa;
+    box-shadow: 0 1px 2px rgba(190, 24, 93, 0.20);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #3f3f46;
+    --bs-btn-border-color: #d4d4d8;
+    --bs-btn-bg: #ffffff;
+    --bs-btn-hover-bg: #f4f4f5;
+    --bs-btn-hover-border-color: #a1a1aa;
+    --bs-btn-hover-color: #18181b;
+    --bs-btn-active-bg: #e4e4e7;
+    --bs-btn-active-color: #18181b;
+    --bs-btn-active-border-color: #a1a1aa;
+}
+
+.btn-outline-danger {
+    --bs-btn-color: #b91c1c;
+    --bs-btn-border-color: #fecaca;
+    --bs-btn-bg: #ffffff;
+    --bs-btn-hover-bg: #b91c1c;
+    --bs-btn-hover-border-color: #b91c1c;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-bg: #991b1b;
+    --bs-btn-active-border-color: #991b1b;
+    --bs-btn-active-color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    color: var(--ae-tinta);
+}
+
+/* Un botón deshabilitado por el guardia de doble clic no debe saltar. */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    transform: none;
+    box-shadow: none;
+    opacity: 0.65;
+}
+
+/* ---------------------------------------------------------------------
+   12. Mensajes de estado
+   Los controladores emiten role="status" para el éxito y role="alert"
+   para el error. El aspecto sale de acá, sin ensuciar las vistas.
+   --------------------------------------------------------------------- */
+main [role="status"],
+main [role="alert"] {
+    padding: var(--ae-3) var(--ae-4);
+    border: 1px solid;
+    border-radius: var(--ae-radio-chico);
+    font-weight: 600;
+    box-shadow: var(--ae-sombra-1);
+}
+
+main [role="status"] {
+    background: var(--ae-exito-suave);
+    border-color: #bbf7d0;
+    color: var(--ae-exito);
+}
+
+main [role="alert"] {
+    background: var(--ae-error-suave);
+    border-color: #fecaca;
+    color: var(--ae-error);
+}
+
+/* El error pegado a un campo no lleva recuadro: se duplicaría con el
+   borde rojo del propio campo. */
+main form [role="alert"] {
+    padding: var(--ae-1) 0 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    font-size: 0.85rem;
+    color: var(--ae-error);
+}
+
+/* ---------------------------------------------------------------------
+   13. Distintivos de estado
+   --------------------------------------------------------------------- */
+.ae-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ae-1);
+    padding: 0.2rem 0.65rem;
+    border: 1px solid;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.ae-badge-exito {
+    background: var(--ae-exito-suave);
+    border-color: #bbf7d0;
+    color: var(--ae-exito);
+}
+
+.ae-badge-espera {
+    background: var(--ae-aviso-suave);
+    border-color: #fde68a;
+    color: var(--ae-aviso);
+}
+
+.ae-badge-baja {
+    background: var(--ae-zinc-100);
+    border-color: var(--ae-zinc-200);
+    color: var(--ae-zinc-600);
+}
+
+.ae-badge-error {
+    background: var(--ae-error-suave);
+    border-color: #fecaca;
+    color: var(--ae-error);
+}
+
+.ae-badge-acento {
+    background: var(--ae-rosa-suave);
+    border-color: var(--ae-rosa-borde);
+    color: var(--ae-rosa);
+}
+
+/* ---------------------------------------------------------------------
+   14. Tablas
+   --------------------------------------------------------------------- */
+.table-responsive {
+    background: #ffffff;
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-1);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: #fcfcfd;
+    --bs-table-hover-bg: #fdf2f8;
+    margin-bottom: 0;
+}
+
+.table > thead th {
+    background: var(--ae-zinc-50);
+    border-bottom: 1px solid var(--ae-zinc-200);
+    color: var(--ae-zinc-600);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    padding: var(--ae-3) var(--ae-4);
+}
+
+.table > tbody td,
+.table > tbody th {
+    padding: var(--ae-3) var(--ae-4);
+    border-color: var(--ae-zinc-200);
+    vertical-align: middle;
+}
+
+.table > tbody > tr:last-child > * {
+    border-bottom-width: 0;
+}
+
+.table tfoot th,
+.table tfoot td {
+    background: var(--ae-zinc-50);
+    font-weight: 700;
+    padding: var(--ae-3) var(--ae-4);
+}
+
+/* El caption dice de qué es la tabla: se muestra, no se esconde. */
+caption {
+    caption-side: top;
+    padding: var(--ae-4) var(--ae-4) var(--ae-2);
+    color: var(--ae-zinc-600);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+td, th {
+    overflow-wrap: anywhere;
+}
+
+/* Botones dentro de una columna de acciones. */
+td .btn {
+    --bs-btn-padding-y: 0.25rem;
+    --bs-btn-padding-x: 0.6rem;
+    font-size: 0.82rem;
+}
+
+td form {
+    display: inline-block;
+    margin: var(--ae-1) var(--ae-1) 0 0;
+}
+
+/* ---------------------------------------------------------------------
+   15. Estado vacío
+   --------------------------------------------------------------------- */
+.ae-vacio {
+    text-align: center;
+    padding: var(--ae-12) var(--ae-6);
+    background: #ffffff;
+    border: 1px dashed var(--ae-zinc-300);
+    border-radius: var(--ae-radio-grande);
+    color: var(--ae-zinc-600);
+}
+
+.ae-vacio-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: var(--ae-4);
+    border-radius: 50%;
+    background: var(--ae-rosa-suave);
+    color: var(--ae-rosa);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ae-vacio h2,
+.ae-vacio h3 {
+    margin-top: 0;
+    font-size: 1.15rem;
+}
+
+.ae-vacio p {
+    max-width: 48ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---------------------------------------------------------------------
+   16. Métricas de los tableros
+   --------------------------------------------------------------------- */
+.ae-metrica {
+    background: #ffffff;
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-1);
+    padding: var(--ae-4) var(--ae-6);
+    height: 100%;
+}
+
+.ae-metrica-rotulo {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ae-zinc-500);
+    margin-bottom: var(--ae-1);
+}
+
+.ae-metrica-valor {
+    display: block;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ae-zinc-900);
+    margin: 0;
+}
+
+/* La métrica que pide acción se destaca con el acento. */
+.ae-metrica-urgente {
+    border-color: var(--ae-rosa-borde);
+    background: var(--ae-rosa-suave);
+}
+
+.ae-metrica-urgente .ae-metrica-valor {
+    color: var(--ae-rosa);
+}
+
+/* ---------------------------------------------------------------------
+   17. Barra lateral de los paneles
+   --------------------------------------------------------------------- */
+.ae-lateral {
+    background: #ffffff;
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-1);
+    padding: var(--ae-4);
+}
+
+.ae-lateral h2 {
+    margin: 0 0 var(--ae-2);
+    padding: 0 var(--ae-3);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ae-zinc-500);
+}
+
+.ae-lateral ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ae-lateral a {
+    display: block;
+    padding: var(--ae-2) var(--ae-3);
+    border-radius: var(--ae-radio-chico);
+    color: var(--ae-zinc-700);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color var(--ae-transicion), color var(--ae-transicion);
+}
+
+.ae-lateral a:hover {
+    background: var(--ae-zinc-100);
+    color: var(--ae-zinc-900);
+}
+
+.ae-lateral a[aria-current="page"] {
+    background: var(--ae-rosa-suave);
+    color: var(--ae-rosa);
+}
+
+@media (min-width: 992px) {
+    .ae-lateral {
+        position: sticky;
+        top: var(--ae-4);
+    }
+}
+
+/* ---------------------------------------------------------------------
+   18. Lista de resultados de vuelos
+   --------------------------------------------------------------------- */
+.ae-vuelo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ae-4);
+    background: #ffffff;
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-1);
+    padding: var(--ae-4) var(--ae-6);
+    margin-bottom: var(--ae-3);
+    transition: box-shadow var(--ae-transicion), border-color var(--ae-transicion), transform var(--ae-transicion);
+}
+
+.ae-vuelo:hover {
+    border-color: var(--ae-rosa-borde);
+    box-shadow: var(--ae-sombra-2);
+    transform: translateY(-2px);
+}
+
+.ae-vuelo-ruta {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ae-zinc-900);
+    margin: 0;
+}
+
+.ae-vuelo-meta {
+    margin: var(--ae-1) 0 0;
+    font-size: 0.875rem;
+    color: var(--ae-zinc-500);
+}
+
+.ae-vuelo-precio {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ae-zinc-900);
+    white-space: nowrap;
+}
+
+.ae-vuelo-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    flex: none;
+    border-radius: var(--ae-radio-chico);
+    background-color: var(--ae-tinta);
+    background-image: linear-gradient(135deg, #312e81, #6d28d9);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* ---------------------------------------------------------------------
+   19. Pasos de la reserva
+   --------------------------------------------------------------------- */
+.ae-pasos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ae-2);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--ae-8);
+}
+
+.ae-paso {
+    flex: 1 1 12rem;
+    padding: var(--ae-3) var(--ae-4);
+    border: 1px solid var(--ae-zinc-200);
+    border-radius: var(--ae-radio-chico);
+    background: #ffffff;
+    color: var(--ae-zinc-500);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.ae-paso-hecho {
+    border-color: #bbf7d0;
+    background: var(--ae-exito-suave);
+    color: var(--ae-exito);
+}
+
+.ae-paso[aria-current="step"] {
+    border-color: var(--ae-rosa);
+    background: var(--ae-rosa);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.22);
+}
+
+/* ---------------------------------------------------------------------
+   20. Paginación
+   --------------------------------------------------------------------- */
+.pagination {
+    --bs-pagination-color: #52525b;
+    --bs-pagination-border-color: #e4e4e7;
+    --bs-pagination-hover-color: #be185d;
+    --bs-pagination-hover-bg: #fdf2f8;
+    --bs-pagination-hover-border-color: #fbcfe8;
+    --bs-pagination-active-bg: #be185d;
+    --bs-pagination-active-border-color: #be185d;
+    --bs-pagination-border-radius: 0.5rem;
+    gap: var(--ae-1);
+    margin-top: var(--ae-6);
+    justify-content: center;
+}
+
+.page-link {
+    transition: background-color var(--ae-transicion), color var(--ae-transicion), border-color var(--ae-transicion);
+}
+
+/* ---------------------------------------------------------------------
+   21. Pie
+   --------------------------------------------------------------------- */
+.ae-pie {
+    margin-top: var(--ae-16);
+    background-color: var(--ae-tinta);
+    background-image: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.ae-pie a {
+    color: rgba(255, 255, 255, 0.86);
+    text-decoration: none;
+}
+
+.ae-pie a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.ae-pie-legal {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.85rem;
+}
+
+/* ---------------------------------------------------------------------
+   22. Menú desplegable de la cuenta
+   --------------------------------------------------------------------- */
+.dropdown-menu {
+    --bs-dropdown-border-color: #e4e4e7;
+    --bs-dropdown-border-radius: 0.75rem;
+    --bs-dropdown-link-active-bg: #be185d;
+    --bs-dropdown-link-hover-bg: #fdf2f8;
+    --bs-dropdown-link-hover-color: #be185d;
+    box-shadow: var(--ae-sombra-3);
+    padding: var(--ae-2);
+}
+
+.dropdown-item {
+    border-radius: var(--ae-radio-chico);
+    padding: var(--ae-2) var(--ae-3);
+    font-weight: 600;
+    transition: background-color var(--ae-transicion), color var(--ae-transicion);
+}
+
+.dropdown-header {
+    padding: var(--ae-2) var(--ae-3);
+    font-size: 0.8rem;
+}
+
+/* ---------------------------------------------------------------------
+   23. Imágenes
+   --------------------------------------------------------------------- */
 img {
     max-width: 100%;
     height: auto;
 }
 
-/* --- Hoja de impresión -----------------------------------------------
-   Pensada para el comprobante de la reserva: se imprime solo el
-   contenido, sin menús, botones ni formularios. */
+.ae-imagen {
+    border-radius: var(--ae-radio);
+    box-shadow: var(--ae-sombra-2);
+}
+
+/* ---------------------------------------------------------------------
+   24. Utilidades chicas
+   --------------------------------------------------------------------- */
+.ae-apagado {
+    color: var(--ae-zinc-500);
+}
+
+.ae-entrada {
+    color: var(--ae-zinc-600);
+    font-size: 1.05rem;
+    max-width: 68ch;
+}
+
+.ae-dato {
+    font-variant-numeric: tabular-nums;
+}
+
+.ae-separador {
+    height: 1px;
+    border: 0;
+    background: var(--ae-zinc-200);
+    margin: var(--ae-8) 0;
+    opacity: 1;
+}
+
+/* Listas de definición usadas como ficha de datos. */
+.ae-ficha {
+    display: grid;
+    grid-template-columns: minmax(8rem, 14rem) 1fr;
+    gap: var(--ae-2) var(--ae-4);
+    margin: 0;
+}
+
+.ae-ficha dt {
+    color: var(--ae-zinc-500);
+    font-weight: 600;
+}
+
+.ae-ficha dd {
+    margin: 0;
+    color: var(--ae-zinc-900);
+    font-weight: 600;
+}
+
+@media (max-width: 575.98px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    .ae-ficha {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .ae-ficha dd {
+        margin-bottom: var(--ae-3);
+    }
+
+    .ae-hero {
+        padding: var(--ae-8) var(--ae-4);
+    }
+
+    .ae-buscador-vuelos,
+    .ae-panel,
+    .ae-tarjeta {
+        padding: var(--ae-4);
+    }
+
+    .table {
+        font-size: 0.875rem;
+    }
+
+    .ae-vuelo {
+        padding: var(--ae-4);
+    }
+}
+
+/* ---------------------------------------------------------------------
+   25. Movimiento reducido (WCAG 2.3.3)
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .ae-tarjeta,
+    .ae-vuelo,
+    .btn,
+    .page-link,
+    .dropdown-item,
+    a {
+        transition-duration: 0.001ms;
+    }
+
+    .ae-tarjeta-enlace:hover,
+    .ae-vuelo:hover,
+    .btn-primary:hover {
+        transform: none;
+    }
+}
+
+/* ---------------------------------------------------------------------
+   26. Impresión
+   --------------------------------------------------------------------- */
 @media print {
     @page {
         margin: 1.5cm;
@@ -128,41 +1124,39 @@ img {
 
     body {
         display: block;
-        background: #fff;
-        color: #000;
+        background: #ffffff;
+        background-image: none;
+        color: #000000;
         font-size: 12pt;
     }
 
-    /* Nada de esto sirve en papel. */
     .skip-link,
-    header form[role="search"],
+    .ae-encabezado,
+    .ae-nav,
+    .ae-pie,
     nav,
-    footer,
     form,
     .no-imprimir {
-        display: none !important;
+        display: none;
     }
 
-    main {
-        padding: 0 !important;
+    .table-responsive,
+    .ae-panel,
+    .ae-tarjeta {
+        overflow: visible;
+        border: 0;
+        box-shadow: none;
+        padding: 0;
     }
 
-    /* El contenedor con scroll de las tablas no tiene sentido en papel:
-       si lo dejamos, recorta las columnas que no entran. */
-    .table-responsive {
-        overflow: visible !important;
-    }
-
-    /* Los enlaces en papel no se pueden clickear: se escribe la dirección. */
     main a[href^="/"]::after {
-        content: " (skyreserva.com" attr(href) ")";
+        content: " (aeroeb.com.ar" attr(href) ")";
         font-size: 10pt;
     }
 
-    /* Que no se corte una fila ni un bloque de datos a mitad de hoja. */
     tr,
     dl,
-    .sky-comprobante {
+    .ae-comprobante {
         page-break-inside: avoid;
     }
 
@@ -173,73 +1167,7 @@ img {
 
     th,
     td {
-        border: 1px solid #000;
+        border: 1px solid #000000;
         padding: 0.3rem;
     }
-}
-
-/* --- Formularios ------------------------------------------------------
-   Cada campo va envuelto en un div en todas las vistas, así que el aire
-   entre campos se resuelve acá y no repitiendo una clase 42 veces. */
-main form > div,
-main form > fieldset {
-    margin-bottom: 1rem;
-}
-
-main form > fieldset > legend {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-/* El texto de ayuda que va debajo de un campo (aria-describedby). */
-main form div > p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: #555;
-}
-
-/* Campo con error. Las vistas ya marcan aria-invalid="true" para el lector
-   de pantalla; esto es el equivalente visual, para no depender solo del
-   color del mensaje (WCAG 1.4.1: el color no puede ser el único indicio). */
-input[aria-invalid="true"],
-select[aria-invalid="true"],
-textarea[aria-invalid="true"] {
-    border-color: var(--sky-error);
-    border-width: 2px;
-}
-
-/* --- Botones dentro de tablas ----------------------------------------
-   En las columnas de acciones los botones del tamaño normal ocupan
-   demasiado y empujan la tabla a scroll horizontal. */
-td .btn,
-td form {
-    margin-top: 0.25rem;
-}
-
-td .btn {
-    padding: 0.2rem 0.5rem;
-    font-size: 0.85rem;
-}
-
-/* --- Tablas en pantalla chica ----------------------------------------
-   Las tablas con muchas columnas van envueltas en .table-responsive, que
-   es lo que recomienda Bootstrap: el scroll queda en el div de alrededor
-   y la tabla sigue siendo una tabla. Poner display:block en el <table>
-   le saca la semántica de tabla a varios lectores de pantalla, así que no
-   se usa. Acá solo apretamos un poco el texto en celulares. */
-@media (max-width: 575.98px) {
-    main table {
-        font-size: 0.85rem;
-    }
-
-    main th,
-    main td {
-        padding: 0.35rem;
-    }
-}
-
-/* Que una palabra larga (un correo, una URL) no estire la celda. */
-main td,
-main th {
-    overflow-wrap: anywhere;
 }

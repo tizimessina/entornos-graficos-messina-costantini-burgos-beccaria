@@ -31,7 +31,7 @@ class CeoController
     {
         $codAerolinea = $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Panel de aerolínea — SkyReserva';
+        $tituloPagina = 'Panel de aerolínea — Aeroeb';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/panel.php', [
             'aerolinea' => Aerolinea::find($codAerolinea),
@@ -39,6 +39,8 @@ class CeoController
             'exito'     => Session::getFlash('exito'),
             'error'     => Session::getFlash('error'),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -55,7 +57,7 @@ class CeoController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis vuelos — SkyReserva';
+        $tituloPagina = 'Mis vuelos — Aeroeb';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelos-listado.php', [
             'vuelos'    => Vuelo::todosDeAerolinea($codAerolinea, $paginador->porPagina, $paginador->offset),
@@ -64,6 +66,8 @@ class CeoController
             'error'     => Session::getFlash('error'),
         ]);
 
+        $menuLateral = $this->menuLateral();
+
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
@@ -71,13 +75,15 @@ class CeoController
     {
         $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Cargar vuelo — SkyReserva';
+        $tituloPagina = 'Cargar vuelo — Aeroeb';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Cargar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
             'vuelo'   => null,
             'datos'   => Session::getFlash('datos', []),
             'errores' => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -115,13 +121,15 @@ class CeoController
             return;
         }
 
-        $tituloPagina = 'Editar vuelo — SkyReserva';
+        $tituloPagina = 'Editar vuelo — Aeroeb';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Editar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
             'vuelo'   => $vuelo,
             'datos'   => Session::getFlash('datos', []),
             'errores' => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -204,13 +212,15 @@ class CeoController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis promociones — SkyReserva';
+        $tituloPagina = 'Mis promociones — Aeroeb';
         $breadcrumbs = $this->breadcrumbs('Mis promociones');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promociones-listado.php', [
             'promociones' => Promocion::deAerolinea($codAerolinea, $paginador->porPagina, $paginador->offset),
             'paginador'   => $paginador,
             'exito'       => Session::getFlash('exito'),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -219,12 +229,14 @@ class CeoController
     {
         $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Proponer promoción — SkyReserva';
+        $tituloPagina = 'Proponer promoción — Aeroeb';
         $breadcrumbs = $this->breadcrumbs('Mis promociones', '/panel/promociones', 'Proponer promoción');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promocion-form.php', [
             'datos'   => Session::getFlash('datos', []),
             'errores' => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -291,7 +303,7 @@ class CeoController
         $desde = trim((string) ($_GET['desde'] ?? date('Y-m-01')));
         $hasta = trim((string) ($_GET['hasta'] ?? date('Y-m-d')));
 
-        $tituloPagina = 'Reportes — SkyReserva';
+        $tituloPagina = 'Reportes — Aeroeb';
         $breadcrumbs = $this->breadcrumbs('Reportes');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/reportes.php', [
             'ocupacion'      => Reporte::ocupacionDeAerolinea($codAerolinea),
@@ -300,6 +312,8 @@ class CeoController
             'desde'          => $desde,
             'hasta'          => $hasta,
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -407,9 +421,11 @@ class CeoController
     private function noEncontrado(string $mensaje): void
     {
         http_response_code(404);
-        $tituloPagina = 'No encontrado — SkyReserva';
+        $tituloPagina = 'No encontrado — Aeroeb';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p><a href="/panel/vuelos">Volver a mis vuelos</a></p>';
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -420,5 +436,19 @@ class CeoController
             http_response_code(400);
             exit('Token de seguridad inválido. Volvé a cargar la página e intentá de nuevo.');
         }
+    }
+
+    /** Menú de la barra lateral del panel de la aerolínea. */
+    private function menuLateral(): array
+    {
+        return [
+            'titulo' => 'Panel de aerolínea',
+            'items'  => [
+                ['texto' => 'Tablero',         'url' => '/panel'],
+                ['texto' => 'Mis vuelos',      'url' => '/panel/vuelos'],
+                ['texto' => 'Mis promociones', 'url' => '/panel/promociones'],
+                ['texto' => 'Reportes',        'url' => '/panel/reportes'],
+            ],
+        ];
     }
 }

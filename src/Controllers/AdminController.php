@@ -34,13 +34,15 @@ class AdminController
     {
         $this->exigirAdmin();
 
-        $tituloPagina = 'Administración — SkyReserva';
+        $tituloPagina = 'Administración — Aeroeb';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/admin/panel.php', [
             'resumen' => Reporte::resumenGlobal(),
             'exito'   => Session::getFlash('exito'),
             'error'   => Session::getFlash('error'),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -66,6 +68,8 @@ class AdminController
             'error'      => Session::getFlash('error'),
         ]);
 
+        $menuLateral = $this->menuLateral();
+
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
@@ -80,6 +84,8 @@ class AdminController
             'datos'     => Session::getFlash('datos', []),
             'errores'   => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -125,6 +131,8 @@ class AdminController
             'datos'     => Session::getFlash('datos', []),
             'errores'   => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -208,6 +216,8 @@ class AdminController
             'error'     => Session::getFlash('error'),
         ]);
 
+        $menuLateral = $this->menuLateral();
+
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
@@ -260,6 +270,8 @@ class AdminController
             'exito'       => Session::getFlash('exito'),
             'errores'     => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -319,6 +331,8 @@ class AdminController
             'error'     => Session::getFlash('error'),
         ]);
 
+        $menuLateral = $this->menuLateral();
+
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
@@ -333,6 +347,8 @@ class AdminController
             'datos'   => Session::getFlash('datos', []),
             'errores' => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -378,6 +394,8 @@ class AdminController
             'datos'   => Session::getFlash('datos', []),
             'errores' => Session::getFlash('errores', []),
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -447,6 +465,8 @@ class AdminController
             'sinLeer'   => Contacto::contarSinLeer(),
         ]);
 
+        $menuLateral = $this->menuLateral();
+
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
@@ -470,6 +490,8 @@ class AdminController
             'mensaje' => $mensaje,
         ]);
 
+        $menuLateral = $this->menuLateral();
+
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
@@ -491,6 +513,8 @@ class AdminController
             'desde'     => $desde,
             'hasta'     => $hasta,
         ]);
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -534,6 +558,8 @@ class AdminController
         $tituloPagina = 'No encontrado — Administración';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p><a href="' . htmlspecialchars($volverA, ENT_QUOTES, 'UTF-8') . '">Volver</a></p>';
+
+        $menuLateral = $this->menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -620,15 +646,32 @@ class AdminController
     {
         $cuerpo = $estado === 'activo'
             ? '<p>Hola, ' . htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
-                . '<p>Habilitamos tu cuenta en SkyReserva. Ya podés iniciar sesión.</p>'
+                . '<p>Habilitamos tu cuenta en Aeroeb. Ya podés iniciar sesión.</p>'
             : '<p>Hola, ' . htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
-                . '<p>Suspendimos tu cuenta en SkyReserva. Si creés que es un error, escribinos desde el formulario de contacto.</p>';
+                . '<p>Suspendimos tu cuenta en Aeroeb. Si creés que es un error, escribinos desde el formulario de contacto.</p>';
 
         Mailer::enviar(
             $usuario['emailUsuario'],
             $usuario['nombreUsuario'],
-            $estado === 'activo' ? 'Tu cuenta de SkyReserva fue habilitada' : 'Tu cuenta de SkyReserva fue suspendida',
+            $estado === 'activo' ? 'Tu cuenta de Aeroeb fue habilitada' : 'Tu cuenta de Aeroeb fue suspendida',
             $cuerpo
         );
+    }
+
+    /** Menú de la barra lateral de la administración. */
+    private function menuLateral(): array
+    {
+        return [
+            'titulo' => 'Administración',
+            'items'  => [
+                ['texto' => 'Tablero',     'url' => '/admin'],
+                ['texto' => 'Aerolíneas',  'url' => '/admin/aerolineas'],
+                ['texto' => 'Usuarios',    'url' => '/admin/usuarios'],
+                ['texto' => 'Promociones', 'url' => '/admin/promociones'],
+                ['texto' => 'Novedades',   'url' => '/admin/novedades'],
+                ['texto' => 'Mensajes',    'url' => '/admin/mensajes'],
+                ['texto' => 'Reportes',    'url' => '/admin/reportes'],
+            ],
+        ];
     }
 }

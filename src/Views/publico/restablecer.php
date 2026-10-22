@@ -4,6 +4,9 @@
  * @var array $errores
  */
 ?>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="ae-panel">
 <h1>Elegir nueva contraseña</h1>
 
 <?php if (!empty($errores)): ?>
@@ -36,3 +39,6 @@
 
     <button class="btn btn-primary" type="submit">Guardar contraseña</button>
 </form>
+        </div>
+    </div>
+</div>

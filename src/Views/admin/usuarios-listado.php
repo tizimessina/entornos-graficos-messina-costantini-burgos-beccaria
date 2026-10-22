@@ -18,6 +18,8 @@ $estados = [
     'activo'                  => 'Activa',
     'suspendido'              => 'Suspendida',
 ];
+
+use App\Helpers\Formato;
 ?>
 <h1>Usuarios</h1>
 
@@ -94,7 +96,7 @@ $estados = [
                     <td><?= htmlspecialchars(ucfirst($usuario['tipoUsuario']), ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars($usuario['nombreAerolinea'] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($usuario['fechaAltaUsuario'])), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($estados[$estadoCuenta] ?? $estadoCuenta, ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?= Formato::estadoCuenta($estadoCuenta) ?></td>
                     <td>
                         <?php if ($esPropia): ?>
                             Es tu propia cuenta

@@ -5,6 +5,8 @@
  * @var string|null $exito
  * @var string|null $error
  */
+
+use App\Helpers\Formato;
 ?>
 <h1>Aerolíneas</h1>
 
@@ -55,7 +57,7 @@
                             —
                         <?php endif; ?>
                     </td>
-                    <td><?= $activa ? 'Activa' : 'Dada de baja' ?></td>
+                    <td><?= $activa ? Formato::badge('Activa', 'exito', '✓') : Formato::badge('Dada de baja', 'baja') ?></td>
                     <td>
                         <a href="/admin/aerolineas/<?= (int) $aerolinea['codAerolinea'] ?>/editar">
                             Editar <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>

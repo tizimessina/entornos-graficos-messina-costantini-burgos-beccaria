@@ -5,6 +5,8 @@
  * @var string|null $exito
  * @var string|null $error
  */
+
+use App\Helpers\Formato;
 ?>
 <h1>Mis vuelos</h1>
 
@@ -47,7 +49,7 @@
                     </td>
                     <td>$<?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></td>
                     <td><?= $vendidos ?> / <?= (int) $vuelo['capacidadTotal'] ?></td>
-                    <td><?= htmlspecialchars(ucfirst($vuelo['estadoVuelo']), ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?= Formato::estadoVuelo((string) $vuelo['estadoVuelo']) ?></td>
                     <td>
                         <a href="/panel/vuelos/<?= (int) $vuelo['codVuelo'] ?>/editar">
                             Editar vuelo <?= htmlspecialchars($vuelo['origenVuelo'] . ' a ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>

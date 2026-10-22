@@ -1,15 +1,15 @@
 <h1>Mapa del sitio</h1>
 
-<p>
-    Estas son todas las secciones de SkyReserva. Las áreas privadas se habilitan
+<p class="ae-entrada">
+    Estas son todas las secciones de Aeroeb. Las áreas privadas se habilitan
     según el tipo de cuenta con la que inicies sesión.
 </p>
 
-<nav aria-label="Mapa del sitio">
-    <ul>
-        <li><a href="/">Inicio</a></li>
+<nav class="ae-panel mt-4" aria-label="Mapa del sitio">
+    <ul class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 list-unstyled">
+        <li class="col"><a href="/">Inicio</a></li>
 
-        <li>
+        <li class="col">
             <a href="/vuelos">Vuelos</a>
             <ul>
                 <li><a href="/vuelos">Buscador de vuelos y resultados</a></li>
@@ -17,7 +17,7 @@
             </ul>
         </li>
 
-        <li>
+        <li class="col">
             <a href="/aerolineas">Aerolíneas</a>
             <ul>
                 <li><a href="/aerolineas">Listado de aerolíneas adheridas</a></li>
@@ -25,7 +25,7 @@
             </ul>
         </li>
 
-        <li>
+        <li class="col">
             <a href="/novedades">Novedades</a>
             <ul>
                 <li><a href="/novedades">Listado de novedades vigentes</a></li>
@@ -37,7 +37,7 @@
 
         <li><a href="/buscar">Buscador interno del sitio</a></li>
 
-        <li>
+        <li class="col">
             Mi cuenta <em>(requiere iniciar sesión como pasajero)</em>
             <ul>
                 <li>Mi perfil</li>
@@ -45,7 +45,7 @@
             </ul>
         </li>
 
-        <li>
+        <li class="col">
             Panel de aerolínea <em>(requiere cuenta de CEO autorizada)</em>
             <ul>
                 <li>Mis vuelos</li>
@@ -54,7 +54,7 @@
             </ul>
         </li>
 
-        <li>
+        <li class="col">
             Administración <em>(requiere cuenta de administrador)</em>
             <ul>
                 <li>Aerolíneas, usuarios y novedades</li>

@@ -6,6 +6,9 @@
  */
 $tipoElegido = $datos['tipo'] ?? 'pasajero';
 ?>
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="ae-panel">
 <h1>Crear cuenta</h1>
 
 <p>
@@ -112,3 +115,6 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
 </form>
 
 <p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a>.</p>
+        </div>
+    </div>
+</div>

@@ -1,53 +1,114 @@
 <?php
 /** @var array $vuelo */
+$ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'];
+$disponibles = (int) $vuelo['asientosDisponibles'];
+$vendidos = (int) $vuelo['capacidadTotal'] - $disponibles;
 ?>
-<h1>
-    <?= htmlspecialchars($vuelo['origenVuelo'], ENT_QUOTES, 'UTF-8') ?>
-    →
-    <?= htmlspecialchars($vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>
-</h1>
+<div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+    <span class="ae-vuelo-logo" aria-hidden="true">
+        <?= htmlspecialchars($vuelo['codigoIATA'], ENT_QUOTES, 'UTF-8') ?>
+    </span>
 
-<dl>
-    <dt>Aerolínea</dt>
-    <dd>
-        <a href="/aerolineas/<?= (int) $vuelo['codAerolinea'] ?>">
-            <?= htmlspecialchars($vuelo['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
-        </a>
-    </dd>
+    <h1 class="mb-0"><?= htmlspecialchars($ruta, ENT_QUOTES, 'UTF-8') ?></h1>
+</div>
 
-    <dt>Número de vuelo</dt>
-    <dd><?= htmlspecialchars($vuelo['numeroVuelo'] ?? '—', ENT_QUOTES, 'UTF-8') ?></dd>
+<p class="ae-entrada">
+    Vuelo <?= htmlspecialchars($vuelo['numeroVuelo'] ?? 's/n', ENT_QUOTES, 'UTF-8') ?>
+    operado por
+    <a href="/aerolineas/<?= (int) $vuelo['codAerolinea'] ?>">
+        <?= htmlspecialchars($vuelo['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
+    </a>
+</p>
 
-    <dt>Fecha de salida</dt>
-    <dd>
-        <time datetime="<?= htmlspecialchars($vuelo['fechaSalidaVuelo'], ENT_QUOTES, 'UTF-8') ?>">
-            <?= htmlspecialchars(date('d/m/Y', strtotime($vuelo['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') ?>
-        </time>
-    </dd>
+<div class="row g-4 mt-1">
+    <div class="col-12 col-lg-7">
+        <section class="ae-panel" aria-labelledby="titulo-datos">
+            <h2 id="titulo-datos" class="h5 mt-0">Datos del vuelo</h2>
 
-    <dt>Hora de salida</dt>
-    <dd><?= htmlspecialchars(substr($vuelo['horaSalidaVuelo'], 0, 5), ENT_QUOTES, 'UTF-8') ?></dd>
+            <dl class="ae-ficha">
+                <dt>Aerolínea</dt>
+                <dd>
+                    <a href="/aerolineas/<?= (int) $vuelo['codAerolinea'] ?>">
+                        <?= htmlspecialchars($vuelo['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
+                    </a>
+                    (<?= htmlspecialchars($vuelo['codigoIATA'], ENT_QUOTES, 'UTF-8') ?>)
+                </dd>
 
-    <?php if (!empty($vuelo['duracionMinutos'])): ?>
-        <dt>Duración estimada</dt>
-        <dd><?= (int) $vuelo['duracionMinutos'] ?> minutos</dd>
-    <?php endif; ?>
+                <dt>Número de vuelo</dt>
+                <dd><?= htmlspecialchars($vuelo['numeroVuelo'] ?? '—', ENT_QUOTES, 'UTF-8') ?></dd>
 
-    <dt>Precio por pasajero</dt>
-    <dd>$<?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></dd>
+                <dt>Fecha de salida</dt>
+                <dd>
+                    <time datetime="<?= htmlspecialchars($vuelo['fechaSalidaVuelo'], ENT_QUOTES, 'UTF-8') ?>">
+                        <?= htmlspecialchars(date('d/m/Y', strtotime($vuelo['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') ?>
+                    </time>
+                </dd>
 
-    <dt>Asientos disponibles</dt>
-    <dd><?= (int) $vuelo['asientosDisponibles'] ?> de <?= (int) $vuelo['capacidadTotal'] ?></dd>
-</dl>
+                <dt>Hora de salida</dt>
+                <dd class="ae-dato"><?= htmlspecialchars(substr($vuelo['horaSalidaVuelo'], 0, 5), ENT_QUOTES, 'UTF-8') ?></dd>
 
-<?php if ((int) $vuelo['asientosDisponibles'] > 0): ?>
-    <?php if (\App\Core\Auth::check()): ?>
-        <p><a href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>/reservar">Reservar este vuelo</a></p>
-    <?php else: ?>
-        <p><a href="/login">Iniciá sesión para reservar este vuelo</a></p>
-    <?php endif; ?>
-<?php else: ?>
-    <p>Este vuelo no tiene asientos disponibles.</p>
-<?php endif; ?>
+                <?php if (!empty($vuelo['duracionMinutos'])): ?>
+                    <dt>Duración estimada</dt>
+                    <dd>
+                        <?php $horas = intdiv((int) $vuelo['duracionMinutos'], 60); ?>
+                        <?php $minutos = (int) $vuelo['duracionMinutos'] % 60; ?>
+                        <?= $horas > 0 ? $horas . ' h ' : '' ?><?= $minutos ?> min
+                    </dd>
+                <?php endif; ?>
 
-<p><a href="/vuelos">Volver a la búsqueda de vuelos</a></p>
+                <dt>Origen</dt>
+                <dd><?= htmlspecialchars($vuelo['origenVuelo'], ENT_QUOTES, 'UTF-8') ?></dd>
+
+                <dt>Destino</dt>
+                <dd><?= htmlspecialchars($vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?></dd>
+
+                <dt>Ocupación</dt>
+                <dd><?= $vendidos ?> de <?= (int) $vuelo['capacidadTotal'] ?> asientos vendidos</dd>
+            </dl>
+        </section>
+    </div>
+
+    <div class="col-12 col-lg-5">
+        <section class="ae-panel" aria-labelledby="titulo-reservar">
+            <h2 id="titulo-reservar" class="h5 mt-0">Reservar</h2>
+
+            <p class="ae-metrica-rotulo">Precio por pasajero</p>
+            <p class="ae-vuelo-precio ae-dato mb-3">
+                $<?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?>
+            </p>
+
+            <p class="mb-4">
+                <?php if ($disponibles === 0): ?>
+                    <span class="ae-badge ae-badge-baja">Sin asientos disponibles</span>
+                <?php elseif ($disponibles <= 10): ?>
+                    <span class="ae-badge ae-badge-espera">Quedan <?= $disponibles ?> asientos</span>
+                <?php else: ?>
+                    <span class="ae-badge ae-badge-exito"><?= $disponibles ?> asientos disponibles</span>
+                <?php endif; ?>
+            </p>
+
+            <?php if ($disponibles === 0): ?>
+                <p class="ae-apagado mb-3">
+                    Este vuelo está completo. Probá con otra fecha o con otra aerolínea.
+                </p>
+                <a class="btn btn-outline-secondary w-100" href="/vuelos">Buscar otro vuelo</a>
+            <?php elseif (\App\Core\Auth::check()): ?>
+                <a class="btn btn-primary w-100" href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>/reservar">
+                    Reservar este vuelo
+                </a>
+                <p class="ae-nota mb-0">
+                    En el próximo paso elegís la cantidad de asientos y podés aplicar un código de promoción.
+                </p>
+            <?php else: ?>
+                <a class="btn btn-primary w-100" href="/login">Iniciar sesión para reservar</a>
+                <p class="ae-nota mb-0">
+                    ¿Todavía no tenés cuenta? <a href="/registro">Creá una</a>, se hace en un minuto.
+                </p>
+            <?php endif; ?>
+        </section>
+    </div>
+</div>
+
+<p class="mt-4">
+    <a class="btn btn-outline-secondary" href="/vuelos">Volver a la búsqueda de vuelos</a>
+</p>

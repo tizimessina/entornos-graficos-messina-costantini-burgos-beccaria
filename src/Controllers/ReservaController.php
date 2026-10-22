@@ -33,7 +33,7 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Reservar vuelo — SkyReserva';
+        $tituloPagina = 'Reservar vuelo — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => '/vuelos'],
@@ -97,7 +97,7 @@ class ReservaController
             exit;
         }
 
-        $tituloPagina = 'Pagar reserva ' . $reserva['codigoReserva'] . ' — SkyReserva';
+        $tituloPagina = 'Pagar reserva ' . $reserva['codigoReserva'] . ' — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
@@ -147,7 +147,7 @@ class ReservaController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis reservas — SkyReserva';
+        $tituloPagina = 'Mis reservas — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mi cuenta', 'url' => '/mi-cuenta'],
@@ -173,7 +173,7 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Reserva ' . $reserva['codigoReserva'] . ' — SkyReserva';
+        $tituloPagina = 'Reserva ' . $reserva['codigoReserva'] . ' — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
@@ -200,7 +200,7 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Comprobante ' . $reserva['codigoReserva'] . ' — SkyReserva';
+        $tituloPagina = 'Comprobante ' . $reserva['codigoReserva'] . ' — Aeroeb';
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/comprobante.php', [
             'reserva' => $reserva,
         ]);
@@ -293,7 +293,7 @@ class ReservaController
     private function paginaNoEncontrada(string $mensaje): void
     {
         http_response_code(404);
-        $tituloPagina = 'No encontrado — SkyReserva';
+        $tituloPagina = 'No encontrado — Aeroeb';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p><a href="/mi-cuenta/reservas">Ver mis reservas</a></p>';
 

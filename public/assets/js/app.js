@@ -1,5 +1,5 @@
 /**
- * SkyReserva — el único JavaScript propio del sitio.
+ * Aeroeb — el único JavaScript propio del sitio.
  *
  * Evita que un doble clic mande el mismo formulario dos veces. El sitio
  * funciona igual con JavaScript apagado: del lado del servidor, el patrón

@@ -21,7 +21,7 @@ class AerolineaController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Aerolíneas — SkyReserva';
+        $tituloPagina = 'Aerolíneas — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Aerolíneas', 'url' => null],
@@ -40,7 +40,7 @@ class AerolineaController
 
         if ($aerolinea === null) {
             http_response_code(404);
-            $tituloPagina = 'Aerolínea no encontrada — SkyReserva';
+            $tituloPagina = 'Aerolínea no encontrada — Aeroeb';
             $contenidoHtml = '<h1>Aerolínea no encontrada</h1>'
                 . '<p>La aerolínea que buscás no existe o ya no está adherida. '
                 . '<a href="/aerolineas">Ver todas las aerolíneas</a>.</p>';
@@ -50,7 +50,7 @@ class AerolineaController
             return;
         }
 
-        $tituloPagina = $aerolinea['nombreAerolinea'] . ' — SkyReserva';
+        $tituloPagina = $aerolinea['nombreAerolinea'] . ' — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Aerolíneas', 'url' => '/aerolineas'],

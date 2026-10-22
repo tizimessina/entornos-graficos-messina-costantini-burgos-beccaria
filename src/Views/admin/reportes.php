@@ -15,6 +15,8 @@ foreach ($ventas as $fila) {
     $totalAsientos += (int) $fila['asientosVendidos'];
     $totalFacturado += (float) $fila['montoFacturado'];
 }
+
+use App\Helpers\Formato;
 ?>
 <h1>Reportes globales</h1>
 
@@ -107,7 +109,7 @@ foreach ($ventas as $fila) {
                         <th scope="row"><?= htmlspecialchars($vuelo['numeroVuelo'] ?? '—', ENT_QUOTES, 'UTF-8') ?></th>
                         <td><?= htmlspecialchars($vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?></td>
                         <td><?= htmlspecialchars(date('d/m/Y', strtotime($vuelo['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars(ucfirst($vuelo['estadoVuelo']), ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= Formato::estadoVuelo((string) $vuelo['estadoVuelo']) ?></td>
                         <td><?= (int) $vuelo['asientosVendidos'] ?> / <?= (int) $vuelo['capacidadTotal'] ?></td>
                         <td><?= number_format((float) $vuelo['porcentajeOcupacion'], 2, ',', '.') ?> %</td>
                         <td>$<?= number_format((float) $vuelo['recaudacionConfirmada'], 2, ',', '.') ?></td>

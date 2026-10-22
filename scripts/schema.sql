@@ -1,5 +1,5 @@
 -- =====================================================================
---  SkyReserva — Esquema físico de base de datos
+--  Aeroeb — Esquema físico de base de datos
 --  TP Integrador · Entornos Gráficos · UTN FRR · 2026
 --  Motor: InnoDB · Juego de caracteres: utf8mb4
 --
@@ -11,11 +11,11 @@
 SET NAMES utf8mb4;
 SET SQL_MODE = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-DROP DATABASE IF EXISTS skyreserva;
-CREATE DATABASE skyreserva
+DROP DATABASE IF EXISTS aeroeb;
+CREATE DATABASE aeroeb
     DEFAULT CHARACTER SET utf8mb4
     DEFAULT COLLATE utf8mb4_unicode_ci;
-USE skyreserva;
+USE aeroeb;
 
 
 -- =====================================================================

@@ -5,6 +5,9 @@
  * @var string|null $enlaceDev
  */
 ?>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="ae-panel">
 <h1>Recuperar contraseña</h1>
 
 <?php if (!empty($exito)): ?>
@@ -37,3 +40,6 @@
 </form>
 
 <p><a href="/login">Volver a iniciar sesión</a></p>
+        </div>
+    </div>
+</div>

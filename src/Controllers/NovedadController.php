@@ -20,7 +20,7 @@ class NovedadController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Novedades — SkyReserva';
+        $tituloPagina = 'Novedades — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Novedades', 'url' => null],
@@ -39,7 +39,7 @@ class NovedadController
 
         if ($novedad === null) {
             http_response_code(404);
-            $tituloPagina = 'Novedad no encontrada — SkyReserva';
+            $tituloPagina = 'Novedad no encontrada — Aeroeb';
             $contenidoHtml = '<h1>Novedad no encontrada</h1>'
                 . '<p>La novedad que buscás no existe o ya no está vigente. '
                 . '<a href="/novedades">Ver todas las novedades</a>.</p>';
@@ -49,7 +49,7 @@ class NovedadController
             return;
         }
 
-        $tituloPagina = $novedad['tituloNovedad'] . ' — SkyReserva';
+        $tituloPagina = $novedad['tituloNovedad'] . ' — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Novedades', 'url' => '/novedades'],

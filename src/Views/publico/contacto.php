@@ -15,9 +15,11 @@
     <p role="alert">Revisá los datos marcados: hay <?= count($errores) ?> error(es) en el formulario.</p>
 <?php endif; ?>
 
-<p>Escribinos y te respondemos a la brevedad. Los campos son todos obligatorios.</p>
+<p class="ae-entrada">Escribinos y te respondemos a la brevedad. Los campos son todos obligatorios.</p>
 
-<form method="post" action="/contacto">
+<div class="row g-4 mt-1">
+<div class="col-12 col-lg-7">
+<form class="ae-panel" method="post" action="/contacto">
     <?= \App\Core\Csrf::field() ?>
 
     <div>
@@ -59,5 +61,37 @@
         <?php endif; ?>
     </div>
 
+    <p class="ae-nota">
+        El mensaje lo lee la administración de Aeroeb. No compartimos tu correo con las aerolíneas.
+    </p>
+
     <button class="btn btn-primary" type="submit">Enviar mensaje</button>
 </form>
+</div>
+
+<div class="col-12 col-lg-5">
+    <section class="ae-panel" aria-labelledby="titulo-datos-contacto">
+        <h2 id="titulo-datos-contacto" class="h5 mt-0">Datos de contacto</h2>
+
+        <dl class="ae-ficha">
+            <dt>Correo</dt>
+            <dd><a href="mailto:contacto@aeroeb.com.ar">contacto@aeroeb.com.ar</a></dd>
+
+            <dt>Horario de atención</dt>
+            <dd>Lunes a viernes, de 9 a 18 h</dd>
+
+            <dt>Dónde estamos</dt>
+            <dd>Resistencia, Chaco</dd>
+        </dl>
+
+        <hr class="ae-separador">
+
+        <h3>Antes de escribir</h3>
+        <p class="ae-apagado mb-0">
+            Si tu consulta es por una reserva que ya hiciste, entrá a
+            <a href="/mi-cuenta/reservas">Mis reservas</a>: ahí podés ver el comprobante,
+            pagar una reserva pendiente o cancelarla.
+        </p>
+    </section>
+</div>
+</div>

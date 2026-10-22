@@ -144,6 +144,34 @@ relativas a `CURDATE()` con ventanas de 20 a 30 días, así que a las tres seman
 los datos el sitio se veía vacío. Ahora las ventanas son de 180 días y los vuelos salen
 entre 30 y 90 días después de la carga.
 
+## 8 bis. Identidad visual y rediseño
+
+Se hizo después del punto 8, a partir de los wireframes del informe.
+
+- [x] El sitio pasa a llamarse **Aeroeb**. Se renombró en todo el repo: código, scripts,
+      documentación, el nombre de la base de datos y el correo del administrador
+      (`admin@aeroeb.com.ar`)
+- [x] Sistema de diseño propio en `public/assets/css/estilos.css`, construido sobre las
+      variables `--bs-*` de Bootstrap: paleta rosa y tinta medida para contraste AA,
+      escala de espaciado de 4 px, sombras suaves de dos capas, radios y transiciones
+- [x] Encabezado con la marca y el menú de cuenta desplegable, barra de secciones que
+      marca dónde estás con `aria-current`, y pie con tres columnas
+- [x] Portada con hero y buscador montado encima, tarjetas de promociones vigentes
+      (consulta nueva: `Promocion::vigentes()`) y novedades destacadas
+- [x] Resultados de vuelos con filtros en columna lateral y cada vuelo como tarjeta,
+      en vez de una fila de tabla que en el celular no se leía
+- [x] Indicador de los tres pasos de la reserva (`partials/pasos-reserva.php`)
+- [x] Barra lateral en los dos paneles (`partials/lateral.php`) y tarjetas de métricas
+      en los dos tableros
+- [x] Distintivos de estado en `src/Helpers/Formato.php`: siempre con símbolo **y**
+      texto, nunca solo con el color
+- [x] Estados vacíos con explicación y salida, en vez de un párrafo suelto
+- [x] Se revalidó todo: **39 páginas de HTML con 0 errores** y la hoja de estilos con
+      0 errores en el W3C
+
+De paso se corrigió un texto viejo: la pantalla de perfil todavía decía que las reservas
+"se construyen en el punto 5".
+
 ## 9. Despliegue
 
 - [ ] Conseguir un hosting y subir el sitio

@@ -144,17 +144,20 @@ enteras en cero, y está bien que así sea.
 - [ ] Nada se superpone, se corta ni requiere scroll horizontal.
   - *Mismo motivo que el anterior: falta la prueba en pantalla real.*
 - [x] Estilo consistente entre pantallas (colores, tipografías, botones).
-  - *Una sola hoja propia (`public/assets/css/estilos.css`) sobre Bootstrap, y las clases se
-    aplicaron de una pasada sobre las 42 vistas, así que no hay dos formularios ni dos
-    tablas con aspecto distinto.*
+  - *Hay un sistema de diseño propio en `public/assets/css/estilos.css`: la paleta, el
+    espaciado, los radios, las sombras y las transiciones salen de variables CSS, y el
+    aspecto de los botones, formularios y tablas se define redefiniendo las variables
+    `--bs-*` de Bootstrap. Las vistas casi no llevan estilo propio, así que no hay dos
+    formularios ni dos tablas con aspecto distinto.*
 - [x] Las imágenes tienen tamaño razonable y `alt`.
   - *La única imagen del sitio es la de la novedad: lleva `img-fluid` para no desbordar y el
     `alt` es obligatorio al cargarla desde el panel.*
 - [x] Las imágenes tiene título visible al pasar mouse sobre las mismas.
   - *`title` con el mismo texto del `alt`.*
 - [x] Contraste suficiente para leer los textos.
-  - *Los colores se eligieron midiendo el contraste sobre blanco: azul de la marca 9,4:1,
-    verde de éxito 7,9:1, rojo de error 9,3:1. WCAG AA pide 4,5:1.*
+  - *Los colores se eligieron midiendo el contraste sobre blanco: el rosa de la marca da
+    6,0:1, que alcanza para texto y para botones con texto blanco. Los neutros son la
+    escala zinc, sin negro puro. WCAG AA pide 4,5:1.*
 
 > Ya hay CSS: Bootstrap 5.3.3 servido desde `public/assets/vendor/` (no desde un CDN, así
 > funciona sin internet) más la hoja propia con la paleta, el foco visible, el enlace de
@@ -269,13 +272,17 @@ enteras en cero, y está bien que así sea.
 ## 20. Test de Validación de Estándares
 
 - [x] Realizó los test de validación de HTML.
-  - *37 páginas pasadas por el W3C Nu Html Checker, que es el sitio completo: público,
-    reservas, panel de aerolínea, administración y las dos páginas de error. **0 errores y 0
-    advertencias.** Reportes en `docs/validaciones/html-w3c/`.*
+  - *39 páginas pasadas por el W3C Nu Html Checker, que es el sitio completo: público,
+    reservas, panel de aerolínea, administración y las páginas de error. **0 errores.**
+    Reportes en `docs/validaciones/html-w3c/`. Se volvió a pasar entero después del
+    rediseño visual.*
 - [x] Realizó los test de validación de CSS.
-  - *`estilos.css` pasado por el validador de CSS del W3C, perfil CSS3+SVG: **0 errores, 0
-    advertencias.** Reporte en `docs/validaciones/css-w3c.json`. Bootstrap no se valida
-    porque es dependencia de terceros sin modificar.*
+  - *`estilos.css` pasado por el validador de CSS del W3C, perfil CSS3+SVG: **0 errores**
+    y 25 advertencias. 23 son la nota genérica de que las variables CSS no se chequean de
+    forma estática, y las otras 2 avisan que un elemento usa el mismo color de fondo y de
+    borde: es a propósito, son los botones y pastillas sólidas. Reporte en
+    `docs/validaciones/css-w3c.json`. Bootstrap no se valida porque es dependencia de
+    terceros sin modificar.*
 - [ ] Realizó los test de validación de ACCESIBLIDAD.
   - *TAW valida contra una URL pública y el sitio todavía corre solo en local, así que queda
     bloqueado hasta el despliegue (punto 9). Mientras tanto se revisó a mano criterio por

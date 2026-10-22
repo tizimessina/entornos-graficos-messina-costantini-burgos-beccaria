@@ -7,7 +7,7 @@
 --  de otra compañía por una coincidencia de nombres.
 -- =====================================================================
 
-USE skyreserva;
+USE aeroeb;
 
 CREATE OR REPLACE VIEW v_ocupacion_vuelos AS
 SELECT

@@ -3,67 +3,84 @@
  * @var array $aerolinea
  * @var array $vuelos
  */
+
+use App\Helpers\Formato;
 ?>
-<h1><?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?></h1>
+<div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+    <span class="ae-vuelo-logo" aria-hidden="true">
+        <?= htmlspecialchars($aerolinea['codigoIATA'], ENT_QUOTES, 'UTF-8') ?>
+    </span>
 
-<dl>
-    <dt>Código IATA</dt>
-    <dd><?= htmlspecialchars($aerolinea['codigoIATA'], ENT_QUOTES, 'UTF-8') ?></dd>
-
-    <dt>País</dt>
-    <dd><?= htmlspecialchars($aerolinea['codPais'], ENT_QUOTES, 'UTF-8') ?></dd>
-</dl>
+    <h1 class="mb-0"><?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?></h1>
+</div>
 
 <?php if (!empty($aerolinea['descripcionAerolinea'])): ?>
-    <p><?= htmlspecialchars($aerolinea['descripcionAerolinea'], ENT_QUOTES, 'UTF-8') ?></p>
-<?php endif; ?>
-
-<?php if (!empty($aerolinea['sitioWebAerolinea'])): ?>
-    <p>
-        <a href="<?= htmlspecialchars($aerolinea['sitioWebAerolinea'], ENT_QUOTES, 'UTF-8') ?>">
-            Sitio web de <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
-        </a>
+    <p class="ae-entrada">
+        <?= htmlspecialchars($aerolinea['descripcionAerolinea'], ENT_QUOTES, 'UTF-8') ?>
     </p>
 <?php endif; ?>
 
-<h2>Próximos vuelos</h2>
+<section class="ae-panel mt-4" aria-labelledby="titulo-ficha">
+    <h2 id="titulo-ficha" class="h5 mt-0">Ficha de la aerolínea</h2>
 
-<?php if (empty($vuelos)): ?>
-    <p>Esta aerolínea todavía no tiene vuelos programados.</p>
-<?php else: ?>
-    <div class="table-responsive">
-    <table class="table table-striped align-middle">
-        <caption>
-            Vuelos programados de <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
-        </caption>
-        <thead>
-            <tr>
-                <th scope="col">Vuelo</th>
-                <th scope="col">Origen</th>
-                <th scope="col">Destino</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Detalle</th>
-            </tr>
-        </thead>
-        <tbody>
+    <dl class="ae-ficha">
+        <dt>Código IATA</dt>
+        <dd><?= htmlspecialchars($aerolinea['codigoIATA'], ENT_QUOTES, 'UTF-8') ?></dd>
+
+        <dt>País</dt>
+        <dd><?= htmlspecialchars($aerolinea['codPais'], ENT_QUOTES, 'UTF-8') ?></dd>
+
+        <?php if (!empty($aerolinea['sitioWebAerolinea'])): ?>
+            <dt>Sitio web</dt>
+            <dd>
+                <a href="<?= htmlspecialchars($aerolinea['sitioWebAerolinea'], ENT_QUOTES, 'UTF-8') ?>">
+                    Sitio oficial de <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
+                </a>
+            </dd>
+        <?php endif; ?>
+    </dl>
+</section>
+
+<section aria-labelledby="titulo-vuelos">
+    <h2 id="titulo-vuelos">Próximos vuelos</h2>
+
+    <?php if (empty($vuelos)): ?>
+        <div class="ae-vacio">
+            <p class="ae-vacio-icono" aria-hidden="true">✈</p>
+            <h3>Esta aerolínea todavía no tiene vuelos programados</h3>
+            <p>Probá más adelante, o mirá la oferta de las demás compañías.</p>
+            <a class="btn btn-primary" href="/vuelos">Ver todos los vuelos</a>
+        </div>
+    <?php else: ?>
+        <ul class="list-unstyled mb-0">
             <?php foreach ($vuelos as $vuelo): ?>
-                <tr>
-                    <td><?= htmlspecialchars($vuelo['numeroVuelo'] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($vuelo['origenVuelo'], ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars($vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars(date('d/m/Y', strtotime($vuelo['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><?= htmlspecialchars(substr($vuelo['horaSalidaVuelo'], 0, 5), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td>$<?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></td>
-                    <td>
-                        <a href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>">
-                            Ver vuelo <?= htmlspecialchars($vuelo['numeroVuelo'] ?? '', ENT_QUOTES, 'UTF-8') ?>
-                        </a>
-                    </td>
-                </tr>
+                <?php $ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo']; ?>
+                <li class="ae-vuelo">
+                    <div class="flex-grow-1">
+                        <p class="ae-vuelo-ruta"><?= htmlspecialchars($ruta, ENT_QUOTES, 'UTF-8') ?></p>
+                        <p class="ae-vuelo-meta">
+                            Vuelo <?= htmlspecialchars($vuelo['numeroVuelo'] ?? 's/n', ENT_QUOTES, 'UTF-8') ?>
+                            · <?= htmlspecialchars(Formato::fecha($vuelo['fechaSalidaVuelo']), ENT_QUOTES, 'UTF-8') ?>
+                            a las <?= htmlspecialchars(Formato::hora($vuelo['horaSalidaVuelo']), ENT_QUOTES, 'UTF-8') ?>
+                        </p>
+                    </div>
+
+                    <p class="ae-vuelo-precio ae-dato mb-0">
+                        <?= htmlspecialchars(Formato::pesos($vuelo['precioVuelo']), ENT_QUOTES, 'UTF-8') ?>
+                    </p>
+
+                    <a class="btn btn-primary" href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>">
+                        Ver detalle
+                        <span class="visually-hidden">
+                            del vuelo <?= htmlspecialchars($ruta, ENT_QUOTES, 'UTF-8') ?>
+                        </span>
+                    </a>
+                </li>
             <?php endforeach; ?>
-        </tbody>
-    </table>
-    </div>
-<?php endif; ?>
+        </ul>
+    <?php endif; ?>
+</section>
+
+<p class="mt-4">
+    <a class="btn btn-outline-secondary" href="/aerolineas">Volver a las aerolíneas</a>
+</p>

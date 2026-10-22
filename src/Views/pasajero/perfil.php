@@ -13,10 +13,12 @@
     <p role="status"><?= htmlspecialchars($exito, ENT_QUOTES, 'UTF-8') ?></p>
 <?php endif; ?>
 
-<section aria-labelledby="titulo-datos">
-    <h2 id="titulo-datos">Mis datos</h2>
+<div class="row g-4">
+<div class="col-12 col-lg-6">
+<section class="ae-panel" aria-labelledby="titulo-datos">
+    <h2 id="titulo-datos" class="h5 mt-0">Mis datos</h2>
 
-    <p>
+    <p class="ae-apagado">
         Correo: <?= htmlspecialchars($usuario['emailUsuario'], ENT_QUOTES, 'UTF-8') ?>
         <br>
         Cuenta creada el
@@ -51,9 +53,11 @@
         <button class="btn btn-primary" type="submit">Guardar cambios</button>
     </form>
 </section>
+</div>
 
-<section aria-labelledby="titulo-clave">
-    <h2 id="titulo-clave">Cambiar contraseña</h2>
+<div class="col-12 col-lg-6">
+<section class="ae-panel" aria-labelledby="titulo-clave">
+    <h2 id="titulo-clave" class="h5 mt-0">Cambiar contraseña</h2>
 
     <?php if (!empty($erroresClave)): ?>
         <p role="alert">Revisá los datos marcados.</p>
@@ -94,8 +98,14 @@
         <button class="btn btn-primary" type="submit">Cambiar contraseña</button>
     </form>
 </section>
+</div>
+</div>
 
-<section aria-labelledby="titulo-reservas">
-    <h2 id="titulo-reservas">Mis reservas</h2>
-    <p>Todavía no está disponible: el módulo de reservas se construye en el punto 5.</p>
+<section class="ae-panel mt-4" aria-labelledby="titulo-reservas">
+    <h2 id="titulo-reservas" class="h5 mt-0">Mis reservas</h2>
+    <p class="ae-apagado">
+        Ahí tenés el historial completo: el localizador de cada reserva, el
+        comprobante de las confirmadas y la opción de cancelar.
+    </p>
+    <a class="btn btn-primary" href="/mi-cuenta/reservas">Ver mis reservas</a>
 </section>

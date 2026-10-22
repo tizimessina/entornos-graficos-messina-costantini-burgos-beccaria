@@ -26,7 +26,7 @@ class AuthController
             exit;
         }
 
-        $tituloPagina = 'Crear cuenta — SkyReserva';
+        $tituloPagina = 'Crear cuenta — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Crear cuenta', 'url' => null],
@@ -105,9 +105,9 @@ class AuthController
         $seEnvio = Mailer::enviar(
             $datos['email'],
             $datos['nombre'],
-            'Validá tu cuenta de SkyReserva',
+            'Validá tu cuenta de Aeroeb',
             '<p>¡Hola, ' . htmlspecialchars($datos['nombre'], ENT_QUOTES, 'UTF-8') . '!</p>'
-            . '<p>Para terminar de crear tu cuenta en SkyReserva, entrá a este enlace:</p>'
+            . '<p>Para terminar de crear tu cuenta en Aeroeb, entrá a este enlace:</p>'
             . '<p><a href="' . $enlace . '">' . $enlace . '</a></p>'
             . '<p>El enlace vence en 24 horas. Si no creaste esta cuenta, ignorá este mensaje.</p>'
         );
@@ -154,7 +154,7 @@ class AuthController
             exit;
         }
 
-        $tituloPagina = 'Iniciar sesión — SkyReserva';
+        $tituloPagina = 'Iniciar sesión — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Iniciar sesión', 'url' => null],
@@ -218,7 +218,7 @@ class AuthController
 
     public function mostrarRecuperar(): void
     {
-        $tituloPagina = 'Recuperar contraseña — SkyReserva';
+        $tituloPagina = 'Recuperar contraseña — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Recuperar contraseña', 'url' => null],
@@ -262,7 +262,7 @@ class AuthController
             $seEnvio = Mailer::enviar(
                 $usuario['emailUsuario'],
                 $usuario['nombreUsuario'],
-                'Restablecer tu contraseña de SkyReserva',
+                'Restablecer tu contraseña de Aeroeb',
                 '<p>Pediste restablecer tu contraseña. Entrá a este enlace para elegir una nueva:</p>'
                 . '<p><a href="' . $enlace . '">' . $enlace . '</a></p>'
                 . '<p>El enlace vence en 24 horas. Si no lo pediste vos, ignorá este mensaje.</p>'
@@ -288,7 +288,7 @@ class AuthController
             exit;
         }
 
-        $tituloPagina = 'Elegir nueva contraseña — SkyReserva';
+        $tituloPagina = 'Elegir nueva contraseña — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Elegir nueva contraseña', 'url' => null],

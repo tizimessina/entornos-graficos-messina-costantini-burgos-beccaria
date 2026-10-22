@@ -7,7 +7,7 @@ return [
     'db' => [
         'host'    => '127.0.0.1',
         'port'    => 3306,
-        'name'    => 'skyreserva',
+        'name'    => 'aeroeb',
         'user'    => 'root',
         'pass'    => '',
         'charset' => 'utf8mb4',
@@ -16,11 +16,11 @@ return [
     'mail' => [
         'host'       => 'smtp.gmail.com',
         'port'       => 587,
-        'username'   => 'no-reply@skyreserva.com',
+        'username'   => 'no-reply@aeroeb.com.ar',
         'password'   => '', // contraseña de aplicación, no la de la cuenta
         'encryption' => 'tls',
-        'from_email' => 'no-reply@skyreserva.com',
-        'from_name'  => 'SkyReserva',
+        'from_email' => 'no-reply@aeroeb.com.ar',
+        'from_name'  => 'Aeroeb',
     ],
 
     'app' => [

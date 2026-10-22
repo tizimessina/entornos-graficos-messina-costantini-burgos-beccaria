@@ -1,5 +1,5 @@
 -- =====================================================================
---  SkyReserva — Datos de prueba
+--  Aeroeb — Datos de prueba
 --  TP Integrador · Entornos Gráficos · UTN FRR · 2026
 --
 --  Ejecutar después de scripts/schema.sql. Estos datos son solo para
@@ -18,7 +18,7 @@
 --  loguearse directo, sin pasar por la validación de correo.
 -- =====================================================================
 
-USE skyreserva;
+USE aeroeb;
 
 -- Aerolínea de prueba, necesaria para poder crear el usuario CEO
 -- (la FK usuarios.codAerolinea exige que exista antes de insertar el usuario).
@@ -34,7 +34,7 @@ VALUES
     ('Administrador del Sitio',
      '$2y$10$0x6yZ94n/nAbhZXHAGTqDuul4yZDcxEfSQxP9vkvfm2ZJ4yCyFMbe', -- Admin2026!
      'administrador',
-     'admin@skyreserva.com',
+     'admin@aeroeb.com.ar',
      '+54 341 4000000',
      'activo',
      NOW());
@@ -117,5 +117,5 @@ VALUES
      (SELECT codAerolinea FROM aerolineas WHERE codigoIATA = 'DEM'), 'aprobada',
      DATE_SUB(CURDATE(), INTERVAL 5 DAY), DATE_ADD(CURDATE(), INTERVAL 180 DAY), 100,
      (SELECT codusuario FROM usuarios WHERE emailUsuario = 'ceo@aerolinea-demo.com'),
-     (SELECT codusuario FROM usuarios WHERE emailUsuario = 'admin@skyreserva.com'),
+     (SELECT codusuario FROM usuarios WHERE emailUsuario = 'admin@aeroeb.com.ar'),
      NOW());

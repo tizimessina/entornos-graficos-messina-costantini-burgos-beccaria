@@ -10,6 +10,30 @@ use PDO;
 class Promocion
 {
     /**
+     * Promociones que hoy puede usar cualquier pasajero: aprobadas, dentro de
+     * su vigencia y con usos disponibles. Es lo que se muestra en la portada.
+     */
+    public static function vigentes(int $limite = 3): array
+    {
+        $stmt = Database::getInstance()->prepare(
+            "SELECT p.codPromocion, p.codigoPromocion, p.descripcionPromocion, p.descuentoPromocion,
+                    p.fechaFinPromocion, a.codAerolinea, a.nombreAerolinea, a.codigoIATA
+               FROM promociones p
+               JOIN aerolineas a ON a.codAerolinea = p.codAerolinea
+              WHERE p.estadoPromocion = 'aprobada'
+                AND a.activaAerolinea = 1
+                AND CURDATE() BETWEEN p.fechaInicioPromocion AND p.fechaFinPromocion
+                AND (p.usosMaximos IS NULL OR p.usosRealizados < p.usosMaximos)
+              ORDER BY p.descuentoPromocion DESC
+              LIMIT :limite"
+        );
+        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
      * Devuelve la promoción solo si se puede aplicar a un vuelo de esa aerolínea:
      * aprobada por la administración, vigente hoy y con usos disponibles.
      *

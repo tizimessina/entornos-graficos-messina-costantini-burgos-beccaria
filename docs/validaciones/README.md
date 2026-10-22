@@ -6,9 +6,12 @@ pantalla que pide la cátedra se pegan en el informe (sección 17).
 
 ## HTML — W3C Nu Html Checker
 
-Se validaron **37 páginas**, que es el sitio completo: todas las del sitio público, las
-tres del circuito de reserva, las seis del panel de la aerolínea, las nueve de
-administración y las dos páginas de error.
+Se validaron **39 páginas**, que es el sitio completo: todas las del sitio público (con
+sus estados vacíos), las del circuito de reserva, las del panel de la aerolínea, las de
+administración y la página de error 404.
+
+La pasada que está guardada es posterior al rediseño visual: vale sobre el sitio tal
+como está hoy, no sobre la versión sin estilos.
 
 | Resultado | Cantidad |
 |---|---|
@@ -36,7 +39,16 @@ Versión del validador usada: `26.10.18`.
 
 | Archivo | Perfil | Errores | Advertencias |
 |---|---|---|---|
-| `public/assets/css/estilos.css` | CSS3 + SVG | **0** | **0** |
+| `public/assets/css/estilos.css` | CSS3 + SVG | **0** | 25 |
+
+Las 25 advertencias no son defectos y no hay nada que corregir:
+
+- **23** son la misma nota repetida: *"Due to their dynamic nature, CSS variables are
+  currently not statically checked"*. El validador avisa que no puede analizar el valor
+  de una variable CSS. Todo el sistema de diseño está hecho con variables, así que la
+  nota aparece una vez por cada una.
+- **2** avisan que un elemento usa el mismo color de fondo y de borde. Es a propósito:
+  son el botón primario y la pastilla del paso activo de la reserva, que son sólidos.
 
 Reporte en [`css-w3c.json`](css-w3c.json).
 
@@ -60,10 +72,13 @@ resuelto en el código:
   tablas con `<caption>` y `<th scope>`, listas reales para las listas, `<fieldset>` y
   `<legend>` donde hay grupos de opciones.
 - **1.4.1 Uso del color.** Un campo con error no se marca solo con color: lleva
-  `aria-invalid="true"`, el mensaje al lado y un borde más grueso.
-- **1.4.3 Contraste.** La paleta se eligió midiendo: el azul de la marca da 9,4:1 sobre
-  blanco, el verde de los mensajes de éxito 7,9:1 y el rojo de los de error 9,3:1. WCAG
-  AA pide 4,5:1.
+  `aria-invalid="true"`, el mensaje al lado y un borde más grueso. Lo mismo con los
+  estados: los distintivos de `src/Helpers/Formato.php` llevan siempre un símbolo y la
+  palabra del estado, nunca solo el color.
+- **1.4.3 Contraste.** La paleta se eligió midiendo. El rosa de la marca (`#be185d`) da
+  6,0:1 sobre blanco, que alcanza tanto para texto como para botones con texto blanco.
+  Los neutros son la escala zinc, sin negro puro, que cansa menos la vista. WCAG AA pide
+  4,5:1.
 - **2.1.1 Teclado.** No hay nada que dependa del mouse. El JavaScript propio es poco y
   ninguna parte del sitio lo necesita para funcionar: evita el doble envío de un
   formulario, pide confirmación antes de una acción destructiva y abre el diálogo de
@@ -76,6 +91,8 @@ resuelto en el código:
   qué fila actúan ("Editar Aerolínea Demo", no "Editar"), así se entienden fuera de
   contexto, que es como los lee un lector de pantalla.
 - **2.4.7 Foco visible.** Contorno propio de 3px en todo lo navegable.
+- **2.3.3 Movimiento.** Las transiciones y los desplazamientos al pasar el mouse se
+  anulan si el sistema operativo pide movimiento reducido (`prefers-reduced-motion`).
 - **3.1.1 Idioma.** `<html lang="es-AR">`.
 - **3.3.1 y 3.3.3 Errores.** Los mensajes de error van en `role="alert"`, pegados al
   campo que falla, en español y diciendo qué corregir. El formulario vuelve con lo que

@@ -33,7 +33,7 @@ class VueloController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Vuelos — SkyReserva';
+        $tituloPagina = 'Vuelos — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => null],
@@ -54,7 +54,7 @@ class VueloController
 
         if ($vuelo === null) {
             http_response_code(404);
-            $tituloPagina = 'Vuelo no encontrado — SkyReserva';
+            $tituloPagina = 'Vuelo no encontrado — Aeroeb';
             $contenidoHtml = '<h1>Vuelo no encontrado</h1>'
                 . '<p>El vuelo que buscás no existe. <a href="/vuelos">Buscar vuelos</a>.</p>';
 
@@ -65,7 +65,7 @@ class VueloController
 
         $ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'];
 
-        $tituloPagina = $ruta . ' — SkyReserva';
+        $tituloPagina = $ruta . ' — Aeroeb';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => '/vuelos'],
