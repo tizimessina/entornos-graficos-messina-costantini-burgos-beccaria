@@ -21,7 +21,7 @@ class PerfilController
 
         $usuario = Usuario::find((int) Auth::id());
 
-        $tituloPagina = 'Mi cuenta — Aeroeb';
+        $tituloPagina = 'Mi cuenta — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mi cuenta', 'url' => null],

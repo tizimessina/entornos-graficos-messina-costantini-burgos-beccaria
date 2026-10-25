@@ -31,7 +31,7 @@ class CeoController
     {
         $codAerolinea = $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Panel de aerolínea — Aeroeb';
+        $tituloPagina = 'Panel de aerolínea — AeroEB';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/panel.php', [
             'aerolinea' => Aerolinea::find($codAerolinea),
@@ -57,7 +57,7 @@ class CeoController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis vuelos — Aeroeb';
+        $tituloPagina = 'Mis vuelos — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelos-listado.php', [
             'vuelos'    => Vuelo::todosDeAerolinea($codAerolinea, $paginador->porPagina, $paginador->offset),
@@ -75,7 +75,7 @@ class CeoController
     {
         $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Cargar vuelo — Aeroeb';
+        $tituloPagina = 'Cargar vuelo — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Cargar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
             'vuelo'   => null,
@@ -121,7 +121,7 @@ class CeoController
             return;
         }
 
-        $tituloPagina = 'Editar vuelo — Aeroeb';
+        $tituloPagina = 'Editar vuelo — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Editar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
             'vuelo'   => $vuelo,
@@ -214,7 +214,7 @@ class CeoController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis promociones — Aeroeb';
+        $tituloPagina = 'Mis promociones — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis promociones');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promociones-listado.php', [
             'promociones' => Promocion::deAerolinea($codAerolinea, $paginador->porPagina, $paginador->offset),
@@ -232,7 +232,7 @@ class CeoController
     {
         $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Proponer promoción — Aeroeb';
+        $tituloPagina = 'Proponer promoción — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis promociones', '/panel/promociones', 'Proponer promoción');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promocion-form.php', [
             'promocion' => null,
@@ -278,7 +278,7 @@ class CeoController
             return;
         }
 
-        $tituloPagina = 'Editar promoción — Aeroeb';
+        $tituloPagina = 'Editar promoción — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis promociones', '/panel/promociones', 'Editar promoción');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promocion-form.php', [
             'promocion' => $promocion,
@@ -374,7 +374,7 @@ class CeoController
         $desde = trim((string) ($_GET['desde'] ?? date('Y-m-01')));
         $hasta = trim((string) ($_GET['hasta'] ?? date('Y-m-d')));
 
-        $tituloPagina = 'Reportes — Aeroeb';
+        $tituloPagina = 'Reportes — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Reportes');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/reportes.php', [
             'ocupacion'      => Reporte::ocupacionDeAerolinea($codAerolinea),
@@ -572,7 +572,7 @@ class CeoController
     private function noEncontrado(string $mensaje, string $volverA = '/panel/vuelos', string $textoVolver = 'Volver a mis vuelos'): void
     {
         http_response_code(404);
-        $tituloPagina = 'No encontrado — Aeroeb';
+        $tituloPagina = 'No encontrado — AeroEB';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p><a href="' . htmlspecialchars($volverA, ENT_QUOTES, 'UTF-8') . '">'
             . htmlspecialchars($textoVolver, ENT_QUOTES, 'UTF-8') . '</a></p>';

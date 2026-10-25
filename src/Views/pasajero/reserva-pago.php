@@ -73,7 +73,7 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
             </p>
 
             <p class="ae-apagado">
-                Aeroeb no procesa pagos reales: el pago es una simulación para el trabajo
+                AeroEB no procesa pagos reales: el pago es una simulación para el trabajo
                 práctico. Al confirmar, la reserva queda confirmada y te mandamos el
                 comprobante por correo.
             </p>

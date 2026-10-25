@@ -5,7 +5,7 @@
  * ese queda en el log del servidor, porque un mensaje de la base de datos
  * puede filtrar nombres de tablas o datos de otra persona.
  */
-$tituloPagina = 'Error del sistema — Aeroeb';
+$tituloPagina = 'Error del sistema — AeroEB';
 $contenidoHtml = <<<'HTML'
 <div class="ae-vacio"><p class="ae-vacio-icono" aria-hidden="true">500</p><h1>Algo falló de nuestro lado</h1>
 

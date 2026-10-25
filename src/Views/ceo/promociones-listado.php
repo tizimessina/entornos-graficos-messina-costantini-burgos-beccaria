@@ -20,7 +20,7 @@ use App\Helpers\Formato;
 
 <p>
     Las promociones que proponés quedan pendientes hasta que la administración de
-    Aeroeb las apruebe. Recién ahí los pasajeros pueden usar el código.
+    AeroEB las apruebe. Recién ahí los pasajeros pueden usar el código.
 </p>
 
 <p><a href="/panel/promociones/nueva">Proponer una promoción</a></p>

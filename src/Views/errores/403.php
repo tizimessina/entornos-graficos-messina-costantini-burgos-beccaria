@@ -12,7 +12,7 @@ $explicacion = htmlspecialchars(
     'UTF-8'
 );
 
-$tituloPagina = 'Acceso no permitido — Aeroeb';
+$tituloPagina = 'Acceso no permitido — AeroEB';
 $contenidoHtml = <<<HTML
 <div class="ae-vacio"><p class="ae-vacio-icono" aria-hidden="true">403</p><h1>No tenés permiso para ver esta página</h1>
 

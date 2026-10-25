@@ -1,5 +1,5 @@
 -- =====================================================================
---  Aeroeb — Esquema físico de base de datos
+--  AeroEB — Esquema físico de base de datos
 --  TP Integrador · Entornos Gráficos · UTN FRR · 2026
 --  Motor: InnoDB · Juego de caracteres: utf8mb4
 --

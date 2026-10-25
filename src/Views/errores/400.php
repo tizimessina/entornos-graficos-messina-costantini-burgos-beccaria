@@ -4,7 +4,7 @@
  * uno vencido, que en la práctica pasa sobre todo al volver a mandar un
  * formulario viejo después de que se cerró la sesión.
  */
-$tituloPagina = 'No pudimos procesar el formulario — Aeroeb';
+$tituloPagina = 'No pudimos procesar el formulario — AeroEB';
 $contenidoHtml = <<<'HTML'
 <div class="ae-vacio"><p class="ae-vacio-icono" aria-hidden="true">400</p><h1>No pudimos procesar el formulario</h1>
 
