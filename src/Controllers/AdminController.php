@@ -366,9 +366,10 @@ class AdminController
         $tituloPagina = 'Nueva novedad — Administración';
         $breadcrumbs = $this->breadcrumbs('Novedades', '/admin/novedades', 'Nueva');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/admin/novedad-form.php', [
-            'novedad' => null,
-            'datos'   => Session::getFlash('datos', []),
-            'errores' => Session::getFlash('errores', []),
+            'novedad'    => null,
+            'datos'      => Session::getFlash('datos', []),
+            'errores'    => Session::getFlash('errores', []),
+            'suscriptos' => Usuario::contarSuscriptosANovedades(),
         ]);
 
         $menuLateral = $this->menuLateral();
@@ -382,7 +383,15 @@ class AdminController
         $this->exigirCsrf();
 
         $datos = $this->datosDeNovedad();
+        $datos['enviarPorCorreo'] = isset($_POST['enviarPorCorreo']);
         $errores = $this->validarNovedad($datos);
+
+        // Mandar hoy una novedad que se publica más adelante adelantaría algo
+        // que en el sitio todavía no se ve.
+        if ($datos['enviarPorCorreo'] && !isset($errores['fechaPublicacionNovedad'])
+            && $datos['fechaPublicacionNovedad'] > date('Y-m-d')) {
+            $errores['enviarPorCorreo'] = 'Solo se puede mandar por correo una novedad que se publica hoy o antes.';
+        }
 
         if ($errores !== []) {
             Session::flash('errores', $errores);
@@ -391,11 +400,53 @@ class AdminController
             exit;
         }
 
-        Novedad::crear($datos, Auth::id());
+        $codNovedad = Novedad::crear($datos, Auth::id());
 
-        Session::flash('exito', 'Publicamos la novedad.');
+        if ($datos['enviarPorCorreo']) {
+            [$enviados, $total] = $this->enviarNovedadPorCorreo($codNovedad, $datos);
+            Session::flash('exito', $total === 0
+                ? 'Publicamos la novedad. No hay pasajeros suscriptos, así que no se mandó ningún correo.'
+                : "Publicamos la novedad y la mandamos por correo a $enviados de $total pasajero(s) suscripto(s).");
+        } else {
+            Session::flash('exito', 'Publicamos la novedad.');
+        }
+
         header('Location: /admin/novedades');
         exit;
+    }
+
+    /**
+     * Manda la novedad a los pasajeros que lo pidieron en sus preferencias.
+     * Se manda uno por uno, no con copia oculta: así nadie ve la dirección de
+     * otro y, si un envío falla, los demás salen igual.
+     *
+     * @return array{0: int, 1: int} enviados y total de suscriptos
+     */
+    private function enviarNovedadPorCorreo(int $codNovedad, array $datos): array
+    {
+        $config = require dirname(__DIR__, 2) . '/config/config.php';
+        $enlace = rtrim((string) ($config['app']['url'] ?? ''), '/') . '/novedades/' . $codNovedad;
+
+        $titulo = htmlspecialchars($datos['tituloNovedad'], ENT_QUOTES, 'UTF-8');
+        $texto = htmlspecialchars($datos['textoNovedad'], ENT_QUOTES, 'UTF-8');
+
+        $suscriptos = Usuario::suscriptosANovedades();
+        $enviados = 0;
+
+        foreach ($suscriptos as $suscripto) {
+            $cuerpo = '<p>Hola, ' . htmlspecialchars($suscripto['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
+                . '<h1>' . $titulo . '</h1>'
+                . '<p>' . $texto . '</p>'
+                . '<p><a href="' . htmlspecialchars($enlace, ENT_QUOTES, 'UTF-8') . '">Ver la novedad en Aeroeb</a></p>'
+                . '<p>Recibís este correo porque lo pediste en las preferencias de tu cuenta. '
+                . 'Para dejar de recibirlo, desactivalo en Mi cuenta.</p>';
+
+            if (Mailer::enviar($suscripto['emailUsuario'], $suscripto['nombreUsuario'], 'Novedad de Aeroeb: ' . $datos['tituloNovedad'], $cuerpo)) {
+                $enviados++;
+            }
+        }
+
+        return [$enviados, count($suscriptos)];
     }
 
     public function editarNovedad(string $id): void

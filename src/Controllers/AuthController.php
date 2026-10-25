@@ -196,6 +196,9 @@ class AuthController
             'pendiente_email' => 'Todavía no validaste tu cuenta. Entrá al enlace que te enviamos por correo.',
             'pendiente_autorizacion' => 'Tu cuenta está esperando la autorización de la administración.',
             'suspendido' => 'Tu cuenta está suspendida. Escribinos desde el formulario de contacto.',
+            Auth::BLOQUEADO => 'Por seguridad bloqueamos el ingreso a esta cuenta durante ' . Auth::MINUTOS_BLOQUEO
+                . ' minutos, después de ' . Auth::MAX_INTENTOS . ' contraseñas incorrectas seguidas. '
+                . 'Probá más tarde o restablecé la contraseña, que también levanta el bloqueo.',
             default => 'El email o la contraseña no son correctos.',
         };
     }

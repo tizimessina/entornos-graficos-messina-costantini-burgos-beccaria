@@ -130,6 +130,7 @@ $router->post('/restablecer', [AuthController::class, 'restablecer']);
 $router->get('/mi-cuenta', [PerfilController::class, 'mostrar']);
 $router->post('/mi-cuenta/perfil', [PerfilController::class, 'actualizar']);
 $router->post('/mi-cuenta/password', [PerfilController::class, 'cambiarClave']);
+$router->post('/mi-cuenta/preferencias', [PerfilController::class, 'actualizarPreferencias']);
 
 // Reservas
 $router->get('/vuelos/{id}/reservar', [ReservaController::class, 'nueva']);
