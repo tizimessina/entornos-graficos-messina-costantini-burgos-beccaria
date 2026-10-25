@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Core\Database;
 use PDO;
+use Throwable;
 
 class Vuelo
 {
@@ -55,14 +56,25 @@ class Vuelo
     }
 
     /**
-     * Arma el WHERE y sus parámetros. Solo se muestran vuelos programados
-     * y que todavía no salieron.
+     * Condición SQL de "se puede reservar": vuelo programado, de una aerolínea
+     * activa y que todavía no salió. Se compara fecha y hora juntas, porque
+     * con la fecha sola un vuelo de hoy a las 8 seguiría a la venta a las 20.
+     * El fechaSalidaVuelo >= CURDATE() es redundante, pero deja usar el índice.
+     */
+    public const RESERVABLE = "v.estadoVuelo = 'programado'
+                AND a.activaAerolinea = 1
+                AND v.fechaSalidaVuelo >= CURDATE()
+                AND TIMESTAMP(v.fechaSalidaVuelo, v.horaSalidaVuelo) > NOW()";
+
+    /**
+     * Arma el WHERE y sus parámetros. Solo se muestran los vuelos que se
+     * pueden reservar (ver RESERVABLE).
      *
      * @return array{0: string, 1: array<string, mixed>}
      */
     private static function condiciones(array $filtros): array
     {
-        $condiciones = ["v.estadoVuelo = 'programado'", 'v.fechaSalidaVuelo >= CURDATE()'];
+        $condiciones = [self::RESERVABLE];
         $params = [];
 
         if (!empty($filtros['origen'])) {
@@ -104,7 +116,8 @@ class Vuelo
             'SELECT v.codVuelo, v.codAerolinea, v.numeroVuelo, v.origenVuelo, v.destinoVuelo,
                     v.fechaSalidaVuelo, v.horaSalidaVuelo, v.duracionMinutos, v.precioVuelo,
                     v.capacidadTotal, v.asientosDisponibles, v.estadoVuelo,
-                    a.nombreAerolinea, a.codigoIATA
+                    a.nombreAerolinea, a.codigoIATA,
+                    (' . self::RESERVABLE . ') AS reservable
                FROM vuelos v
                JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
               WHERE v.codVuelo = :id'
@@ -114,18 +127,24 @@ class Vuelo
         return $stmt->fetch() ?: null;
     }
 
+    /** Si el vuelo que devolvió find() todavía se puede reservar. */
+    public static function sePuedeReservar(array $vuelo): bool
+    {
+        return (int) $vuelo['reservable'] === 1;
+    }
+
     /** Próximos vuelos de una aerolínea, para su ficha pública. */
     public static function delAerolinea(int $codAerolinea, int $limite = 20): array
     {
         $stmt = Database::getInstance()->prepare(
-            "SELECT codVuelo, numeroVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo,
-                    horaSalidaVuelo, precioVuelo, asientosDisponibles
-               FROM vuelos
-              WHERE codAerolinea = :codAerolinea
-                AND estadoVuelo = 'programado'
-                AND fechaSalidaVuelo >= CURDATE()
-              ORDER BY fechaSalidaVuelo, horaSalidaVuelo
-              LIMIT :limite"
+            'SELECT v.codVuelo, v.numeroVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
+                    v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles
+               FROM vuelos v
+               JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
+              WHERE v.codAerolinea = :codAerolinea
+                AND ' . self::RESERVABLE . '
+              ORDER BY v.fechaSalidaVuelo, v.horaSalidaVuelo
+              LIMIT :limite'
         );
         $stmt->bindValue(':codAerolinea', $codAerolinea, PDO::PARAM_INT);
         $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
@@ -244,16 +263,63 @@ class Vuelo
         ]);
     }
 
-    /** Baja lógica: el vuelo queda cancelado y deja de aparecer en las búsquedas. */
+    /**
+     * Baja lógica: el vuelo queda cancelado y deja de aparecer en las búsquedas.
+     *
+     * Sus reservas vivas se cancelan en la misma transacción. Si no, una
+     * reserva pendiente se podría seguir pagando y las confirmadas seguirían
+     * contando como ventas en los reportes, de un vuelo que no va a salir.
+     */
     public static function cancelar(int $codVuelo): bool
     {
-        $stmt = Database::getInstance()->prepare(
-            "UPDATE vuelos SET estadoVuelo = 'cancelado'
-              WHERE codVuelo = :vuelo AND estadoVuelo <> 'cancelado'"
-        );
-        $stmt->execute(['vuelo' => $codVuelo]);
+        $pdo = Database::getInstance();
+        $pdo->beginTransaction();
 
-        return $stmt->rowCount() > 0;
+        try {
+            $stmt = $pdo->prepare(
+                "UPDATE vuelos SET estadoVuelo = 'cancelado'
+                  WHERE codVuelo = :vuelo AND estadoVuelo <> 'cancelado'"
+            );
+            $stmt->execute(['vuelo' => $codVuelo]);
+
+            if ($stmt->rowCount() === 0) {
+                $pdo->rollBack();
+
+                return false;
+            }
+
+            $stmt = $pdo->prepare(
+                "SELECT codReserva, codPromocion FROM reservas
+                  WHERE codVuelo = :vuelo AND estadoReserva <> 'cancelada'
+                  FOR UPDATE"
+            );
+            $stmt->execute(['vuelo' => $codVuelo]);
+
+            $cancelar = $pdo->prepare(
+                "UPDATE reservas
+                    SET estadoReserva = 'cancelada', fechaCancelacion = NOW(),
+                        motivoCancelacion = 'La aerolínea canceló el vuelo.'
+                  WHERE codReserva = :cod"
+            );
+
+            foreach ($stmt->fetchAll() as $reserva) {
+                $cancelar->execute(['cod' => $reserva['codReserva']]);
+
+                if ($reserva['codPromocion'] !== null) {
+                    Promocion::liberarUso((int) $reserva['codPromocion']);
+                }
+            }
+
+            $pdo->commit();
+
+            return true;
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+
+            throw $e;
+        }
     }
 
     /** Pasajeros con reservas vivas en un vuelo, para avisarles si se cancela. */
@@ -282,8 +348,7 @@ class Vuelo
                     a.nombreAerolinea
                FROM vuelos v
                JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
-              WHERE v.estadoVuelo = 'programado'
-                AND v.fechaSalidaVuelo >= CURDATE()
+              WHERE " . self::RESERVABLE . "
                 AND (v.origenVuelo LIKE :origen
                      OR v.destinoVuelo LIKE :destino
                      OR v.numeroVuelo LIKE :numero)

@@ -7,7 +7,7 @@
 <h1>Novedades</h1>
 
 <p class="ae-entrada">
-    Rutas nuevas, promociones de temporada y todo lo que publican Aeroeb y las
+    Rutas nuevas, promociones de temporada y todo lo que publican AeroEB y las
     aerolíneas adheridas.
 </p>
 

@@ -3,6 +3,7 @@
  * @var array $promociones
  * @var \App\Core\Paginator $paginador
  * @var string|null $exito
+ * @var string|null $error
  */
 
 use App\Helpers\Formato;
@@ -13,9 +14,13 @@ use App\Helpers\Formato;
     <p role="status"><?= htmlspecialchars($exito, ENT_QUOTES, 'UTF-8') ?></p>
 <?php endif; ?>
 
+<?php if (!empty($error)): ?>
+    <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
+<?php endif; ?>
+
 <p>
     Las promociones que proponés quedan pendientes hasta que la administración de
-    Aeroeb las apruebe. Recién ahí los pasajeros pueden usar el código.
+    AeroEB las apruebe. Recién ahí los pasajeros pueden usar el código.
 </p>
 
 <p><a href="/panel/promociones/nueva">Proponer una promoción</a></p>
@@ -35,6 +40,7 @@ use App\Helpers\Formato;
                 <th scope="col">Usos</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Resolución</th>
+                <th scope="col">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -61,6 +67,20 @@ use App\Helpers\Formato;
                         <?php else: ?>
                             —
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php $codigo = htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8'); ?>
+                        <a href="/panel/promociones/<?= (int) $promocion['codPromocion'] ?>/editar">
+                            Editar promoción <?= $codigo ?>
+                        </a>
+
+                        <form method="post" action="/panel/promociones/<?= (int) $promocion['codPromocion'] ?>/eliminar"
+                              onsubmit="return confirm('¿Eliminar esta promoción? No se puede deshacer.');">
+                            <?= \App\Core\Csrf::field() ?>
+                            <button class="btn btn-primary" type="submit">
+                                Eliminar promoción <?= $codigo ?>
+                            </button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>

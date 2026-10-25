@@ -10,6 +10,7 @@ use App\Core\Mailer;
 use App\Core\Paginator;
 use App\Core\Session;
 use App\Core\Vista;
+use App\Models\Promocion;
 use App\Models\Reserva;
 use App\Models\Vuelo;
 use DateTimeImmutable;
@@ -27,13 +28,13 @@ class ReservaController
 
         $vuelo = Vuelo::find((int) $idVuelo);
 
-        if ($vuelo === null || $vuelo['estadoVuelo'] !== 'programado') {
+        if ($vuelo === null || !Vuelo::sePuedeReservar($vuelo)) {
             $this->paginaNoEncontrada('El vuelo que querés reservar no existe o ya no está disponible.');
 
             return;
         }
 
-        $tituloPagina = 'Reservar vuelo — Aeroeb';
+        $tituloPagina = 'Reservar vuelo — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => '/vuelos'],
@@ -43,6 +44,7 @@ class ReservaController
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/reserva-nueva.php', [
             'vuelo'       => $vuelo,
             'maxAsientos' => min(self::MAX_ASIENTOS, (int) $vuelo['asientosDisponibles']),
+            'promocion'   => Promocion::vigenteDeAerolinea((int) $vuelo['codAerolinea']),
             'error'       => Session::getFlash('error'),
             'datos'       => Session::getFlash('datos', []),
         ]);
@@ -75,7 +77,8 @@ class ReservaController
             exit;
         }
 
-        Session::flash('exito', 'Reservamos tus asientos. El localizador es ' . $resultado['codigoReserva'] . '. Te quedan 24 horas para pagarla.');
+        Session::flash('exito', 'Reservamos tus asientos. El localizador es ' . $resultado['codigoReserva']
+            . '. Te quedan ' . $this->horasParaPagar() . ' horas para pagarla: después se cancela sola y los asientos se liberan.');
         header('Location: /reservas/' . $resultado['codReserva'] . '/pago');
         exit;
     }
@@ -97,15 +100,16 @@ class ReservaController
             exit;
         }
 
-        $tituloPagina = 'Pagar reserva ' . $reserva['codigoReserva'] . ' — Aeroeb';
+        $tituloPagina = 'Pagar reserva ' . $reserva['codigoReserva'] . ' — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
             ['texto' => 'Pagar ' . $reserva['codigoReserva'], 'url' => null],
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/reserva-pago.php', [
-            'reserva' => $reserva,
-            'exito'   => Session::getFlash('exito'),
+            'reserva'      => $reserva,
+            'vencimiento'  => $this->vencimientoDelPago($reserva),
+            'exito'        => Session::getFlash('exito'),
         ]);
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
@@ -123,7 +127,7 @@ class ReservaController
         }
 
         if (!Reserva::confirmarPago((int) $reserva['codReserva'])) {
-            Session::flash('error', 'Esa reserva ya no estaba pendiente de pago.');
+            Session::flash('error', 'No se puede pagar esta reserva: ya no estaba pendiente de pago o el vuelo ya no está disponible.');
             header('Location: /reservas/' . $reserva['codReserva']);
             exit;
         }
@@ -147,7 +151,7 @@ class ReservaController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis reservas — Aeroeb';
+        $tituloPagina = 'Mis reservas — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mi cuenta', 'url' => '/mi-cuenta'],
@@ -163,6 +167,30 @@ class ReservaController
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
+    public function misCompras(): void
+    {
+        Auth::requireLogin();
+
+        $paginador = new Paginator(
+            Reserva::contarComprasDelUsuario((int) Auth::id()),
+            max(1, (int) ($_GET['pagina'] ?? 1)),
+            self::POR_PAGINA
+        );
+
+        $tituloPagina = 'Mis compras — AeroEB';
+        $breadcrumbs = [
+            ['texto' => 'Inicio', 'url' => '/'],
+            ['texto' => 'Mi cuenta', 'url' => '/mi-cuenta'],
+            ['texto' => 'Mis compras', 'url' => null],
+        ];
+        $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/compras-listado.php', [
+            'compras'   => Reserva::comprasDelUsuario((int) Auth::id(), $paginador->porPagina, $paginador->offset),
+            'paginador' => $paginador,
+        ]);
+
+        require dirname(__DIR__) . '/Views/layouts/base.php';
+    }
+
     public function detalle(string $id): void
     {
         Auth::requireLogin();
@@ -173,7 +201,7 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Reserva ' . $reserva['codigoReserva'] . ' — Aeroeb';
+        $tituloPagina = 'Reserva ' . $reserva['codigoReserva'] . ' — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
@@ -183,6 +211,7 @@ class ReservaController
             'reserva'      => $reserva,
             'sePuedeCancelar' => $this->sePuedeCancelar($reserva),
             'horasMinimas' => $this->horasMinimasCancelacion(),
+            'vencimiento'  => $this->vencimientoDelPago($reserva),
             'exito'        => Session::getFlash('exito'),
             'error'        => Session::getFlash('error'),
         ]);
@@ -200,7 +229,13 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Comprobante ' . $reserva['codigoReserva'] . ' — Aeroeb';
+        // Una reserva que nunca se pagó no tiene comprobante de compra.
+        if (empty($reserva['fechaPago'])) {
+            header('Location: /reservas/' . $reserva['codReserva']);
+            exit;
+        }
+
+        $tituloPagina = 'Comprobante ' . $reserva['codigoReserva'] . ' — AeroEB';
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/comprobante.php', [
             'reserva' => $reserva,
         ]);
@@ -293,7 +328,7 @@ class ReservaController
     private function paginaNoEncontrada(string $mensaje): void
     {
         http_response_code(404);
-        $tituloPagina = 'No encontrado — Aeroeb';
+        $tituloPagina = 'No encontrado — AeroEB';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p><a href="/mi-cuenta/reservas">Ver mis reservas</a></p>';
 
@@ -303,8 +338,7 @@ class ReservaController
     private function exigirCsrf(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar la página e intentá de nuevo.');
+            Csrf::rechazar();
         }
     }
 
@@ -313,6 +347,19 @@ class ReservaController
         $config = require dirname(__DIR__, 2) . '/config/config.php';
 
         return (int) ($config['app']['horas_min_cancelacion'] ?? 72);
+    }
+
+    private function horasParaPagar(): int
+    {
+        $config = require dirname(__DIR__, 2) . '/config/config.php';
+
+        return (int) ($config['app']['horas_para_pagar'] ?? 24);
+    }
+
+    /** Hasta cuándo se puede pagar una reserva pendiente antes de que se cancele sola. */
+    private function vencimientoDelPago(array $reserva): DateTimeImmutable
+    {
+        return (new DateTimeImmutable($reserva['fechaReserva']))->modify('+' . $this->horasParaPagar() . ' hours');
     }
 
     private function enviarComprobante(?array $reserva): void

@@ -1,5 +1,5 @@
 -- =====================================================================
---  Aeroeb — Datos de prueba
+--  AeroEB — Datos de prueba
 --  TP Integrador · Entornos Gráficos · UTN FRR · 2026
 --
 --  Ejecutar después de scripts/schema.sql. Estos datos son solo para
@@ -17,6 +17,10 @@
 --  Los tres usuarios quedan en estadoCuenta = 'activo' para poder
 --  loguearse directo, sin pasar por la validación de correo.
 -- =====================================================================
+
+-- Sin esto, el cliente mysql de Windows lee el archivo como cp850 y guarda
+-- las tildes rotas ("Aerol├¡nea" en vez de "Aerolínea").
+SET NAMES utf8mb4;
 
 USE aeroeb;
 

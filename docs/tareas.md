@@ -73,6 +73,10 @@ punto 8, cuando repasemos accesibilidad y diseño.
 - [x] Envío del comprobante por correo
 - [x] Historial de reservas del pasajero y comprobante imprimible
 - [x] Cancelación con la regla de 72 horas y devolución del asiento al inventario
+- [x] Vencimiento de las reservas sin pagar: a las 24 h (`horas_para_pagar` en la
+      config) se cancelan solas al principio del siguiente pedido, sin cron
+- [ ] Agregar `'horas_para_pagar' => 24` al `config/config.php` de cada uno (si falta,
+      se usa 24 igual) y documentar el vencimiento en el diagrama de flujo de la reserva
 - [ ] Revisar el informe, punto 5.c y sección 11: el flujo documentado solo permite
       cancelar reservas **confirmadas**. En el código también se puede cancelar una
       `pendiente de pago` (sin la regla de 72 h), porque si no los asientos quedarían
@@ -86,6 +90,11 @@ punto 8, cuando repasemos accesibilidad y diseño.
 - [x] Solicitud de cuenta CEO, bloqueada hasta que el administrador la autoriza
 - [x] ABMC de los vuelos propios
 - [x] Alta de promociones (quedan en estado pendiente)
+- [x] Edición y eliminación de promociones. Editar vuelve a dejarla pendiente de
+      aprobación; eliminar solo se puede si ninguna reserva usó el código
+- [x] Regla de una sola promoción vigente por aerolínea: se controla al proponer o
+      editar (contra las aprobadas) y otra vez al aprobar
+- [x] Probar los casos 1 a 7 de `tests/manual/casos-de-prueba.md` contra la base
 - [x] Reportes de ocupación y ventas, solo de su propia aerolínea
 - [x] El otro lado del circuito quedó cerrado en el punto 7: desde `/admin/usuarios` se
       autorizan las cuentas de CEO y desde `/admin/promociones` se aprueban o deniegan
@@ -148,7 +157,7 @@ entre 30 y 90 días después de la carga.
 
 Se hizo después del punto 8, a partir de los wireframes del informe.
 
-- [x] El sitio pasa a llamarse **Aeroeb**. Se renombró en todo el repo: código, scripts,
+- [x] El sitio pasa a llamarse **AeroEB**. Se renombró en todo el repo: código, scripts,
       documentación, el nombre de la base de datos y el correo del administrador
       (`admin@aeroeb.com.ar`)
 - [x] Sistema de diseño propio en `public/assets/css/estilos.css`, construido sobre las
@@ -171,6 +180,36 @@ Se hizo después del punto 8, a partir de los wireframes del informe.
 
 De paso se corrigió un texto viejo: la pantalla de perfil todavía decía que las reservas
 "se construyen en el punto 5".
+
+## 8 ter. Revisión contra el enunciado (25/10/2026)
+
+Se recorrió el sitio entero con los tres roles (casos 8 a 16 de
+`tests/manual/casos-de-prueba.md`) y se corrigió lo que apareció:
+
+- [x] Historial de compras (`/mi-cuenta/compras`), que el enunciado pide como sección
+      propia del pasajero: muestra las reservas que se pagaron (regla 14)
+- [x] La ficha del vuelo y el formulario de reserva muestran la promoción vigente de
+      la aerolínea ("promociones aplicables", historia de usuario del pasajero)
+- [x] Los vuelos de una aerolínea dada de baja ya no se buscan ni se reservan
+- [x] Un vuelo de hoy que ya salió deja de estar a la venta (antes se miraba solo la fecha)
+- [x] Cancelar un vuelo cancela sus reservas, y una reserva de un vuelo que ya no está a
+      la venta no se puede pagar
+- [x] El CEO no puede cargar un vuelo con salida en el pasado
+- [x] Suspender una cuenta corta la sesión que el usuario tenía abierta
+- [x] Páginas 403 y 400 con el diseño del sitio, en vez de texto plano sin `<title>` ni `lang`
+- [x] El aviso de enlace de restablecer inválido no se mostraba nunca
+- [x] El comprobante solo se abre para reservas pagadas
+- [x] Regla 7, preferencias del usuario: el pasajero elige en Mi cuenta si quiere recibir
+      las novedades por correo, y al publicar una novedad el administrador puede mandarla
+      a los suscriptos. Cubre además el requerimiento "Newsletters" de la Guía Web.
+      Columna nueva `usuarios.recibeNovedades`: en una base ya cargada hay que correr
+      `scripts/migrations/2026_10_25_agrega_preferencia_recibir_novedades.sql`
+- [x] Bloqueo por intentos fallidos con las columnas `intentosFallidos` y `bloqueadoHasta`:
+      5 contraseñas incorrectas seguidas bloquean el ingreso 15 minutos. Restablecer la
+      contraseña lo levanta. El login correcto registra `ultimoAccesoUsuario`, que tampoco
+      se usaba
+- [ ] Actualizar el informe: sección 11 (columna nueva y uso de las de bloqueo) y los
+      requerimientos funcionales del punto 4.b (newsletter)
 
 ## 9. Despliegue
 

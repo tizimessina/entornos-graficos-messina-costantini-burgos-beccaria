@@ -10,10 +10,7 @@ $usuarioEnSesion = $haySesion ? \App\Core\Auth::user() : null;
 <header class="ae-encabezado">
     <div class="container py-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
         <div>
-            <a class="ae-marca" href="/">
-                <span class="ae-marca-punto" aria-hidden="true"></span>
-                Aeroeb
-            </a>
+            <?php require __DIR__ . '/marca.php'; ?>
             <p class="ae-bajada d-none d-sm-block">Compará y reservá vuelos de todas las aerolíneas</p>
         </div>
 
@@ -42,6 +39,7 @@ $usuarioEnSesion = $haySesion ? \App\Core\Auth::user() : null;
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/mi-cuenta">Mi perfil</a></li>
                         <li><a class="dropdown-item" href="/mi-cuenta/reservas">Mis reservas</a></li>
+                        <li><a class="dropdown-item" href="/mi-cuenta/compras">Mis compras</a></li>
 
                         <?php if (\App\Core\Auth::hasRole('ceo de aerolinea')): ?>
                             <li><a class="dropdown-item" href="/panel">Panel de aerolínea</a></li>

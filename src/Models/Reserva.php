@@ -29,15 +29,17 @@ class Reserva
 
         try {
             $stmt = $pdo->prepare(
-                'SELECT codAerolinea, precioVuelo, asientosDisponibles, estadoVuelo, fechaSalidaVuelo
-                   FROM vuelos
-                  WHERE codVuelo = :cod
+                'SELECT v.codAerolinea, v.precioVuelo, v.asientosDisponibles,
+                        (' . Vuelo::RESERVABLE . ') AS reservable
+                   FROM vuelos v
+                   JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
+                  WHERE v.codVuelo = :cod
                   FOR UPDATE'
             );
             $stmt->execute(['cod' => $codVuelo]);
             $vuelo = $stmt->fetch();
 
-            if (!$vuelo || $vuelo['estadoVuelo'] !== 'programado' || $vuelo['fechaSalidaVuelo'] < date('Y-m-d')) {
+            if (!$vuelo || !Vuelo::sePuedeReservar($vuelo)) {
                 $pdo->rollBack();
 
                 return ['ok' => false, 'error' => 'Este vuelo ya no está disponible para reservar.'];
@@ -129,7 +131,7 @@ class Reserva
         $stmt = Database::getInstance()->prepare(
             'SELECT r.codReserva, r.codigoReserva, r.codusuario, r.codVuelo, r.codPromocion,
                     r.cantidadAsientos, r.precioUnitario, r.descuentoAplicado, r.montoTotal,
-                    r.estadoReserva, r.fechaReserva, r.fechaPago, r.fechaCancelacion,
+                    r.estadoReserva, r.fechaReserva, r.fechaPago, r.fechaCancelacion, r.motivoCancelacion,
                     v.numeroVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo, v.horaSalidaVuelo,
                     a.nombreAerolinea, a.codigoIATA,
                     p.codigoPromocion
@@ -165,6 +167,43 @@ class Reserva
         return $stmt->fetchAll();
     }
 
+    /**
+     * Historial de compras: según la regla de negocio 14, una compra es una
+     * reserva que pasó de "pendiente de pago" a "confirmada". Se filtra por
+     * fechaPago y no por el estado actual, así una compra que después se
+     * canceló sigue apareciendo (con su estado) y el historial no se reescribe.
+     */
+    public static function comprasDelUsuario(int $codusuario, int $limite, int $offset): array
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT r.codReserva, r.codigoReserva, r.cantidadAsientos, r.montoTotal, r.estadoReserva,
+                    r.fechaPago, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo, v.horaSalidaVuelo,
+                    a.nombreAerolinea
+               FROM reservas r
+               JOIN vuelos v     ON v.codVuelo = r.codVuelo
+               JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
+              WHERE r.codusuario = :usuario AND r.fechaPago IS NOT NULL
+              ORDER BY r.fechaPago DESC
+              LIMIT :limite OFFSET :offset'
+        );
+        $stmt->bindValue(':usuario', $codusuario, PDO::PARAM_INT);
+        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function contarComprasDelUsuario(int $codusuario): int
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT COUNT(*) FROM reservas WHERE codusuario = :usuario AND fechaPago IS NOT NULL'
+        );
+        $stmt->execute(['usuario' => $codusuario]);
+
+        return (int) $stmt->fetchColumn();
+    }
+
     public static function contarDelUsuario(int $codusuario): int
     {
         $stmt = Database::getInstance()->prepare('SELECT COUNT(*) FROM reservas WHERE codusuario = :usuario');
@@ -173,17 +212,89 @@ class Reserva
         return (int) $stmt->fetchColumn();
     }
 
-    /** Pasa la reserva a confirmada. Devuelve false si ya no estaba pendiente de pago. */
+    /**
+     * Pasa la reserva a confirmada. Devuelve false si ya no estaba pendiente
+     * de pago, o si el vuelo ya no se puede reservar (se canceló, ya salió o
+     * la aerolínea se dio de baja): no se cobra un pasaje que no se va a usar.
+     */
     public static function confirmarPago(int $codReserva): bool
     {
         $stmt = Database::getInstance()->prepare(
-            "UPDATE reservas
-                SET estadoReserva = 'confirmada', fechaPago = NOW()
-              WHERE codReserva = :cod AND estadoReserva = 'pendiente de pago'"
+            "UPDATE reservas r
+               JOIN vuelos v     ON v.codVuelo = r.codVuelo
+               JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
+                SET r.estadoReserva = 'confirmada', r.fechaPago = NOW()
+              WHERE r.codReserva = :cod AND r.estadoReserva = 'pendiente de pago'
+                AND " . Vuelo::RESERVABLE
         );
         $stmt->execute(['cod' => $codReserva]);
 
         return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Cancela las reservas que pasaron más de $horas en "pendiente de pago".
+     * Si no, los asientos quedarían bloqueados para siempre por gente que
+     * reservó y nunca pagó. Devuelve cuántas venció.
+     *
+     * Se llama al principio de cada pedido (public/index.php) en vez de con un
+     * cron, porque los hostings gratuitos no suelen permitir tareas
+     * programadas. La primera consulta no bloquea nada, así que cuando no hay
+     * nada vencido, que es lo normal, el costo es una sola lectura por índice.
+     */
+    public static function vencerPendientes(int $horas): int
+    {
+        $pdo = Database::getInstance();
+
+        $sql = "SELECT codReserva, codPromocion
+                  FROM reservas
+                 WHERE estadoReserva = 'pendiente de pago'
+                   AND fechaReserva < NOW() - INTERVAL :horas HOUR";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':horas', $horas, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt->fetchColumn() === false) {
+            return 0;
+        }
+
+        $pdo->beginTransaction();
+
+        try {
+            // Se vuelve a leer con FOR UPDATE: entre la consulta de arriba y
+            // esta, el pasajero pudo haber pagado o cancelado la reserva.
+            $stmt = $pdo->prepare($sql . ' FOR UPDATE');
+            $stmt->bindValue(':horas', $horas, PDO::PARAM_INT);
+            $stmt->execute();
+            $vencidas = $stmt->fetchAll();
+
+            // Los asientos vuelven al vuelo por el trigger trg_reservas_cancelacion.
+            $cancelar = $pdo->prepare(
+                "UPDATE reservas
+                    SET estadoReserva = 'cancelada', fechaCancelacion = NOW(),
+                        motivoCancelacion = 'Venció el plazo para pagarla.'
+                  WHERE codReserva = :cod AND estadoReserva = 'pendiente de pago'"
+            );
+
+            foreach ($vencidas as $reserva) {
+                $cancelar->execute(['cod' => $reserva['codReserva']]);
+
+                if ($reserva['codPromocion'] !== null) {
+                    Promocion::liberarUso((int) $reserva['codPromocion']);
+                }
+            }
+
+            $pdo->commit();
+
+            return count($vencidas);
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+
+            throw $e;
+        }
     }
 
     /**

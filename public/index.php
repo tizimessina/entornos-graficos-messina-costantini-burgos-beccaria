@@ -30,8 +30,10 @@ use App\Controllers\PerfilController;
 use App\Controllers\ReservaController;
 use App\Controllers\SitioController;
 use App\Controllers\VueloController;
+use App\Core\Auth;
 use App\Core\Router;
 use App\Core\Session;
+use App\Models\Reserva;
 
 $rutaConfig = dirname(__DIR__) . '/config/config.php';
 
@@ -54,7 +56,7 @@ error_reporting(E_ALL);
 ob_start();
 
 $mostrarError500 = static function (string $detalle) use ($config): void {
-    error_log('Aeroeb: ' . $detalle);
+    error_log('AeroEB: ' . $detalle);
 
     while (ob_get_level() > 0) {
         ob_end_clean();
@@ -86,6 +88,11 @@ register_shutdown_function(static function () use ($mostrarError500): void {
 });
 
 Session::start();
+Auth::verificarCuentaVigente();
+
+// Antes de atender el pedido se cancelan las reservas que no se pagaron a
+// tiempo, así los asientos que muestra el sitio son siempre los reales.
+Reserva::vencerPendientes((int) ($config['app']['horas_para_pagar'] ?? 24));
 
 $router = new Router();
 
@@ -123,11 +130,13 @@ $router->post('/restablecer', [AuthController::class, 'restablecer']);
 $router->get('/mi-cuenta', [PerfilController::class, 'mostrar']);
 $router->post('/mi-cuenta/perfil', [PerfilController::class, 'actualizar']);
 $router->post('/mi-cuenta/password', [PerfilController::class, 'cambiarClave']);
+$router->post('/mi-cuenta/preferencias', [PerfilController::class, 'actualizarPreferencias']);
 
 // Reservas
 $router->get('/vuelos/{id}/reservar', [ReservaController::class, 'nueva']);
 $router->post('/reservas', [ReservaController::class, 'crear']);
 $router->get('/mi-cuenta/reservas', [ReservaController::class, 'misReservas']);
+$router->get('/mi-cuenta/compras', [ReservaController::class, 'misCompras']);
 $router->get('/reservas/{id}', [ReservaController::class, 'detalle']);
 $router->get('/reservas/{id}/pago', [ReservaController::class, 'mostrarPago']);
 $router->post('/reservas/{id}/pago', [ReservaController::class, 'confirmarPago']);
@@ -147,6 +156,9 @@ $router->post('/panel/vuelos/{id}/cancelar', [CeoController::class, 'cancelarVue
 $router->get('/panel/promociones', [CeoController::class, 'promociones']);
 $router->get('/panel/promociones/nueva', [CeoController::class, 'nuevaPromocion']);
 $router->post('/panel/promociones/nueva', [CeoController::class, 'crearPromocion']);
+$router->get('/panel/promociones/{id}/editar', [CeoController::class, 'editarPromocion']);
+$router->post('/panel/promociones/{id}/editar', [CeoController::class, 'actualizarPromocion']);
+$router->post('/panel/promociones/{id}/eliminar', [CeoController::class, 'eliminarPromocion']);
 
 $router->get('/panel/reportes', [CeoController::class, 'reportes']);
 

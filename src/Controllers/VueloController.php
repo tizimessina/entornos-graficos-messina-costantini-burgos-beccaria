@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Paginator;
 use App\Core\Vista;
+use App\Models\Promocion;
 use App\Models\Vuelo;
 
 class VueloController
@@ -33,7 +34,7 @@ class VueloController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Vuelos — Aeroeb';
+        $tituloPagina = 'Vuelos — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => null],
@@ -54,7 +55,7 @@ class VueloController
 
         if ($vuelo === null) {
             http_response_code(404);
-            $tituloPagina = 'Vuelo no encontrado — Aeroeb';
+            $tituloPagina = 'Vuelo no encontrado — AeroEB';
             $contenidoHtml = '<h1>Vuelo no encontrado</h1>'
                 . '<p>El vuelo que buscás no existe. <a href="/vuelos">Buscar vuelos</a>.</p>';
 
@@ -65,14 +66,15 @@ class VueloController
 
         $ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'];
 
-        $tituloPagina = $ruta . ' — Aeroeb';
+        $tituloPagina = $ruta . ' — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => '/vuelos'],
             ['texto' => $ruta, 'url' => null],
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/vuelo-detalle.php', [
-            'vuelo' => $vuelo,
+            'vuelo'     => $vuelo,
+            'promocion' => Promocion::vigenteDeAerolinea((int) $vuelo['codAerolinea']),
         ]);
 
         require dirname(__DIR__) . '/Views/layouts/base.php';

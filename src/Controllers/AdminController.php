@@ -34,7 +34,7 @@ class AdminController
     {
         $this->exigirAdmin();
 
-        $tituloPagina = 'Administración — Aeroeb';
+        $tituloPagina = 'Administración — AeroEB';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/admin/panel.php', [
             'resumen' => Reporte::resumenGlobal(),
@@ -297,6 +297,29 @@ class AdminController
             exit;
         }
 
+        // Solo puede haber una promoción vigente por aerolínea. El CEO ya lo
+        // controla al proponerla, pero dos pendientes pueden pisarse entre sí:
+        // la que se aprueba primero gana y la segunda se frena acá.
+        if ($decision === 'aprobada') {
+            $promocion = Promocion::find((int) $id);
+
+            $choca = $promocion === null ? null : Promocion::aprobadaSuperpuesta(
+                (int) $promocion['codAerolinea'],
+                (string) $promocion['fechaInicioPromocion'],
+                (string) $promocion['fechaFinPromocion'],
+                (int) $promocion['codPromocion']
+            );
+
+            if ($choca !== null) {
+                Session::flash('errores', [(int) $id => 'No se puede aprobar: la aerolínea ya tiene aprobada '
+                    . $choca['codigoPromocion'] . ' del ' . date('d/m/Y', strtotime($choca['fechaInicioPromocion']))
+                    . ' al ' . date('d/m/Y', strtotime($choca['fechaFinPromocion']))
+                    . ', y solo puede haber una promoción vigente por aerolínea. Denegala indicando ese motivo.']);
+                header('Location: /admin/promociones');
+                exit;
+            }
+        }
+
         if (!Promocion::resolver((int) $id, $decision, $motivo !== '' ? $motivo : null, (int) Auth::id())) {
             Session::flash('errores', ['general' => 'Esa promoción ya había sido resuelta.']);
             header('Location: /admin/promociones');
@@ -343,9 +366,10 @@ class AdminController
         $tituloPagina = 'Nueva novedad — Administración';
         $breadcrumbs = $this->breadcrumbs('Novedades', '/admin/novedades', 'Nueva');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/admin/novedad-form.php', [
-            'novedad' => null,
-            'datos'   => Session::getFlash('datos', []),
-            'errores' => Session::getFlash('errores', []),
+            'novedad'    => null,
+            'datos'      => Session::getFlash('datos', []),
+            'errores'    => Session::getFlash('errores', []),
+            'suscriptos' => Usuario::contarSuscriptosANovedades(),
         ]);
 
         $menuLateral = $this->menuLateral();
@@ -359,7 +383,15 @@ class AdminController
         $this->exigirCsrf();
 
         $datos = $this->datosDeNovedad();
+        $datos['enviarPorCorreo'] = isset($_POST['enviarPorCorreo']);
         $errores = $this->validarNovedad($datos);
+
+        // Mandar hoy una novedad que se publica más adelante adelantaría algo
+        // que en el sitio todavía no se ve.
+        if ($datos['enviarPorCorreo'] && !isset($errores['fechaPublicacionNovedad'])
+            && $datos['fechaPublicacionNovedad'] > date('Y-m-d')) {
+            $errores['enviarPorCorreo'] = 'Solo se puede mandar por correo una novedad que se publica hoy o antes.';
+        }
 
         if ($errores !== []) {
             Session::flash('errores', $errores);
@@ -368,11 +400,53 @@ class AdminController
             exit;
         }
 
-        Novedad::crear($datos, Auth::id());
+        $codNovedad = Novedad::crear($datos, Auth::id());
 
-        Session::flash('exito', 'Publicamos la novedad.');
+        if ($datos['enviarPorCorreo']) {
+            [$enviados, $total] = $this->enviarNovedadPorCorreo($codNovedad, $datos);
+            Session::flash('exito', $total === 0
+                ? 'Publicamos la novedad. No hay pasajeros suscriptos, así que no se mandó ningún correo.'
+                : "Publicamos la novedad y la mandamos por correo a $enviados de $total pasajero(s) suscripto(s).");
+        } else {
+            Session::flash('exito', 'Publicamos la novedad.');
+        }
+
         header('Location: /admin/novedades');
         exit;
+    }
+
+    /**
+     * Manda la novedad a los pasajeros que lo pidieron en sus preferencias.
+     * Se manda uno por uno, no con copia oculta: así nadie ve la dirección de
+     * otro y, si un envío falla, los demás salen igual.
+     *
+     * @return array{0: int, 1: int} enviados y total de suscriptos
+     */
+    private function enviarNovedadPorCorreo(int $codNovedad, array $datos): array
+    {
+        $config = require dirname(__DIR__, 2) . '/config/config.php';
+        $enlace = rtrim((string) ($config['app']['url'] ?? ''), '/') . '/novedades/' . $codNovedad;
+
+        $titulo = htmlspecialchars($datos['tituloNovedad'], ENT_QUOTES, 'UTF-8');
+        $texto = htmlspecialchars($datos['textoNovedad'], ENT_QUOTES, 'UTF-8');
+
+        $suscriptos = Usuario::suscriptosANovedades();
+        $enviados = 0;
+
+        foreach ($suscriptos as $suscripto) {
+            $cuerpo = '<p>Hola, ' . htmlspecialchars($suscripto['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
+                . '<h1>' . $titulo . '</h1>'
+                . '<p>' . $texto . '</p>'
+                . '<p><a href="' . htmlspecialchars($enlace, ENT_QUOTES, 'UTF-8') . '">Ver la novedad en AeroEB</a></p>'
+                . '<p>Recibís este correo porque lo pediste en las preferencias de tu cuenta. '
+                . 'Para dejar de recibirlo, desactivalo en Mi cuenta.</p>';
+
+            if (Mailer::enviar($suscripto['emailUsuario'], $suscripto['nombreUsuario'], 'Novedad de AeroEB: ' . $datos['tituloNovedad'], $cuerpo)) {
+                $enviados++;
+            }
+        }
+
+        return [$enviados, count($suscriptos)];
     }
 
     public function editarNovedad(string $id): void
@@ -529,8 +603,7 @@ class AdminController
     private function exigirCsrf(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar la página e intentá de nuevo.');
+            Csrf::rechazar();
         }
     }
 
@@ -646,14 +719,14 @@ class AdminController
     {
         $cuerpo = $estado === 'activo'
             ? '<p>Hola, ' . htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
-                . '<p>Habilitamos tu cuenta en Aeroeb. Ya podés iniciar sesión.</p>'
+                . '<p>Habilitamos tu cuenta en AeroEB. Ya podés iniciar sesión.</p>'
             : '<p>Hola, ' . htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
-                . '<p>Suspendimos tu cuenta en Aeroeb. Si creés que es un error, escribinos desde el formulario de contacto.</p>';
+                . '<p>Suspendimos tu cuenta en AeroEB. Si creés que es un error, escribinos desde el formulario de contacto.</p>';
 
         Mailer::enviar(
             $usuario['emailUsuario'],
             $usuario['nombreUsuario'],
-            $estado === 'activo' ? 'Tu cuenta de Aeroeb fue habilitada' : 'Tu cuenta de Aeroeb fue suspendida',
+            $estado === 'activo' ? 'Tu cuenta de AeroEB fue habilitada' : 'Tu cuenta de AeroEB fue suspendida',
             $cuerpo
         );
     }

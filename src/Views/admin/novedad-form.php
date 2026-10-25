@@ -3,6 +3,7 @@
  * @var array|null $novedad
  * @var array $datos
  * @var array $errores
+ * @var int|null $suscriptos Solo al publicar: pasajeros que piden las novedades por correo
  */
 $esEdicion = $novedad !== null;
 $accion = $esEdicion
@@ -97,6 +98,25 @@ $destacada = array_key_exists('destacadaNovedad', $datos)
                <?= $destacada ? 'checked' : '' ?>>
         <label class="form-check-label" for="destacadaNovedad">Destacar en la portada</label>
     </div>
+
+    <?php if (!$esEdicion): ?>
+        <?php $cantidadSuscriptos = (int) ($suscriptos ?? 0); ?>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="enviarPorCorreo" name="enviarPorCorreo" value="1"
+                   aria-describedby="ayuda-envio<?= isset($errores['enviarPorCorreo']) ? ' error-envio' : '' ?>"
+                   <?= !empty($datos['enviarPorCorreo']) ? 'checked' : '' ?>
+                   <?= isset($errores['enviarPorCorreo']) ? 'aria-invalid="true"' : '' ?>>
+            <label class="form-check-label" for="enviarPorCorreo">Mandarla por correo a los pasajeros suscriptos</label>
+            <p id="ayuda-envio" class="ae-apagado mb-0">
+                <?= $cantidadSuscriptos === 1
+                    ? 'Hay 1 pasajero que pidió recibir las novedades por correo.'
+                    : 'Hay ' . $cantidadSuscriptos . ' pasajeros que pidieron recibir las novedades por correo.' ?>
+            </p>
+            <?php if (isset($errores['enviarPorCorreo'])): ?>
+                <p id="error-envio" role="alert"><?= htmlspecialchars($errores['enviarPorCorreo'], ENT_QUOTES, 'UTF-8') ?></p>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <button class="btn btn-primary" type="submit"><?= $esEdicion ? 'Guardar cambios' : 'Publicar' ?></button>
 </form>

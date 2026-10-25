@@ -21,7 +21,7 @@ class PerfilController
 
         $usuario = Usuario::find((int) Auth::id());
 
-        $tituloPagina = 'Mi cuenta — Aeroeb';
+        $tituloPagina = 'Mi cuenta — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mi cuenta', 'url' => null],
@@ -42,8 +42,7 @@ class PerfilController
         Auth::requireLogin();
 
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $datos = [
@@ -77,13 +76,36 @@ class PerfilController
         exit;
     }
 
+    /**
+     * Preferencias del pasajero (regla de negocio 7). Por ahora hay una sola:
+     * recibir por correo las novedades que publica la administración. Es un
+     * checkbox, así que si no llega en el POST quiere decir que la desactivó.
+     */
+    public function actualizarPreferencias(): void
+    {
+        Auth::requireRole('usuario');
+
+        if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
+            Csrf::rechazar();
+        }
+
+        $recibe = isset($_POST['recibeNovedades']);
+
+        Usuario::actualizarPreferencias((int) Auth::id(), $recibe);
+
+        Session::flash('exito', $recibe
+            ? 'Listo: te vamos a mandar las novedades por correo.'
+            : 'Listo: ya no te mandamos las novedades por correo.');
+        header('Location: /mi-cuenta');
+        exit;
+    }
+
     public function cambiarClave(): void
     {
         Auth::requireLogin();
 
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $datos = [

@@ -1,5 +1,5 @@
 /* =====================================================================
-   Aeroeb — sistema de diseño
+   AeroEB — sistema de diseño
    Se carga después de Bootstrap. La mayor parte del trabajo se hace
    redefiniendo las variables --bs-* que Bootstrap 5.3 expone, así el
    HTML de las vistas queda limpio y el aspecto del sitio sale de acá.
@@ -205,12 +205,18 @@ summary:focus-visible,
     color: #ffffff;
 }
 
-.ae-marca-punto {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--ae-rosa);
-    box-shadow: 0 0 0 4px rgba(190, 24, 93, 0.25);
+/* El ícono es cuadrado y ya trae sus esquinas redondeadas. Se mide en rem
+   para que crezca junto con el texto si el usuario agranda la letra. */
+.ae-marca-logo {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+}
+
+/* "EB" en el rosa claro de la marca: sobre el violeta del encabezado da más
+   de 3:1, que es lo que pide WCAG 1.4.3 para texto grande y en negrita. */
+.ae-marca-eb {
+    color: #ff4d8d;
 }
 
 .ae-bajada {

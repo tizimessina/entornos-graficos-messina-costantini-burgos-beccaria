@@ -15,7 +15,7 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
         <div>
             <h1 class="mb-1">Comprobante de reserva</h1>
-            <p class="ae-apagado mb-0">Aeroeb · aeroeb.com.ar</p>
+            <p class="ae-apagado mb-0">AeroEB · aeroeb.com.ar</p>
         </div>
 
         <div class="text-end">
@@ -96,7 +96,7 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
     </div>
 
     <p class="ae-nota">
-        Aeroeb no opera vuelos: intermedia entre las aerolíneas adheridas y los pasajeros.
+        AeroEB no opera vuelos: intermedia entre las aerolíneas adheridas y los pasajeros.
         Presentá este localizador al hacer el check-in.
     </p>
 </article>

@@ -31,7 +31,7 @@ class CeoController
     {
         $codAerolinea = $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Panel de aerolínea — Aeroeb';
+        $tituloPagina = 'Panel de aerolínea — AeroEB';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/panel.php', [
             'aerolinea' => Aerolinea::find($codAerolinea),
@@ -57,7 +57,7 @@ class CeoController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis vuelos — Aeroeb';
+        $tituloPagina = 'Mis vuelos — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelos-listado.php', [
             'vuelos'    => Vuelo::todosDeAerolinea($codAerolinea, $paginador->porPagina, $paginador->offset),
@@ -75,7 +75,7 @@ class CeoController
     {
         $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Cargar vuelo — Aeroeb';
+        $tituloPagina = 'Cargar vuelo — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Cargar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
             'vuelo'   => null,
@@ -94,7 +94,7 @@ class CeoController
         $this->exigirCsrf();
 
         $datos = $this->datosDelFormularioDeVuelo();
-        $errores = $this->validarVuelo($datos);
+        $errores = $this->validarVuelo($datos, null);
 
         if ($errores !== []) {
             Session::flash('errores', $errores);
@@ -121,7 +121,7 @@ class CeoController
             return;
         }
 
-        $tituloPagina = 'Editar vuelo — Aeroeb';
+        $tituloPagina = 'Editar vuelo — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Editar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
             'vuelo'   => $vuelo,
@@ -148,7 +148,7 @@ class CeoController
         }
 
         $datos = $this->datosDelFormularioDeVuelo();
-        $errores = $this->validarVuelo($datos);
+        $errores = $this->validarVuelo($datos, $vuelo);
 
         // La capacidad no puede quedar por debajo de lo ya vendido: esas
         // reservas existen y hay que respetarlas.
@@ -195,7 +195,9 @@ class CeoController
 
         $this->avisarCancelacion($vuelo, $pasajeros);
 
-        Session::flash('exito', 'Cancelamos el vuelo y avisamos a ' . count($pasajeros) . ' pasajero(s) con reserva.');
+        Session::flash('exito', count($pasajeros) === 0
+            ? 'Cancelamos el vuelo. No tenía reservas.'
+            : 'Cancelamos el vuelo y sus ' . count($pasajeros) . ' reserva(s), y les avisamos a los pasajeros por correo.');
         header('Location: /panel/vuelos');
         exit;
     }
@@ -212,12 +214,13 @@ class CeoController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis promociones — Aeroeb';
+        $tituloPagina = 'Mis promociones — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis promociones');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promociones-listado.php', [
             'promociones' => Promocion::deAerolinea($codAerolinea, $paginador->porPagina, $paginador->offset),
             'paginador'   => $paginador,
             'exito'       => Session::getFlash('exito'),
+            'error'       => Session::getFlash('error'),
         ]);
 
         $menuLateral = $this->menuLateral();
@@ -229,11 +232,12 @@ class CeoController
     {
         $this->aerolineaDelCeo();
 
-        $tituloPagina = 'Proponer promoción — Aeroeb';
+        $tituloPagina = 'Proponer promoción — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis promociones', '/panel/promociones', 'Proponer promoción');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promocion-form.php', [
-            'datos'   => Session::getFlash('datos', []),
-            'errores' => Session::getFlash('errores', []),
+            'promocion' => null,
+            'datos'     => Session::getFlash('datos', []),
+            'errores'   => Session::getFlash('errores', []),
         ]);
 
         $menuLateral = $this->menuLateral();
@@ -246,39 +250,8 @@ class CeoController
         $codAerolinea = $this->aerolineaDelCeo();
         $this->exigirCsrf();
 
-        $datos = [
-            'codigoPromocion'      => strtoupper(trim((string) ($_POST['codigoPromocion'] ?? ''))),
-            'descripcionPromocion' => trim((string) ($_POST['descripcionPromocion'] ?? '')),
-            'descuentoPromocion'   => trim((string) ($_POST['descuentoPromocion'] ?? '')),
-            'fechaInicioPromocion' => trim((string) ($_POST['fechaInicioPromocion'] ?? '')),
-            'fechaFinPromocion'    => trim((string) ($_POST['fechaFinPromocion'] ?? '')),
-            'usosMaximos'          => trim((string) ($_POST['usosMaximos'] ?? '')),
-        ];
-
-        $validador = new Validator($datos);
-        $validador
-            ->required('codigoPromocion', 'El código')->maxLength('codigoPromocion', 20, 'El código')
-            ->required('descripcionPromocion', 'La descripción')->maxLength('descripcionPromocion', 200, 'La descripción')
-            ->required('descuentoPromocion', 'El descuento')->numeric('descuentoPromocion', 'El descuento')
-            ->required('fechaInicioPromocion', 'La fecha de inicio')->date('fechaInicioPromocion', 'La fecha de inicio')
-            ->required('fechaFinPromocion', 'La fecha de fin')->date('fechaFinPromocion', 'La fecha de fin')
-            ->numeric('usosMaximos', 'El tope de usos');
-
-        $errores = $validador->errors();
-
-        $descuento = (float) $datos['descuentoPromocion'];
-
-        if (!isset($errores['descuentoPromocion']) && ($descuento <= 0 || $descuento > 100)) {
-            $errores['descuentoPromocion'] = 'El descuento tiene que estar entre 0,01 y 100.';
-        }
-
-        if (!isset($errores['fechaFinPromocion']) && $datos['fechaFinPromocion'] < $datos['fechaInicioPromocion']) {
-            $errores['fechaFinPromocion'] = 'La fecha de fin no puede ser anterior a la de inicio.';
-        }
-
-        if (!isset($errores['codigoPromocion']) && Promocion::existeCodigo($datos['codigoPromocion'])) {
-            $errores['codigoPromocion'] = 'Ya existe una promoción con ese código.';
-        }
+        $datos = $this->datosDelFormularioDePromocion();
+        $errores = $this->validarPromocion($datos, $codAerolinea, null);
 
         if ($errores !== []) {
             Session::flash('errores', $errores);
@@ -294,6 +267,104 @@ class CeoController
         exit;
     }
 
+    public function editarPromocion(string $id): void
+    {
+        $codAerolinea = $this->aerolineaDelCeo();
+        $promocion = Promocion::findDeAerolinea((int) $id, $codAerolinea);
+
+        if ($promocion === null) {
+            $this->noEncontrado('La promoción que buscás no existe o no es de tu aerolínea.', '/panel/promociones', 'Volver a mis promociones');
+
+            return;
+        }
+
+        $tituloPagina = 'Editar promoción — AeroEB';
+        $breadcrumbs = $this->breadcrumbs('Mis promociones', '/panel/promociones', 'Editar promoción');
+        $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/promocion-form.php', [
+            'promocion' => $promocion,
+            'datos'     => Session::getFlash('datos', []),
+            'errores'   => Session::getFlash('errores', []),
+        ]);
+
+        $menuLateral = $this->menuLateral();
+
+        require dirname(__DIR__) . '/Views/layouts/base.php';
+    }
+
+    public function actualizarPromocion(string $id): void
+    {
+        $codAerolinea = $this->aerolineaDelCeo();
+        $this->exigirCsrf();
+
+        $promocion = Promocion::findDeAerolinea((int) $id, $codAerolinea);
+
+        if ($promocion === null) {
+            $this->noEncontrado('La promoción que querés editar no existe o no es de tu aerolínea.', '/panel/promociones', 'Volver a mis promociones');
+
+            return;
+        }
+
+        $codPromocion = (int) $promocion['codPromocion'];
+        $datos = $this->datosDelFormularioDePromocion();
+        $errores = $this->validarPromocion($datos, $codAerolinea, $codPromocion);
+
+        // El tope no puede quedar por debajo de los usos que ya hubo: esas
+        // reservas existen (y la base lo rechaza con un CHECK).
+        $usados = (int) $promocion['usosRealizados'];
+
+        if (!isset($errores['usosMaximos']) && $datos['usosMaximos'] !== '' && (int) $datos['usosMaximos'] < $usados) {
+            $errores['usosMaximos'] = "El código ya se usó $usados vez/veces: el tope no puede ser menor.";
+        }
+
+        if ($errores !== []) {
+            Session::flash('errores', $errores);
+            Session::flash('datos', $datos);
+            header('Location: /panel/promociones/' . $codPromocion . '/editar');
+            exit;
+        }
+
+        Promocion::actualizar($codPromocion, (int) Auth::id(), $datos);
+
+        Session::flash('exito', $promocion['estadoPromocion'] === 'pendiente'
+            ? 'Guardamos los cambios. La promoción sigue pendiente de aprobación.'
+            : 'Guardamos los cambios. La promoción volvió a quedar pendiente: hasta que la administración la apruebe de nuevo, el código no se puede usar.');
+        header('Location: /panel/promociones');
+        exit;
+    }
+
+    public function eliminarPromocion(string $id): void
+    {
+        $codAerolinea = $this->aerolineaDelCeo();
+        $this->exigirCsrf();
+
+        $promocion = Promocion::findDeAerolinea((int) $id, $codAerolinea);
+
+        if ($promocion === null) {
+            $this->noEncontrado('La promoción que querés eliminar no existe o no es de tu aerolínea.', '/panel/promociones', 'Volver a mis promociones');
+
+            return;
+        }
+
+        // Una promoción que ya se aplicó en una reserva forma parte del
+        // comprobante de esa compra: borrarla dejaría la reserva sin saber de
+        // dónde salió el descuento. Para que deje de aplicarse, alcanza con
+        // editarla (vuelve a quedar pendiente) o acortar su vigencia.
+        $usos = Promocion::reservasQueLaUsaron((int) $promocion['codPromocion']);
+
+        if ($usos > 0) {
+            Session::flash('error', 'No se puede eliminar ' . $promocion['codigoPromocion'] . ': ya se usó en '
+                . $usos . ' reserva(s). Si querés que deje de aplicarse, editala y cambiale la fecha de fin.');
+            header('Location: /panel/promociones');
+            exit;
+        }
+
+        Promocion::eliminar((int) $promocion['codPromocion'], $codAerolinea);
+
+        Session::flash('exito', 'Eliminamos la promoción ' . $promocion['codigoPromocion'] . '.');
+        header('Location: /panel/promociones');
+        exit;
+    }
+
     // --- Reportes ---------------------------------------------------------
 
     public function reportes(): void
@@ -303,7 +374,7 @@ class CeoController
         $desde = trim((string) ($_GET['desde'] ?? date('Y-m-01')));
         $hasta = trim((string) ($_GET['hasta'] ?? date('Y-m-d')));
 
-        $tituloPagina = 'Reportes — Aeroeb';
+        $tituloPagina = 'Reportes — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Reportes');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/reportes.php', [
             'ocupacion'      => Reporte::ocupacionDeAerolinea($codAerolinea),
@@ -328,8 +399,7 @@ class CeoController
         $codAerolinea = Auth::user()['codAerolinea'] ?? null;
 
         if ($codAerolinea === null) {
-            http_response_code(403);
-            exit('Tu cuenta no tiene una aerolínea asignada. Escribinos desde el formulario de contacto.');
+            Auth::prohibir('Tu cuenta no tiene una aerolínea asignada. Escribinos desde el formulario de contacto.');
         }
 
         return (int) $codAerolinea;
@@ -360,14 +430,16 @@ class CeoController
             'origenVuelo'      => trim((string) ($_POST['origenVuelo'] ?? '')),
             'destinoVuelo'     => trim((string) ($_POST['destinoVuelo'] ?? '')),
             'fechaSalidaVuelo' => trim((string) ($_POST['fechaSalidaVuelo'] ?? '')),
-            'horaSalidaVuelo'  => trim((string) ($_POST['horaSalidaVuelo'] ?? '')),
+            // Algunos navegadores mandan los segundos (09:30:00): se guarda HH:MM.
+            'horaSalidaVuelo'  => substr(trim((string) ($_POST['horaSalidaVuelo'] ?? '')), 0, 5),
             'duracionMinutos'  => trim((string) ($_POST['duracionMinutos'] ?? '')),
             'precioVuelo'      => trim((string) ($_POST['precioVuelo'] ?? '')),
             'capacidadTotal'   => trim((string) ($_POST['capacidadTotal'] ?? '')),
         ];
     }
 
-    private function validarVuelo(array $datos): array
+    /** Al editar, $vueloActual es el vuelo como está guardado. */
+    private function validarVuelo(array $datos, ?array $vueloActual): array
     {
         $validador = new Validator($datos);
         $validador
@@ -382,6 +454,10 @@ class CeoController
 
         $errores = $validador->errors();
 
+        if (!isset($errores['horaSalidaVuelo']) && !preg_match('/^([01]\d|2[0-3]):[0-5]\d$/', $datos['horaSalidaVuelo'])) {
+            $errores['horaSalidaVuelo'] = 'La hora de salida no es válida.';
+        }
+
         // Las mismas reglas que tienen los CHECK de la base, para avisarlas con
         // un mensaje claro en vez de dejar que explote la restricción.
         if (!isset($errores['destinoVuelo']) && $datos['origenVuelo'] !== '' && $datos['origenVuelo'] === $datos['destinoVuelo']) {
@@ -394,6 +470,81 @@ class CeoController
 
         if (!isset($errores['capacidadTotal']) && (int) $datos['capacidadTotal'] <= 0) {
             $errores['capacidadTotal'] = 'La capacidad tiene que ser mayor que cero.';
+        }
+
+        // No se puede poner a la venta un vuelo que ya salió. Al editar se
+        // controla solo si cambió la salida: así un vuelo viejo se puede
+        // seguir corrigiendo (por ejemplo, el número) sin que esto lo frene.
+        if (!isset($errores['fechaSalidaVuelo']) && !isset($errores['horaSalidaVuelo'])) {
+            $salida = $datos['fechaSalidaVuelo'] . ' ' . $datos['horaSalidaVuelo'];
+            $cambio = $vueloActual === null
+                || $salida !== $vueloActual['fechaSalidaVuelo'] . ' ' . substr((string) $vueloActual['horaSalidaVuelo'], 0, 5);
+
+            if ($cambio && strtotime($salida) <= time()) {
+                $errores['fechaSalidaVuelo'] = 'La salida tiene que ser posterior a este momento.';
+            }
+        }
+
+        return $errores;
+    }
+
+    private function datosDelFormularioDePromocion(): array
+    {
+        return [
+            'codigoPromocion'      => strtoupper(trim((string) ($_POST['codigoPromocion'] ?? ''))),
+            'descripcionPromocion' => trim((string) ($_POST['descripcionPromocion'] ?? '')),
+            'descuentoPromocion'   => trim((string) ($_POST['descuentoPromocion'] ?? '')),
+            'fechaInicioPromocion' => trim((string) ($_POST['fechaInicioPromocion'] ?? '')),
+            'fechaFinPromocion'    => trim((string) ($_POST['fechaFinPromocion'] ?? '')),
+            'usosMaximos'          => trim((string) ($_POST['usosMaximos'] ?? '')),
+        ];
+    }
+
+    /** Al editar, $exceptoCod es la propia promoción, para que no choque consigo misma. */
+    private function validarPromocion(array $datos, int $codAerolinea, ?int $exceptoCod): array
+    {
+        $validador = new Validator($datos);
+        $validador
+            ->required('codigoPromocion', 'El código')->maxLength('codigoPromocion', 20, 'El código')
+            ->required('descripcionPromocion', 'La descripción')->maxLength('descripcionPromocion', 200, 'La descripción')
+            ->required('descuentoPromocion', 'El descuento')->numeric('descuentoPromocion', 'El descuento')
+            ->required('fechaInicioPromocion', 'La fecha de inicio')->date('fechaInicioPromocion', 'La fecha de inicio')
+            ->required('fechaFinPromocion', 'La fecha de fin')->date('fechaFinPromocion', 'La fecha de fin')
+            ->numeric('usosMaximos', 'El tope de usos');
+
+        $errores = $validador->errors();
+
+        $descuento = (float) $datos['descuentoPromocion'];
+
+        if (!isset($errores['descuentoPromocion']) && ($descuento <= 0 || $descuento > 100)) {
+            $errores['descuentoPromocion'] = 'El descuento tiene que estar entre 0,01 y 100.';
+        }
+
+        if (!isset($errores['fechaFinPromocion']) && $datos['fechaFinPromocion'] < $datos['fechaInicioPromocion']) {
+            $errores['fechaFinPromocion'] = 'La fecha de fin no puede ser anterior a la de inicio.';
+        }
+
+        if (!isset($errores['codigoPromocion']) && Promocion::existeCodigo($datos['codigoPromocion'], $exceptoCod)) {
+            $errores['codigoPromocion'] = 'Ya existe una promoción con ese código.';
+        }
+
+        // Solo puede haber una promoción vigente por aerolínea. La regla se
+        // vuelve a controlar al aprobarla, pero conviene avisarle al CEO ahora
+        // y no que se entere cuando la administración la rechace.
+        if (!isset($errores['fechaInicioPromocion']) && !isset($errores['fechaFinPromocion'])) {
+            $choca = Promocion::aprobadaSuperpuesta(
+                $codAerolinea,
+                $datos['fechaInicioPromocion'],
+                $datos['fechaFinPromocion'],
+                $exceptoCod
+            );
+
+            if ($choca !== null) {
+                $errores['fechaInicioPromocion'] = 'Esas fechas se pisan con ' . $choca['codigoPromocion']
+                    . ', que ya está aprobada del ' . date('d/m/Y', strtotime($choca['fechaInicioPromocion']))
+                    . ' al ' . date('d/m/Y', strtotime($choca['fechaFinPromocion']))
+                    . '. Solo puede haber una promoción vigente por aerolínea a la vez.';
+            }
         }
 
         return $errores;
@@ -418,12 +569,13 @@ class CeoController
         }
     }
 
-    private function noEncontrado(string $mensaje): void
+    private function noEncontrado(string $mensaje, string $volverA = '/panel/vuelos', string $textoVolver = 'Volver a mis vuelos'): void
     {
         http_response_code(404);
-        $tituloPagina = 'No encontrado — Aeroeb';
+        $tituloPagina = 'No encontrado — AeroEB';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
-            . '<p><a href="/panel/vuelos">Volver a mis vuelos</a></p>';
+            . '<p><a href="' . htmlspecialchars($volverA, ENT_QUOTES, 'UTF-8') . '">'
+            . htmlspecialchars($textoVolver, ENT_QUOTES, 'UTF-8') . '</a></p>';
 
         $menuLateral = $this->menuLateral();
 
@@ -433,8 +585,7 @@ class CeoController
     private function exigirCsrf(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar la página e intentá de nuevo.');
+            Csrf::rechazar();
         }
     }
 

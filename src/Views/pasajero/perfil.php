@@ -101,6 +101,28 @@
 </div>
 </div>
 
+<?php if ($usuario['tipoUsuario'] === 'usuario'): ?>
+<section class="ae-panel mt-4" aria-labelledby="titulo-preferencias">
+    <h2 id="titulo-preferencias" class="h5 mt-0">Preferencias</h2>
+
+    <form method="post" action="/mi-cuenta/preferencias">
+        <?= \App\Core\Csrf::field() ?>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="recibeNovedades" name="recibeNovedades" value="1"
+                   aria-describedby="ayuda-novedades"
+                   <?= (int) $usuario['recibeNovedades'] === 1 ? 'checked' : '' ?>>
+            <label class="form-check-label" for="recibeNovedades">Recibir las novedades por correo</label>
+            <p id="ayuda-novedades" class="ae-apagado mb-0">
+                Avisos de nuevas rutas, cambios en los aeropuertos y promociones. Lo podés desactivar cuando quieras.
+            </p>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Guardar preferencias</button>
+    </form>
+</section>
+<?php endif; ?>
+
 <section class="ae-panel mt-4" aria-labelledby="titulo-reservas">
     <h2 id="titulo-reservas" class="h5 mt-0">Mis reservas</h2>
     <p class="ae-apagado">
@@ -108,4 +130,5 @@
         comprobante de las confirmadas y la opción de cancelar.
     </p>
     <a class="btn btn-primary" href="/mi-cuenta/reservas">Ver mis reservas</a>
+    <a class="btn btn-outline-secondary" href="/mi-cuenta/compras">Ver mis compras</a>
 </section>

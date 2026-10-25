@@ -3,12 +3,12 @@
      "uri"       : "estilos.css",
      "checkedby" : "http://www.w3.org/2005/07/css-validator",
      "csslevel"  : "css3",
-     "date"      : "2026-10-22T10:46:44Z",
-     "timestamp" : "1792666004225",
+     "date"      : "2026-10-25T06:30:03Z",
+     "timestamp" : "1792953003138",
      "validity"  : true,
      "result"    : {
 		"errorcount"   : 0,
-		"warningcount" : 25
+		"warningcount" : 23
                    }
        ,
      "warnings"   : [
@@ -22,7 +22,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 247,
+         "line"    : 253,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -30,7 +30,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 255,
+         "line"    : 261,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -38,15 +38,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 314,
-         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
-         "type"    :  "css-variable",
-         "level"   : 0
-      }
-     ,
-      {
-         "source"  : "file://localhost/estilos.css",
-         "line"    : 317,
+         "line"    : 320,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -62,7 +54,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 331,
+         "line"    : 329,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -70,7 +62,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 346,
+         "line"    : 337,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -78,7 +70,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 380,
+         "line"    : 352,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -86,7 +78,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 418,
+         "line"    : 386,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -94,16 +86,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 470,
-       "context" :  ".form-check-input:checked", 
-         "message" :  "Same color for \u201Cbackground-color\u201D and \u201Cborder-color\u201D",
-         "type"    :  "same-colors",
-         "level"   : 1
-      }
-     ,
-      {
-         "source"  : "file://localhost/estilos.css",
-         "line"    : 488,
+         "line"    : 424,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -111,7 +94,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 559,
+         "line"    : 494,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -119,7 +102,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 638,
+         "line"    : 565,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -127,7 +110,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 748,
+         "line"    : 644,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -135,7 +118,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 789,
+         "line"    : 754,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -143,7 +126,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 816,
+         "line"    : 795,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -151,7 +134,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 847,
+         "line"    : 822,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -159,7 +142,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 850,
+         "line"    : 853,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -167,7 +150,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 855,
+         "line"    : 856,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -175,16 +158,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 927,
-       "context" :  ".ae-paso[aria-current=\"step\"]", 
-         "message" :  "Same color for \u201Cbackground-color\u201D and \u201Cborder-color\u201D",
-         "type"    :  "same-colors",
-         "level"   : 1
-      }
-     ,
-      {
-         "source"  : "file://localhost/estilos.css",
-         "line"    : 950,
+         "line"    : 861,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -192,7 +166,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 987,
+         "line"    : 956,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -200,7 +174,7 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 995,
+         "line"    : 993,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
@@ -208,7 +182,15 @@
      ,
       {
          "source"  : "file://localhost/estilos.css",
-         "line"    : 1013,
+         "line"    : 1001,
+         "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
+         "type"    :  "css-variable",
+         "level"   : 0
+      }
+     ,
+      {
+         "source"  : "file://localhost/estilos.css",
+         "line"    : 1019,
          "message" :  "Due to their dynamic nature, CSS variables are currently not statically checked",
          "type"    :  "css-variable",
          "level"   : 0
