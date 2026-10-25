@@ -146,7 +146,10 @@ class Reserva
         return $stmt->fetch() ?: null;
     }
 
-    public static function delUsuario(int $codusuario, int $limite, int $offset): array
+    /** Los valores del ENUM reservas.estadoReserva, en el orden del filtro de "Mis reservas". */
+    public const ESTADOS = ['pendiente de pago', 'confirmada', 'cancelada'];
+
+    public static function delUsuario(int $codusuario, int $limite, int $offset, ?string $estado = null): array
     {
         $stmt = Database::getInstance()->prepare(
             'SELECT r.codReserva, r.codigoReserva, r.cantidadAsientos, r.montoTotal, r.estadoReserva,
@@ -156,10 +159,13 @@ class Reserva
                JOIN vuelos v     ON v.codVuelo = r.codVuelo
                JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
               WHERE r.codusuario = :usuario
+                AND (:estado IS NULL OR r.estadoReserva = :estado2)
               ORDER BY r.fechaReserva DESC
               LIMIT :limite OFFSET :offset'
         );
         $stmt->bindValue(':usuario', $codusuario, PDO::PARAM_INT);
+        $stmt->bindValue(':estado', $estado);
+        $stmt->bindValue(':estado2', $estado);
         $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
@@ -204,10 +210,13 @@ class Reserva
         return (int) $stmt->fetchColumn();
     }
 
-    public static function contarDelUsuario(int $codusuario): int
+    public static function contarDelUsuario(int $codusuario, ?string $estado = null): int
     {
-        $stmt = Database::getInstance()->prepare('SELECT COUNT(*) FROM reservas WHERE codusuario = :usuario');
-        $stmt->execute(['usuario' => $codusuario]);
+        $stmt = Database::getInstance()->prepare(
+            'SELECT COUNT(*) FROM reservas
+              WHERE codusuario = :usuario AND (:estado IS NULL OR estadoReserva = :estado2)'
+        );
+        $stmt->execute(['usuario' => $codusuario, 'estado' => $estado, 'estado2' => $estado]);
 
         return (int) $stmt->fetchColumn();
     }

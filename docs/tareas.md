@@ -211,6 +211,84 @@ Se recorrió el sitio entero con los tres roles (casos 8 a 16 de
 - [ ] Actualizar el informe: sección 11 (columna nueva y uso de las de bloqueo) y los
       requerimientos funcionales del punto 4.b (newsletter)
 
+## 8 quater. Revisión contra los wireframes del informe y los dos enunciados (25/10/2026)
+
+Se compararon las pantallas con los wireframes del punto 5.b del informe (G9_E1_EG2026.pdf)
+y el código con el enunciado del TP y la guía general de la cátedra. Lo que faltaba:
+
+- [x] Sección **Institucional** (está en el árbol de contenidos y en el mapa del sitio):
+      Quiénes somos, Preguntas frecuentes y Términos y condiciones, enlazadas desde el pie.
+      El pie suma además la fecha de "Última actualización" que pide la plantilla base
+- [x] Buscador (wireframes 3 y 4, PAS-06 y PAS-07): rango de fechas, cantidad de pasajeros,
+      precio mínimo, filtro por horario de salida y por aerolínea. Con varios pasajeros solo
+      aparecen los vuelos con lugar para todos, y la cantidad pasa sola al paso de reserva
+- [x] Pago (wireframe 7): campos de tarjeta del pago simulado. Se valida solo el formato
+      (dígito verificador de Luhn, vencimiento, código) y **no se guarda ni se manda a ningún
+      lado**. Tarjeta de prueba: 4111 1111 1111 1111
+- [x] Mis reservas (wireframe 8): barra lateral de "Mi cuenta" y filtro por estado
+- [x] Panel de la aerolínea (wireframe 9): métricas de ocupación promedio y ventas del mes,
+      botones de acceso rápido, tabla de próximos vuelos con la ocupación y ventas por mes.
+      Nueva acción **Duplicar vuelo**
+- [x] Panel de administración (wireframe 10): promociones pendientes (se aprueban desde ahí),
+      cuentas de CEO por autorizar y mensajes sin leer
+- [x] Contacto (wireframe 11): el asunto es una lista y la dirección pasa a Rosario, Santa Fe
+      (decía Resistencia, Chaco)
+- [x] Registro (wireframe 6): casilla obligatoria de aceptar los términos y condiciones
+- [x] **Eliminar vuelo**, que el enunciado pide en "Gestión de Vuelos" y no existía: se
+      borra solo si nunca tuvo reservas; si tuvo, se cancela para no perder el historial
+- [x] Validación del lado del cliente con mensajes en español (`public/assets/js/app.js`): sin
+      esto los mensajes de HTML5 salían en el idioma del navegador
+- [x] Correo de confirmación al cancelar una reserva, como dice el flujo 3 del informe
+- [x] La conexión a MySQL usa la misma zona horaria que PHP (`SET time_zone` en
+      `Database.php`). En un hosting con MySQL en UTC, el vencimiento de las reservas, los
+      tokens y el bloqueo del login quedaban corridos 3 horas
+- [x] De paso: el título y la nota de la caja de búsqueda de la portada eran invisibles
+      (blanco sobre blanco), y el menú lateral de los paneles marcaba dos ítems a la vez
+- [x] `composer.lock` actualizado (el content-hash no coincidía desde que se renombró el paquete)
+- [ ] Actualizar el informe: el wireframe 6 pide Nombre y Apellido separados, pero el modelo
+      mínimo del enunciado tiene un solo `nombreUsuario`, así que quedó un solo campo. Hay
+      que justificarlo o ajustar el wireframe. Lo mismo con la "encuesta de satisfacción en
+      el pie" del punto 6 del informe, que no se hizo: sacarla del informe o justificarla
+- [ ] Volver a pasar el validador del W3C sobre las páginas nuevas (institucionales) y
+      las modificadas, y guardar los reportes en `docs/validaciones/`
+
+### Correcciones de la profesora en la exposición
+
+- [x] **Base de datos en los diagramas de flujo:** se rehicieron en Mermaid con el cilindro
+      de la base en cada paso que consulta o guarda. Se corrigieron además tres cajas que no
+      coincidían con el sitio (reenviar el correo, sugerir fechas cercanas y "solo se cancela
+      si está confirmada") y se sumó el flujo del formulario de contacto.
+      → [`docs/diagramas/flujos.md`](diagramas/flujos.md)
+- [x] **Mapa de navegación (árbol funcional):** Mi cuenta suma Mis reservas y Mis compras;
+      se sacaron las páginas que no existen (Boletín, Cambiar contraseña, Cuentas de CEO
+      aparte de Usuarios) y las herramientas transversales se explican aparte.
+      → [`docs/diagramas/arbol-funcional.md`](diagramas/arbol-funcional.md)
+- [x] **Botones juntos y textual o contextual:** la tabla de elementos de navegación agrupa
+      los botones en una fila y tiene la columna Tipo.
+      → [`docs/diagramas/navegacion.md`](diagramas/navegacion.md)
+- [x] **Wireframes:** se sacó lo que no tenía sentido (Accesibilidad y Ayuda en el pie,
+      Institucional en el menú, fecha de vuelta, "Directo", la caja de reserva duplicada,
+      Imprimir detalle, Cerrar sesión en los menús laterales, teléfono inventado) y se
+      rehicieron en Mermaid. → [`docs/bocetos/01-wireframes/`](bocetos/01-wireframes/)
+- [x] El sitio sigue a los wireframes nuevos: Institucional pasó del menú al pie, se
+      borraron las páginas de Privacidad y Accesibilidad, y el botón Imprimir del detalle
+      del vuelo. Los campos de tarjeta del pago se mantienen
+
+### Checklist de la cátedra (Guía Web)
+
+Completado ítem por ítem en [`checklists/comprobacion-guia-web.md`](checklists/comprobacion-guia-web.md),
+para el punto 14 del informe. Lo que no se cumplía y se corrigió:
+
+- [x] Página de **Ayuda** (el checklist la pide dos veces): vuelve, ahora con un glosario
+- [x] **Campos obligatorios destacados** con asterisco y aclaración, en todos los formularios
+- [x] **Enlaces visitados** diferenciados (violeta)
+- [x] **Contacto virtual y físico en el pie** de todas las páginas
+- [x] **Misión, visión, objetivos y equipo** en Quiénes somos
+- [x] Teléfono de contacto de muestra (+54 341 000-0000) en el pie y en Contacto
+- [ ] Los ítems "Pendiente" del checklist, que dependen de la URL pública
+- [ ] Reemplazar en el informe (puntos 5.a, 5.b, 5.c y 6) las figuras viejas por las de
+      `docs/diagramas/png/` y `docs/bocetos/01-wireframes/png/`, y la tabla de navegación
+
 ## 9. Despliegue
 
 - [ ] Conseguir un hosting y subir el sitio

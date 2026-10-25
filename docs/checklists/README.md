@@ -184,7 +184,7 @@ enteras en cero, y está bien que así sea.
 ## 11. Formato General
 
 - [x] Posee carátula con datos de identificación del equipo como del trabajo
-  - *Falta completar legajos y correos de tres integrantes.*
+  - *Legajos y correos de los cuatro integrantes completos en el README (sacados de la carátula del informe).*
 - [ ] Posee Indice completo navegable
   - *El índice está, pero como texto plano. Hay que reemplazarlo por una tabla de contenido
     navegable (en Google Docs: Insertar → Tabla de contenido).*
@@ -203,19 +203,18 @@ enteras en cero, y está bien que así sea.
 
 ## 14. Estructura del Sitio
 
-- [ ] Realizó los diagramas de estructura de todas las páginas.
-  - *Faltan: son los wireframes de las 10 páginas que lista el informe en 5.b.*
-- [ ] Realizó los diagramas de flujo de todas las páginas con transacción.
-  - *Están los tres críticos (registro, búsqueda/reserva/pago y cancelación) escritos en
-    Mermaid dentro del informe. Falta exportarlos a imagen y guardarlos en `docs/diagramas/`,
-    y sumar el del formulario de contacto.*
+- [x] Realizó los diagramas de estructura de todas las páginas.
+  - *Doce wireframes en Mermaid, con su imagen, en `docs/bocetos/01-wireframes/`.*
+- [x] Realizó los diagramas de flujo de todas las páginas con transacción.
+  - *Registro, reserva y pago, cancelación y contacto, con la base de datos en cada
+    consulta, en `docs/diagramas/flujos.md` y como imagen en `docs/diagramas/png/`.*
 
 ## 15. Sistema de Navegación
 
 - [x] Definió el sistema de navegación.
   - *Informe, sección 6: consistente, uniforme y visible, con la lista de elementos.*
-- [ ] Listó todos los elementos de navegación del sitio clasificándolos en Textuales y Contextuales.
-  - *El informe los lista, pero no los clasifica en esas dos categorías. Falta esa columna.*
+- [x] Listó todos los elementos de navegación del sitio clasificándolos en Textuales y Contextuales.
+  - *Tabla con la columna Tipo en `docs/diagramas/navegacion.md`. Falta pasarla al informe.*
 
 ## 16. Diseño Visual
 

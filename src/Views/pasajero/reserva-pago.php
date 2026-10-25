@@ -3,6 +3,8 @@
  * @var array $reserva
  * @var \DateTimeImmutable $vencimiento
  * @var string|null $exito
+ * @var array $errores
+ * @var array $datos
  */
 $pasoActual = 3;
 $total = (float) $reserva['montoTotal'];
@@ -74,12 +76,63 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
 
             <p class="ae-apagado">
                 AeroEB no procesa pagos reales: el pago es una simulación para el trabajo
-                práctico. Al confirmar, la reserva queda confirmada y te mandamos el
-                comprobante por correo.
+                práctico. Los datos de la tarjeta solo se revisan de formato, no se guardan
+                ni se mandan a ningún lado. <strong>No uses una tarjeta real:</strong> podés
+                probar con la 4111 1111 1111 1111.
             </p>
+
+            <?php if (!empty($errores)): ?>
+                <p role="alert">Revisá los datos de la tarjeta: hay <?= count($errores) ?> error(es).</p>
+            <?php endif; ?>
 
             <form method="post" action="/reservas/<?= (int) $reserva['codReserva'] ?>/pago">
                 <?= \App\Core\Csrf::field() ?>
+
+                <div>
+                    <label class="form-label" for="titular">Titular de la tarjeta</label>
+                    <input class="form-control" id="titular" name="titular" type="text" maxlength="100" required autocomplete="off"
+                           value="<?= htmlspecialchars($datos['titular'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                           <?= isset($errores['titular']) ? 'aria-invalid="true" aria-describedby="error-titular"' : '' ?>>
+                    <?php if (isset($errores['titular'])): ?>
+                        <p id="error-titular" role="alert"><?= htmlspecialchars($errores['titular'], ENT_QUOTES, 'UTF-8') ?></p>
+                    <?php endif; ?>
+                </div>
+                <div>
+                    <label class="form-label" for="tarjeta">Número de tarjeta</label>
+                    <input class="form-control" id="tarjeta" name="tarjeta" type="text" inputmode="numeric" maxlength="23" required autocomplete="off"
+                           pattern="[0-9 ]{13,23}" placeholder="0000 0000 0000 0000"
+                           data-mensaje="Escribí los números de la tarjeta, sin letras."
+                           <?= isset($errores['tarjeta']) ? 'aria-invalid="true" aria-describedby="error-tarjeta"' : '' ?>>
+                    <?php if (isset($errores['tarjeta'])): ?>
+                        <p id="error-tarjeta" role="alert"><?= htmlspecialchars($errores['tarjeta'], ENT_QUOTES, 'UTF-8') ?></p>
+                    <?php endif; ?>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div>
+                            <label class="form-label" for="vencimiento">Vencimiento</label>
+                            <input class="form-control" id="vencimiento" name="vencimiento" type="text" inputmode="numeric" maxlength="5" required autocomplete="off"
+                                   pattern="(0[1-9]|1[0-2])/[0-9]{2}" placeholder="mm/aa" data-mensaje="Usá el formato mm/aa, por ejemplo 08/29."
+                                   value="<?= htmlspecialchars($datos['vencimiento'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                   <?= isset($errores['vencimiento']) ? 'aria-invalid="true" aria-describedby="error-vencimiento"' : '' ?>>
+                            <?php if (isset($errores['vencimiento'])): ?>
+                                <p id="error-vencimiento" role="alert"><?= htmlspecialchars($errores['vencimiento'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div>
+                            <label class="form-label" for="codigo">Código de seguridad</label>
+                            <input class="form-control" id="codigo" name="codigo" type="password" inputmode="numeric" maxlength="4" required autocomplete="off"
+                                   pattern="[0-9]{3,4}" data-mensaje="Son 3 o 4 números."
+                                   <?= isset($errores['codigo']) ? 'aria-invalid="true" aria-describedby="error-codigo"' : '' ?>>
+                            <?php if (isset($errores['codigo'])): ?>
+                                <p id="error-codigo" role="alert"><?= htmlspecialchars($errores['codigo'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
                 <button class="btn btn-primary w-100" type="submit">
                     Confirmar pago de $<?= number_format($total, 2, ',', '.') ?>
                 </button>

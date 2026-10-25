@@ -41,13 +41,13 @@
 
                 <div class="col-12 col-lg-9">
                     <main id="contenido">
-                        <?= $contenidoHtml ?? '' ?>
+                        <?= \App\Helpers\Formato::marcarObligatorios($contenidoHtml ?? '') ?>
                     </main>
                 </div>
             </div>
         <?php else: ?>
             <main id="contenido">
-                <?= $contenidoHtml ?? '' ?>
+                <?= \App\Helpers\Formato::marcarObligatorios($contenidoHtml ?? '') ?>
             </main>
         <?php endif; ?>
     </div>

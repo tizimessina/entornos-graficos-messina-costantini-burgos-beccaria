@@ -2,6 +2,7 @@
 /**
  * @var array $reservas
  * @var \App\Core\Paginator $paginador
+ * @var string|null $estado
  * @var string|null $exito
  * @var string|null $error
  */
@@ -18,7 +19,30 @@ use App\Helpers\Formato;
     <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
 <?php endif; ?>
 
-<?php if (empty($reservas)): ?>
+<?php if (!empty($reservas) || $estado !== null): ?>
+    <form class="d-flex flex-wrap align-items-end gap-2 mb-4" method="get" action="/mi-cuenta/reservas">
+        <div class="mb-0">
+            <label class="form-label" for="estado">Filtrar por estado</label>
+            <select class="form-select" id="estado" name="estado">
+                <option value="">Todas</option>
+                <?php foreach (\App\Models\Reserva::ESTADOS as $opcion): ?>
+                    <option value="<?= htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8') ?>" <?= $estado === $opcion ? 'selected' : '' ?>>
+                        <?= htmlspecialchars(ucfirst($opcion), ENT_QUOTES, 'UTF-8') ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <button class="btn btn-outline-secondary" type="submit">Filtrar</button>
+    </form>
+<?php endif; ?>
+
+<?php if (empty($reservas) && $estado !== null): ?>
+    <div class="ae-vacio">
+        <p class="ae-vacio-icono" aria-hidden="true">?</p>
+        <h2>No tenés reservas en ese estado</h2>
+        <p>Elegí otro estado o <a href="/mi-cuenta/reservas">mirá todas tus reservas</a>.</p>
+    </div>
+<?php elseif (empty($reservas)): ?>
     <div class="ae-vacio">
         <p class="ae-vacio-icono" aria-hidden="true">✈</p>
         <h2>Todavía no hiciste ninguna reserva</h2>

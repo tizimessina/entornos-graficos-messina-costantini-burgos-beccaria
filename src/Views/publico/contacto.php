@@ -15,7 +15,9 @@
     <p role="alert">Revisá los datos marcados: hay <?= count($errores) ?> error(es) en el formulario.</p>
 <?php endif; ?>
 
-<p class="ae-entrada">Escribinos y te respondemos a la brevedad. Los campos son todos obligatorios.</p>
+<p class="ae-entrada">
+    Respondemos las consultas dentro de las 48 h hábiles. Los campos son todos obligatorios.
+</p>
 
 <div class="row g-4 mt-1">
 <div class="col-12 col-lg-7">
@@ -44,9 +46,16 @@
 
     <div>
         <label class="form-label" for="asunto">Asunto</label>
-        <input class="form-control" type="text" id="asunto" name="asunto" maxlength="120" required
-               value="<?= htmlspecialchars($datos['asunto'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-               <?= isset($errores['asunto']) ? 'aria-invalid="true" aria-describedby="error-asunto"' : '' ?>>
+        <select class="form-select" id="asunto" name="asunto" required
+                <?= isset($errores['asunto']) ? 'aria-invalid="true" aria-describedby="error-asunto"' : '' ?>>
+            <option value="">Elegí un asunto</option>
+            <?php foreach (\App\Controllers\ContactoController::ASUNTOS as $opcion): ?>
+                <option value="<?= htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8') ?>"
+                        <?= ($datos['asunto'] ?? '') === $opcion ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($opcion, ENT_QUOTES, 'UTF-8') ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
         <?php if (isset($errores['asunto'])): ?>
             <p id="error-asunto" role="alert"><?= htmlspecialchars($errores['asunto'], ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
@@ -77,11 +86,14 @@
             <dt>Correo</dt>
             <dd><a href="mailto:contacto@aeroeb.com.ar">contacto@aeroeb.com.ar</a></dd>
 
+            <dt>Teléfono</dt>
+            <dd>+54 341 000-0000</dd>
+
             <dt>Horario de atención</dt>
             <dd>Lunes a viernes, de 9 a 18 h</dd>
 
             <dt>Dónde estamos</dt>
-            <dd>Resistencia, Chaco</dd>
+            <dd>Rosario, Santa Fe</dd>
         </dl>
 
         <hr class="ae-separador">
