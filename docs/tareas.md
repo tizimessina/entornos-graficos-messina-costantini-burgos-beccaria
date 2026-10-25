@@ -199,11 +199,17 @@ Se recorrió el sitio entero con los tres roles (casos 8 a 16 de
 - [x] Páginas 403 y 400 con el diseño del sitio, en vez de texto plano sin `<title>` ni `lang`
 - [x] El aviso de enlace de restablecer inválido no se mostraba nunca
 - [x] El comprobante solo se abre para reservas pagadas
-- [ ] Regla 7: "los usuarios podrán gestionar su información personal **y preferencias**".
-      Hoy el perfil tiene nombre, teléfono y contraseña, pero ninguna preferencia. Hay que
-      decidir cuál agregar (por ejemplo, recibir novedades por correo) o justificarlo
-- [ ] Las columnas `intentosFallidos` y `bloqueadoHasta` de `usuarios` no se usan: o se
-      implementa el bloqueo por intentos fallidos o se sacan del esquema y del informe
+- [x] Regla 7, preferencias del usuario: el pasajero elige en Mi cuenta si quiere recibir
+      las novedades por correo, y al publicar una novedad el administrador puede mandarla
+      a los suscriptos. Cubre además el requerimiento "Newsletters" de la Guía Web.
+      Columna nueva `usuarios.recibeNovedades`: en una base ya cargada hay que correr
+      `scripts/migrations/2026_10_25_agrega_preferencia_recibir_novedades.sql`
+- [x] Bloqueo por intentos fallidos con las columnas `intentosFallidos` y `bloqueadoHasta`:
+      5 contraseñas incorrectas seguidas bloquean el ingreso 15 minutos. Restablecer la
+      contraseña lo levanta. El login correcto registra `ultimoAccesoUsuario`, que tampoco
+      se usaba
+- [ ] Actualizar el informe: sección 11 (columna nueva y uso de las de bloqueo) y los
+      requerimientos funcionales del punto 4.b (newsletter)
 
 ## 9. Despliegue
 

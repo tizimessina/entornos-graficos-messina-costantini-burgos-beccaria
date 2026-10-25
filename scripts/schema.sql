@@ -63,6 +63,10 @@ CREATE TABLE usuarios (
     emailUsuario              VARCHAR(100)  NOT NULL,
     telefonoUsuario           VARCHAR(20)       NULL,
 
+    -- Preferencias (regla de negocio 7). Por defecto no se manda nada: el
+    -- pasajero tiene que pedirlo desde su perfil.
+    recibeNovedades           TINYINT(1)    NOT NULL DEFAULT 0 COMMENT 'Recibir las novedades por correo',
+
     -- Vínculo CEO ↔ aerolínea (NULL para administradores y pasajeros)
     codAerolinea              INT UNSIGNED      NULL,
 
