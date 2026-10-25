@@ -113,6 +113,7 @@ $router->post('/contacto', [ContactoController::class, 'enviar']);
 
 $router->get('/institucional', [InstitucionalController::class, 'indice']);
 $router->get('/institucional/{slug}', [InstitucionalController::class, 'pagina']);
+$router->get('/ayuda', [InstitucionalController::class, 'ayuda']);
 
 $router->get('/mapa-sitio', [SitioController::class, 'mapa']);
 $router->get('/buscar', [SitioController::class, 'buscar']);

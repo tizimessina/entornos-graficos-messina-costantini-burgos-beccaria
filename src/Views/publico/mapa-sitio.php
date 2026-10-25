@@ -51,7 +51,12 @@
             </ul>
         </li>
 
-        <li class="col"><a href="/contacto">Contacto</a></li>
+        <li class="col">
+            <a href="/contacto">Contacto</a>
+            <ul>
+                <li><a href="/ayuda">Ayuda y glosario</a></li>
+            </ul>
+        </li>
 
         <li class="col"><a href="/buscar">Buscador interno del sitio</a></li>
 

@@ -135,6 +135,19 @@ a {
     transition: color var(--ae-transicion);
 }
 
+/* Los enlaces del contenido ya visitados cambian a violeta, así se distinguen
+   de los que faltan visitar. Contraste 7:1 sobre blanco. Los botones no cambian. */
+main a:not(.btn):visited {
+    color: #6d28d9;
+}
+
+/* Asterisco de los campos obligatorios (lo agrega Formato::marcarObligatorios). */
+.ae-obligatorio {
+    color: var(--ae-rosa);
+    font-weight: 700;
+    margin-left: 0.15em;
+}
+
 /* ---------------------------------------------------------------------
    3. Foco visible (WCAG 2.4.7)
    --------------------------------------------------------------------- */

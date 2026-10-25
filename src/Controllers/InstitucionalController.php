@@ -57,6 +57,19 @@ class InstitucionalController
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
 
+    /** Ayuda: cómo se usa el sitio, paso por paso, y glosario de los términos propios. */
+    public function ayuda(): void
+    {
+        $tituloPagina = 'Ayuda — AeroEB';
+        $breadcrumbs = [
+            ['texto' => 'Inicio', 'url' => '/'],
+            ['texto' => 'Ayuda', 'url' => null],
+        ];
+        $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/ayuda.php');
+
+        require dirname(__DIR__) . '/Views/layouts/base.php';
+    }
+
     private static function menuLateral(): array
     {
         $items = [];
