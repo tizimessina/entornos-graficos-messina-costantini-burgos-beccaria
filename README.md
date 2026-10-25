@@ -7,7 +7,7 @@ pueden buscarlos, compararlos y reservarlos desde un solo lugar. La idea es que 
 aerolínea administre su propia oferta (vuelos, promociones) y que la administración de
 la plataforma modere ese contenido antes de que se publique.
 
-URL de producción: *(se agrega cuando el sitio esté desplegado)*
+URL de producción: _(se agrega cuando el sitio esté desplegado)_
 
 ## Índice
 
@@ -24,12 +24,12 @@ URL de producción: *(se agrega cuando el sitio esté desplegado)*
 
 ## Integrantes
 
-| Apellido y nombre | Legajo | E-mail |
-|---|---|---|
-| Messina, Tiziano | _(completar)_ | _(completar)_ |
-| Costantini, Jeremias | _(completar)_ | _(completar)_ |
-| Burgos, Mateo | 52978 | mateoburgosrc22@gmail.com |
-| Beccaria, Eugenia | _(completar)_ | _(completar)_ |
+| Apellido y nombre    | Legajo        | E-mail                    |
+| -------------------- | ------------- | ------------------------- |
+| Messina, Tiziano     | 52911         | tizilmessina@gmail.com    |
+| Costantini, Jeremias | _(completar)_ | _(completar)_             |
+| Burgos, Mateo        | 52978         | mateoburgosrc22@gmail.com |
+| Beccaria, Eugenia    | _(completar)_ | _(completar)_             |
 
 ## Stack
 
@@ -123,11 +123,11 @@ FK) está en el informe. El DDL está en `scripts/schema.sql` y los datos de pru
 Los carga `scripts/seed.sql`. Son solo para desarrollo y corrección: hay que borrarlos
 antes de cualquier uso real del sitio.
 
-| Rol | E-mail | Contraseña |
-|---|---|---|
-| Administrador | admin@aeroeb.com.ar | Admin2026! |
-| CEO de aerolínea | ceo@aerolinea-demo.com | Ceo2026! |
-| Pasajero | pasajero@demo.com | Pasajero2026! |
+| Rol              | E-mail                 | Contraseña    |
+| ---------------- | ---------------------- | ------------- |
+| Administrador    | admin@aeroeb.com.ar    | Admin2026!    |
+| CEO de aerolínea | ceo@aerolinea-demo.com | Ceo2026!      |
+| Pasajero         | pasajero@demo.com      | Pasajero2026! |
 
 El seed también deja cargadas dos aerolíneas, cuatro vuelos y dos novedades, así el
 sitio no se abre vacío.
@@ -159,9 +159,9 @@ poder explicar cualquier línea de código o decisión del informe, sin importar
 haya escrito. El detalle de qué se usó, para qué y qué se verificó está en el capítulo
 15 del informe y en el checklist de `docs/checklists/`.
 
-| Herramienta | Para qué se usó |
-|---|---|
-| _(completar)_ | _(completar)_ |
+| Herramienta   | Para qué se usó |
+| ------------- | --------------- |
+| _(completar)_ | _(completar)_   |
 
 ## Documentación del proyecto
 
