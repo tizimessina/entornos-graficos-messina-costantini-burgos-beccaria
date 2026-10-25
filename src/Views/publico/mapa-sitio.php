@@ -33,16 +33,40 @@
             </ul>
         </li>
 
-        <li><a href="/contacto">Contacto</a></li>
-
-        <li><a href="/buscar">Buscador interno del sitio</a></li>
+        <li class="col">
+            <a href="/institucional">Institucional</a>
+            <ul>
+                <li><a href="/institucional/quienes-somos">Quiénes somos</a></li>
+                <li><a href="/institucional/preguntas-frecuentes">Preguntas frecuentes</a></li>
+                <li><a href="/institucional/terminos">Términos y condiciones</a></li>
+                <li><a href="/institucional/privacidad">Política de privacidad</a></li>
+                <li><a href="/institucional/accesibilidad">Política de accesibilidad</a></li>
+            </ul>
+        </li>
 
         <li class="col">
-            Mi cuenta <em>(requiere iniciar sesión como pasajero)</em>
+            Acceso
             <ul>
-                <li>Mi perfil</li>
-                <li>Mis reservas</li>
-                <li>Mis compras</li>
+                <li><a href="/login">Iniciar sesión</a></li>
+                <li><a href="/registro">Registrarse</a></li>
+                <li><a href="/recuperar">Recuperar contraseña</a></li>
+            </ul>
+        </li>
+
+        <li class="col">
+            <a href="/contacto">Contacto</a>
+            <ul>
+                <li><a href="/ayuda">Ayuda</a></li>
+                <li><a href="/buscar">Buscador interno del sitio</a></li>
+            </ul>
+        </li>
+
+        <li class="col">
+            Mi cuenta <em>(requiere iniciar sesión)</em>
+            <ul>
+                <li><a href="/mi-cuenta">Mi perfil</a></li>
+                <li><a href="/mi-cuenta/reservas">Mis reservas</a></li>
+                <li><a href="/mi-cuenta/compras">Mis compras</a></li>
             </ul>
         </li>
 

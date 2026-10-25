@@ -41,12 +41,18 @@ class ReservaController
             ['texto' => $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'], 'url' => '/vuelos/' . $vuelo['codVuelo']],
             ['texto' => 'Reservar', 'url' => null],
         ];
+        $maxAsientos = min(self::MAX_ASIENTOS, (int) $vuelo['asientosDisponibles']);
+
+        // Si no vuelve de un error, se arranca con los pasajeros de la búsqueda.
+        $datos = Session::getFlash('datos', [])
+            ?: ['cantidad' => min($maxAsientos, max(1, (int) ($_GET['asientos'] ?? 1)))];
+
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/reserva-nueva.php', [
             'vuelo'       => $vuelo,
-            'maxAsientos' => min(self::MAX_ASIENTOS, (int) $vuelo['asientosDisponibles']),
+            'maxAsientos' => $maxAsientos,
             'promocion'   => Promocion::vigenteDeAerolinea((int) $vuelo['codAerolinea']),
             'error'       => Session::getFlash('error'),
-            'datos'       => Session::getFlash('datos', []),
+            'datos'       => $datos,
         ]);
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
@@ -110,6 +116,8 @@ class ReservaController
             'reserva'      => $reserva,
             'vencimiento'  => $this->vencimientoDelPago($reserva),
             'exito'        => Session::getFlash('exito'),
+            'errores'      => Session::getFlash('errores', []),
+            'datos'        => Session::getFlash('datos', []),
         ]);
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
@@ -124,6 +132,20 @@ class ReservaController
 
         if ($reserva === null) {
             return;
+        }
+
+        $errores = $this->erroresDeTarjeta($_POST);
+
+        if ($errores !== []) {
+            // Solo vuelven al formulario el titular y el vencimiento: el número
+            // y el código de seguridad no se guardan en ningún lado, tampoco en la sesión.
+            Session::flash('errores', $errores);
+            Session::flash('datos', [
+                'titular'     => trim((string) ($_POST['titular'] ?? '')),
+                'vencimiento' => trim((string) ($_POST['vencimiento'] ?? '')),
+            ]);
+            header('Location: /reservas/' . $reserva['codReserva'] . '/pago');
+            exit;
         }
 
         if (!Reserva::confirmarPago((int) $reserva['codReserva'])) {
@@ -145,8 +167,11 @@ class ReservaController
     {
         Auth::requireLogin();
 
+        // El filtro sale de la lista de estados de la tabla: cualquier otro valor es "todas".
+        $estado = in_array($_GET['estado'] ?? '', Reserva::ESTADOS, true) ? $_GET['estado'] : null;
+
         $paginador = new Paginator(
-            Reserva::contarDelUsuario((int) Auth::id()),
+            Reserva::contarDelUsuario((int) Auth::id(), $estado),
             max(1, (int) ($_GET['pagina'] ?? 1)),
             self::POR_PAGINA
         );
@@ -158,11 +183,13 @@ class ReservaController
             ['texto' => 'Mis reservas', 'url' => null],
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/reservas-listado.php', [
-            'reservas'  => Reserva::delUsuario((int) Auth::id(), $paginador->porPagina, $paginador->offset),
+            'reservas'  => Reserva::delUsuario((int) Auth::id(), $paginador->porPagina, $paginador->offset, $estado),
             'paginador' => $paginador,
+            'estado'    => $estado,
             'exito'     => Session::getFlash('exito'),
             'error'     => Session::getFlash('error'),
         ]);
+        $menuLateral = PerfilController::menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -187,6 +214,7 @@ class ReservaController
             'compras'   => Reserva::comprasDelUsuario((int) Auth::id(), $paginador->porPagina, $paginador->offset),
             'paginador' => $paginador,
         ]);
+        $menuLateral = PerfilController::menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
@@ -275,7 +303,8 @@ class ReservaController
         $codPromocion = $reserva['codPromocion'] !== null ? (int) $reserva['codPromocion'] : null;
 
         if (Reserva::cancelar((int) $reserva['codReserva'], $codPromocion)) {
-            Session::flash('exito', 'Cancelamos la reserva ' . $reserva['codigoReserva'] . ' y devolvimos los asientos al vuelo.');
+            $this->avisarCancelacion($reserva);
+            Session::flash('exito', 'Cancelamos la reserva ' . $reserva['codigoReserva'] . ' y devolvimos los asientos al vuelo. Te mandamos la confirmación por correo.');
         } else {
             Session::flash('error', 'Esa reserva ya estaba cancelada.');
         }
@@ -362,6 +391,20 @@ class ReservaController
         return (new DateTimeImmutable($reserva['fechaReserva']))->modify('+' . $this->horasParaPagar() . ' hours');
     }
 
+    /** Confirmación de la cancelación (flujo 3 del informe: "recibe un correo de confirmación"). */
+    private function avisarCancelacion(array $reserva): void
+    {
+        $usuario = Auth::user();
+
+        $cuerpo = '<p>Hola, ' . htmlspecialchars($usuario['nombre'], ENT_QUOTES, 'UTF-8') . ':</p>'
+            . '<p>Cancelamos tu reserva <strong>' . htmlspecialchars($reserva['codigoReserva'], ENT_QUOTES, 'UTF-8') . '</strong>'
+            . ' del vuelo ' . htmlspecialchars($reserva['origenVuelo'] . ' a ' . $reserva['destinoVuelo'], ENT_QUOTES, 'UTF-8')
+            . ' del ' . htmlspecialchars(date('d/m/Y', strtotime($reserva['fechaSalidaVuelo'])), ENT_QUOTES, 'UTF-8') . '.</p>'
+            . '<p>Los asientos volvieron a quedar disponibles. Si fue un error, podés volver a reservar desde el sitio.</p>';
+
+        Mailer::enviar($usuario['email'], $usuario['nombre'], 'Cancelaste tu reserva ' . $reserva['codigoReserva'], $cuerpo);
+    }
+
     private function enviarComprobante(?array $reserva): void
     {
         if ($reserva === null) {
@@ -383,5 +426,65 @@ class ReservaController
             . '<p>Podés cancelar hasta ' . $this->horasMinimasCancelacion() . ' horas antes de la salida.</p>';
 
         Mailer::enviar($usuario['email'], $usuario['nombre'], 'Comprobante de tu reserva ' . $reserva['codigoReserva'], $cuerpo);
+    }
+
+    /**
+     * Validación del pago simulado (wireframe del paso de pago): se revisa
+     * solo el formato de la tarjeta, para que el formulario se comporte como
+     * uno real. Los datos no se guardan ni se mandan a ninguna pasarela.
+     *
+     * @return array<string, string>
+     */
+    private function erroresDeTarjeta(array $post): array
+    {
+        $errores = [];
+
+        $titular = trim((string) ($post['titular'] ?? ''));
+        $numero = preg_replace('/\s+/', '', (string) ($post['tarjeta'] ?? ''));
+        $vencimiento = trim((string) ($post['vencimiento'] ?? ''));
+        $codigo = trim((string) ($post['codigo'] ?? ''));
+
+        if ($titular === '' || mb_strlen($titular) > 100) {
+            $errores['titular'] = 'Escribí el nombre del titular, como figura en la tarjeta.';
+        }
+
+        if (!preg_match('/^[0-9]{13,19}$/', $numero) || !self::pasaLuhn($numero)) {
+            $errores['tarjeta'] = 'El número de tarjeta no es válido. Para probar podés usar 4111 1111 1111 1111.';
+        }
+
+        if (!preg_match('#^(0[1-9]|1[0-2])/([0-9]{2})$#', $vencimiento, $partes)) {
+            $errores['vencimiento'] = 'Escribí el vencimiento con el formato mm/aa, por ejemplo 08/29.';
+        } elseif ((int) ('20' . $partes[2] . $partes[1]) < (int) date('Ym')) {
+            $errores['vencimiento'] = 'La tarjeta está vencida.';
+        }
+
+        if (!preg_match('/^[0-9]{3,4}$/', $codigo)) {
+            $errores['codigo'] = 'El código de seguridad son los 3 o 4 números del dorso de la tarjeta.';
+        }
+
+        return $errores;
+    }
+
+    /** Dígito verificador de Luhn, el que usan todas las tarjetas de crédito. */
+    private static function pasaLuhn(string $numero): bool
+    {
+        $suma = 0;
+        $doblar = false;
+
+        for ($i = strlen($numero) - 1; $i >= 0; $i--) {
+            $digito = (int) $numero[$i];
+
+            if ($doblar) {
+                $digito *= 2;
+                if ($digito > 9) {
+                    $digito -= 9;
+                }
+            }
+
+            $suma += $digito;
+            $doblar = !$doblar;
+        }
+
+        return $suma % 10 === 0;
     }
 }

@@ -43,6 +43,22 @@ class Contacto
         return $stmt->fetchAll();
     }
 
+    /** Los mensajes sin leer más viejos primero: son los que esperan hace más tiempo. */
+    public static function sinLeer(int $limite): array
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT codContacto, nombreContacto, asuntoContacto, fechaContacto
+               FROM contacto
+              WHERE leidoContacto = 0
+              ORDER BY fechaContacto
+              LIMIT :limite'
+        );
+        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public static function contarTodos(): int
     {
         return (int) Database::getInstance()->query('SELECT COUNT(*) FROM contacto')->fetchColumn();

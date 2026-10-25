@@ -5,16 +5,17 @@
  * equivalente visual de esa misma marca.
  *
  * En pantalla chica los enlaces se acomodan en dos filas en vez de
- * esconderse detrás de un botón: son cinco y entran bien.
+ * esconderse detrás de un botón: son seis y entran bien.
  */
 $rutaActual = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
 $secciones = [
-    '/'           => 'Inicio',
-    '/vuelos'     => 'Vuelos',
-    '/aerolineas' => 'Aerolíneas',
-    '/novedades'  => 'Novedades',
-    '/contacto'   => 'Contacto',
+    '/'              => 'Inicio',
+    '/vuelos'        => 'Vuelos',
+    '/aerolineas'    => 'Aerolíneas',
+    '/novedades'     => 'Novedades',
+    '/institucional' => 'Institucional',
+    '/contacto'      => 'Contacto',
 ];
 
 /** La sección activa incluye sus páginas interiores: /vuelos/12 marca Vuelos. */

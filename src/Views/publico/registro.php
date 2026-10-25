@@ -111,6 +111,19 @@ $tipoElegido = $datos['tipo'] ?? 'pasajero';
         <?php endif; ?>
     </div>
 
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="terminos" name="terminos" value="1" required
+               <?= !empty($datos['terminos']) ? 'checked' : '' ?>
+               <?= isset($errores['terminos']) ? 'aria-invalid="true" aria-describedby="error-terminos"' : '' ?>>
+        <label class="form-check-label" for="terminos">
+            Leí y acepto los <a href="/institucional/terminos">términos y condiciones</a>
+            y la <a href="/institucional/privacidad">política de privacidad</a>
+        </label>
+        <?php if (isset($errores['terminos'])): ?>
+            <p id="error-terminos" role="alert"><?= htmlspecialchars($errores['terminos'], ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
+    </div>
+
     <button class="btn btn-primary" type="submit">Crear cuenta</button>
 </form>
 

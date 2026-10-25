@@ -55,6 +55,20 @@ use App\Helpers\Formato;
                             Editar vuelo <?= htmlspecialchars($vuelo['origenVuelo'] . ' a ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>
                         </a>
 
+                        <a href="/panel/vuelos/nuevo?duplicar=<?= (int) $vuelo['codVuelo'] ?>">
+                            Duplicar vuelo <?= htmlspecialchars($vuelo['origenVuelo'] . ' a ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>
+                        </a>
+
+                        <?php if ((int) $vuelo['cantidadReservas'] === 0): ?>
+                            <form method="post" action="/panel/vuelos/<?= (int) $vuelo['codVuelo'] ?>/eliminar"
+                                  onsubmit="return confirm('¿Eliminar este vuelo? No tiene reservas, así que se borra del sistema.');">
+                                <?= \App\Core\Csrf::field() ?>
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    Eliminar vuelo <?= htmlspecialchars($vuelo['origenVuelo'] . ' a ' . $vuelo['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>
+                                </button>
+                            </form>
+                        <?php endif; ?>
+
                         <?php if ($vuelo['estadoVuelo'] !== 'cancelado'): ?>
                             <form method="post" action="/panel/vuelos/<?= (int) $vuelo['codVuelo'] ?>/cancelar"
                                   onsubmit="return confirm('¿Cancelar este vuelo? Se avisa por correo a los pasajeros con reserva.');">

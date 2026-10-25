@@ -386,6 +386,18 @@ summary:focus-visible,
     box-shadow: var(--ae-sombra-3);
     padding: var(--ae-6);
     margin-top: var(--ae-8);
+    color: var(--ae-zinc-700);
+}
+
+/* La caja es blanca dentro del hero oscuro: el título y la nota no pueden
+   heredar el blanco del hero, o quedan invisibles (blanco sobre blanco). */
+.ae-buscador-vuelos h2 {
+    color: var(--ae-zinc-900);
+}
+
+.ae-buscador-vuelos .ae-nota {
+    color: var(--ae-zinc-500);
+    max-width: none;
 }
 
 .ae-buscador-vuelos .form-label {
@@ -448,6 +460,22 @@ legend {
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--ae-zinc-800);
+}
+
+/* En la columna de filtros los grupos de casillas no llevan recuadro: ya
+   están dentro del panel y un recuadro adentro de otro se ve recargado. */
+.ae-filtros fieldset {
+    border: 0;
+    padding: 0;
+    background: none;
+}
+
+.ae-filtros legend {
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ae-zinc-700);
+    margin-bottom: var(--ae-1);
 }
 
 /* Texto de ayuda debajo de un campo (lo referencia aria-describedby). */
@@ -776,6 +804,40 @@ td form {
 }
 
 /* La métrica que pide acción se destaca con el acento. */
+/* Ocupación de un vuelo en las tablas de los paneles: barra y, al lado, el
+   número, así el dato no depende solo de leer el largo de la barra. */
+.ae-ocupacion {
+    display: flex;
+    align-items: center;
+    gap: var(--ae-2);
+}
+
+.ae-ocupacion progress {
+    width: 7rem;
+    height: 0.6rem;
+    accent-color: var(--ae-rosa);
+}
+
+/* Barra de ventas por mes: el ancho es proporcional al mes de mayor venta. */
+.ae-barra-venta {
+    position: relative;
+    min-width: 12rem;
+    padding: var(--ae-1) var(--ae-2);
+}
+
+.ae-barra-venta-relleno {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(190, 24, 93, 0.12);
+    border-radius: var(--ae-radio-chico);
+}
+
+.ae-barra-venta .ae-dato {
+    position: relative;
+}
+
 .ae-metrica-urgente {
     border-color: var(--ae-rosa-borde);
     background: var(--ae-rosa-suave);

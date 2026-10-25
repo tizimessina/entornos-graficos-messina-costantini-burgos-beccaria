@@ -106,6 +106,17 @@ class Validator
         return $this;
     }
 
+    /** El valor tiene que ser uno de los de la lista (por ejemplo, las opciones de un select). */
+    public function in(string $campo, array $permitidos, string $mensaje): static
+    {
+        $valor = $this->valor($campo);
+        if ($valor !== null && $valor !== '' && !in_array($valor, $permitidos, true)) {
+            $this->agregarError($campo, $mensaje);
+        }
+
+        return $this;
+    }
+
     public function fails(): bool
     {
         return count($this->errores) > 0;
