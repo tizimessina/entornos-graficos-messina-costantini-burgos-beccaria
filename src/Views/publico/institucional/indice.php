@@ -9,15 +9,13 @@ $bajadas = [
     'quienes-somos'        => 'Qué es AeroEB, cómo trabaja con las aerolíneas y quiénes lo hicimos.',
     'preguntas-frecuentes' => 'Las dudas que más aparecen sobre reservas, pagos, cancelaciones y cuentas.',
     'terminos'             => 'Las reglas de uso del sitio: plazos para pagar y cancelar, promociones y cuentas.',
-    'privacidad'           => 'Qué datos tuyos guardamos, para qué los usamos y con quién no los compartimos.',
-    'accesibilidad'        => 'El nivel de accesibilidad al que apunta el sitio y cómo avisarnos si algo falla.',
 ];
 ?>
 <h1>Institucional</h1>
 
 <p class="ae-entrada">
-    Información sobre la plataforma: quiénes somos, las reglas de uso y cómo
-    tratamos tus datos.
+    Información sobre la plataforma: quiénes somos, las dudas más comunes y las
+    reglas de uso.
 </p>
 
 <div class="row g-4 mt-1">

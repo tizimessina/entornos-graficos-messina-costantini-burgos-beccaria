@@ -22,21 +22,20 @@
                         <li><a href="/vuelos">Buscar vuelos</a></li>
                         <li><a href="/aerolineas">Aerolíneas adheridas</a></li>
                         <li><a href="/novedades">Novedades</a></li>
+                        <li><a href="/buscar">Buscador del sitio</a></li>
                         <li><a href="/mapa-sitio">Mapa del sitio</a></li>
                     </ul>
                 </nav>
             </div>
 
             <div class="col-6 col-lg-4">
-                <nav aria-label="Ayuda y contacto">
-                    <h2 class="h6 text-white">Ayuda</h2>
+                <nav aria-label="Información institucional y contacto">
+                    <h2 class="h6 text-white">Institucional</h2>
                     <ul class="list-unstyled d-grid gap-2 mb-0">
-                        <li><a href="/ayuda">Ayuda</a></li>
-                        <li><a href="/contacto">Contacto</a></li>
-                        <li><a href="/institucional/accesibilidad">Accesibilidad</a></li>
+                        <li><a href="/institucional/quienes-somos">Quiénes somos</a></li>
+                        <li><a href="/institucional/preguntas-frecuentes">Preguntas frecuentes</a></li>
                         <li><a href="/institucional/terminos">Términos y condiciones</a></li>
-                        <li><a href="/institucional/privacidad">Privacidad</a></li>
-                        <li><a href="/buscar">Buscador del sitio</a></li>
+                        <li><a href="/contacto">Contacto</a></li>
                     </ul>
                 </nav>
             </div>

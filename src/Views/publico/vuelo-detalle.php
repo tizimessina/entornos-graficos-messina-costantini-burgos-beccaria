@@ -140,7 +140,6 @@ $urlReservar = '/vuelos/' . (int) $vuelo['codVuelo'] . '/reservar'
     </div>
 </div>
 
-<p class="no-imprimir mt-4 d-flex flex-wrap gap-2">
+<p class="mt-4">
     <a class="btn btn-outline-secondary" href="/vuelos">Volver a la búsqueda de vuelos</a>
-    <button class="btn btn-outline-secondary" type="button" onclick="window.print()">Imprimir detalle</button>
 </p>

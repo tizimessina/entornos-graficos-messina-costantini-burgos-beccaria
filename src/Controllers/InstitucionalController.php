@@ -18,8 +18,6 @@ class InstitucionalController
         'quienes-somos'        => 'Quiénes somos',
         'preguntas-frecuentes' => 'Preguntas frecuentes',
         'terminos'             => 'Términos y condiciones',
-        'privacidad'           => 'Política de privacidad',
-        'accesibilidad'        => 'Política de accesibilidad',
     ];
 
     public function indice(): void
@@ -55,19 +53,6 @@ class InstitucionalController
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/institucional/' . $slug . '.php');
         $menuLateral = self::menuLateral();
-
-        require dirname(__DIR__) . '/Views/layouts/base.php';
-    }
-
-    /** Ayuda: cómo se usa el sitio, paso por paso. Va en el pie, como en el wireframe. */
-    public function ayuda(): void
-    {
-        $tituloPagina = 'Ayuda — AeroEB';
-        $breadcrumbs = [
-            ['texto' => 'Inicio', 'url' => '/'],
-            ['texto' => 'Ayuda', 'url' => null],
-        ];
-        $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/ayuda.php');
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
     }
