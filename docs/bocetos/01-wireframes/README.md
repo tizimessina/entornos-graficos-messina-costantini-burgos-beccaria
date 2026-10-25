@@ -6,8 +6,9 @@ el menú principal y el pie de la plantilla base; lo que cambia es el contenido.
 
 Corregido después de la exposición. Se sacó lo que no tenía sentido:
 
-- **Pie**: se sacaron "Accesibilidad" y "Ayuda". La accesibilidad es una cualidad de
-  todo el sitio, no una sección, y la ayuda repetía las preguntas frecuentes.
+- **Pie**: se sacó "Accesibilidad": es una cualidad de todo el sitio, no una sección.
+  La Ayuda se mantiene (con un glosario) porque el checklist de la cátedra la pide, y el
+  pie suma el correo y la ciudad, que el checklist pide en todas las páginas.
 - **Menú principal**: "Institucional" pasa al pie, porque no es una tarea del usuario.
 - **Portada**: "Fecha de ida y de vuelta" pasa a "Salida desde / hasta", porque no hay
   vuelos de ida y vuelta. Las promociones son por aerolínea, no por ruta.
@@ -48,7 +49,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -94,7 +95,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ cont ~~~ pie
 ```
@@ -135,7 +136,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -164,7 +165,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -201,7 +202,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -239,7 +240,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -276,7 +277,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -305,7 +306,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -346,7 +347,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -388,7 +389,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -417,7 +418,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -442,11 +443,11 @@ flowchart TB
     migas["Inicio › Mapa del sitio"]
     subgraph cont["Contenido · h1 Mapa del sitio · nav con listas anidadas"]
         direction LR
-        c1["Inicio<br/>Vuelos<br/>· Buscador y resultados<br/>· Detalle de cada vuelo<br/>Aerolíneas<br/>· Listado · Ficha<br/>Novedades<br/>· Listado · Detalle"] ~~~ c2["Institucional<br/>· Quiénes somos<br/>· Preguntas frecuentes<br/>· Términos y condiciones<br/>Acceso<br/>· Iniciar sesión · Registrarse<br/>· Recuperar contraseña<br/>Contacto · Buscador del sitio"] ~~~ c3["Mi cuenta<br/>· Mi perfil · Mis reservas · Mis compras<br/>Panel de aerolínea<br/>· Mis vuelos · Mis promociones · Reportes<br/>Administración<br/>· Aerolíneas, usuarios y novedades<br/>· Promociones · Mensajes · Reportes"]
+        c1["Inicio<br/>Vuelos<br/>· Buscador y resultados<br/>· Detalle de cada vuelo<br/>Aerolíneas<br/>· Listado · Ficha<br/>Novedades<br/>· Listado · Detalle"] ~~~ c2["Institucional<br/>· Quiénes somos<br/>· Preguntas frecuentes<br/>· Términos y condiciones<br/>Acceso<br/>· Iniciar sesión · Registrarse<br/>· Recuperar contraseña<br/>Contacto · Ayuda y glosario<br/>Buscador del sitio"] ~~~ c3["Mi cuenta<br/>· Mi perfil · Mis reservas · Mis compras<br/>Panel de aerolínea<br/>· Mis vuelos · Mis promociones · Reportes<br/>Administración<br/>· Aerolíneas, usuarios y novedades<br/>· Promociones · Mensajes · Reportes"]
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Contacto"] ~~~ legal["© 2026 AeroEB<br/>Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```

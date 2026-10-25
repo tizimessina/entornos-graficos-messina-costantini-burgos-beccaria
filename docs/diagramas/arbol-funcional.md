@@ -70,4 +70,4 @@ así que se llega a ellas desde cualquier lugar.
 - **Buscador del sitio** (encabezado): busca en vuelos, aerolíneas y novedades.
 - **Ingresar, Registrarse y Recuperar contraseña** (menú "Mi cuenta ▾").
 - **Mapa del sitio** (pie), que el enunciado pide que esté siempre en el footer.
-- **Institucional** (pie): Quiénes somos, Preguntas frecuentes y Términos y condiciones.
+- **Institucional** (pie): Quiénes somos, Preguntas frecuentes, Términos y condiciones y Ayuda con glosario.
