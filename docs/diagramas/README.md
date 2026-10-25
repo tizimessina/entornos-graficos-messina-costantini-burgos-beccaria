@@ -1,14 +1,18 @@
 # Diagramas
 
-Carpeta para los diagramas exportados como imagen (PNG) que se referencian desde el
-informe:
+Diagramas del informe en Mermaid. GitHub los dibuja directamente al abrir cada archivo,
+y la imagen de cada uno, para pegar en el informe, está en [`png/`](png/).
 
-- `mapa-sitio.png` — árbol de contenido funcional (informe, punto 5.a)
-- `der-logico.png` — diagrama entidad-relación lógico (informe, punto 11 / Sección 2 del
-  documento de repositorio y modelo de datos)
-- `der-fisico.png` — diagrama físico, si difiere del lógico
-- `flujo-registro.png`, `flujo-reserva.png`, `flujo-cancelacion.png` — diagramas de flujo
-  de las transacciones (informe, punto 5.c)
+| Archivo | Contenido | Informe |
+|---|---|---|
+| [`arbol-funcional.md`](arbol-funcional.md) | Mapa del sitio: árbol de contenido funcional | Punto 5.a |
+| [`flujos.md`](flujos.md) | Diagramas de flujo de registro, reserva y pago, cancelación y contacto, con la base de datos | Punto 5.c |
+| [`navegacion.md`](navegacion.md) | Elementos de navegación clasificados en textuales y contextuales | Punto 6 |
 
-Los diagramas Mermaid de origen están en el documento de Sección 1 y 2 del repositorio;
-se exportan pegando el código en <https://mermaid.live>.
+Los wireframes de cada página (punto 5.b) están en
+[`docs/bocetos/01-wireframes/`](../bocetos/01-wireframes/).
+
+Para editar un diagrama se cambia el bloque `mermaid` del archivo; para regenerar la
+imagen se puede pegar el código en <https://mermaid.live> y exportarla como PNG.
+
+Pendiente: el diagrama entidad-relación lógico y el físico (punto 11 del informe).
