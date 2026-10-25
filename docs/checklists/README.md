@@ -184,7 +184,7 @@ enteras en cero, y está bien que así sea.
 ## 11. Formato General
 
 - [x] Posee carátula con datos de identificación del equipo como del trabajo
-  - *Falta completar legajos y correos de tres integrantes.*
+  - *Legajos y correos de los cuatro integrantes completos en el README (sacados de la carátula del informe).*
 - [ ] Posee Indice completo navegable
   - *El índice está, pero como texto plano. Hay que reemplazarlo por una tabla de contenido
     navegable (en Google Docs: Insertar → Tabla de contenido).*
