@@ -21,7 +21,7 @@ Corregido después de la exposición. Se sacó lo que no tenía sentido:
 - **Mis reservas**: "Cancelar" ya no está en la tabla, sino en el detalle de la reserva.
 - **Menús laterales**: se sacó "Cerrar sesión", que ya está en "Mi cuenta ▾".
 - **Panel del CEO**: "Duplicar" va en cada vuelo, y el gráfico es una tabla con barras.
-- **Contacto**: se sacó el teléfono inventado.
+- **Contacto**: el teléfono es de muestra, porque el proyecto no tiene una línea real.
 - **Registro**: un solo campo "Nombre y apellido", como el modelo de datos (nombreUsuario).
 
 Las imágenes para el informe están en [`png/`](png/). Las capturas del sitio real
@@ -49,7 +49,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -95,7 +95,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ cont ~~~ pie
 ```
@@ -136,7 +136,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -165,7 +165,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -202,7 +202,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -240,7 +240,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -277,7 +277,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -306,7 +306,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -347,7 +347,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -389,7 +389,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -414,11 +414,11 @@ flowchart TB
     migas["Inicio › Contacto"]
     subgraph cont["Contenido · h1 Contacto · respondemos dentro de las 48 h hábiles"]
         direction LR
-        form["Nombre y apellido *<br/>Correo electrónico *<br/>Asunto * · lista<br/>Mensaje *<br/>validación en cliente y servidor · token CSRF<br/>Enviar mensaje"] ~~~ datos["Datos de contacto<br/>Correo · Horario de atención<br/>Rosario, Santa Fe<br/>Antes de escribir: Mis reservas"]
+        form["Nombre y apellido *<br/>Correo electrónico *<br/>Asunto * · lista<br/>Mensaje *<br/>validación en cliente y servidor · token CSRF<br/>Enviar mensaje"] ~~~ datos["Datos de contacto<br/>Correo · Teléfono · Horario<br/>Rosario, Santa Fe<br/>Antes de escribir: Mis reservas"]
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```
@@ -447,7 +447,7 @@ flowchart TB
     end
     subgraph pie["Pie de página"]
         direction LR
-        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
+        explorar["Explorar<br/>Buscar vuelos · Aerolíneas · Novedades<br/>Buscador del sitio · Mapa del sitio"] ~~~ institucional["Institucional<br/>Quiénes somos · Preguntas frecuentes<br/>Términos y condiciones · Ayuda · Contacto"] ~~~ legal["contacto@aeroeb.com.ar · +54 341 000-0000<br/>Rosario, Santa Fe<br/>© 2026 AeroEB · Última actualización: dd/mm/aaaa"]
     end
     url ~~~ salto ~~~ enc ~~~ menu ~~~ migas ~~~ cont ~~~ pie
 ```

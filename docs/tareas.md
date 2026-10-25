@@ -284,7 +284,7 @@ para el punto 14 del informe. Lo que no se cumplía y se corrigió:
 - [x] **Enlaces visitados** diferenciados (violeta)
 - [x] **Contacto virtual y físico en el pie** de todas las páginas
 - [x] **Misión, visión, objetivos y equipo** en Quiénes somos
-- [ ] Teléfono de contacto: queda como "No", justificado (no hay una línea real)
+- [x] Teléfono de contacto de muestra (+54 341 000-0000) en el pie y en Contacto
 - [ ] Los ítems "Pendiente" del checklist, que dependen de la URL pública
 - [ ] Reemplazar en el informe (puntos 5.a, 5.b, 5.c y 6) las figuras viejas por las de
       `docs/diagramas/png/` y `docs/bocetos/01-wireframes/png/`, y la tabla de navegación
