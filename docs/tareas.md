@@ -216,15 +216,12 @@ Se recorrió el sitio entero con los tres roles (casos 8 a 16 de
 Se compararon las pantallas con los wireframes del punto 5.b del informe (G9_E1_EG2026.pdf)
 y el código con el enunciado del TP y la guía general de la cátedra. Lo que faltaba:
 
-- [x] Sección **Institucional** (está en el árbol de contenidos, en el menú de todos los
-      wireframes y en el mapa del sitio): Quiénes somos, Preguntas frecuentes, Términos y
-      condiciones, Política de privacidad y Política de accesibilidad, más la página de
-      **Ayuda**. El pie suma Ayuda, Accesibilidad, Términos y Privacidad, y la fecha de
-      "Última actualización" que pide la plantilla base
+- [x] Sección **Institucional** (está en el árbol de contenidos y en el mapa del sitio):
+      Quiénes somos, Preguntas frecuentes y Términos y condiciones, enlazadas desde el pie.
+      El pie suma además la fecha de "Última actualización" que pide la plantilla base
 - [x] Buscador (wireframes 3 y 4, PAS-06 y PAS-07): rango de fechas, cantidad de pasajeros,
       precio mínimo, filtro por horario de salida y por aerolínea. Con varios pasajeros solo
       aparecen los vuelos con lugar para todos, y la cantidad pasa sola al paso de reserva
-- [x] Detalle del vuelo: botón "Imprimir detalle" (wireframe 5)
 - [x] Pago (wireframe 7): campos de tarjeta del pago simulado. Se valida solo el formato
       (dígito verificador de Luhn, vencimiento, código) y **no se guarda ni se manda a ningún
       lado**. Tarjeta de prueba: 4111 1111 1111 1111
@@ -252,10 +249,32 @@ y el código con el enunciado del TP y la guía general de la cátedra. Lo que f
       mínimo del enunciado tiene un solo `nombreUsuario`, así que quedó un solo campo. Hay
       que justificarlo o ajustar el wireframe. Lo mismo con la "encuesta de satisfacción en
       el pie" del punto 6 del informe, que no se hizo: sacarla del informe o justificarla
-- [ ] Actualizar el diagrama del flujo 3 (cancelar también una reserva pendiente) y sumar
-      el vencimiento a las 24 h, como ya decía el punto 5
-- [ ] Volver a pasar el validador del W3C sobre las páginas nuevas (institucionales, ayuda)
-      y las modificadas, y guardar los reportes en `docs/validaciones/`
+- [ ] Volver a pasar el validador del W3C sobre las páginas nuevas (institucionales) y
+      las modificadas, y guardar los reportes en `docs/validaciones/`
+
+### Correcciones de la profesora en la exposición
+
+- [x] **Base de datos en los diagramas de flujo:** se rehicieron en Mermaid con el cilindro
+      de la base en cada paso que consulta o guarda. Se corrigieron además tres cajas que no
+      coincidían con el sitio (reenviar el correo, sugerir fechas cercanas y "solo se cancela
+      si está confirmada") y se sumó el flujo del formulario de contacto.
+      → [`docs/diagramas/flujos.md`](diagramas/flujos.md)
+- [x] **Mapa de navegación (árbol funcional):** Mi cuenta suma Mis reservas y Mis compras;
+      se sacaron las páginas que no existen (Boletín, Cambiar contraseña, Cuentas de CEO
+      aparte de Usuarios) y las herramientas transversales se explican aparte.
+      → [`docs/diagramas/arbol-funcional.md`](diagramas/arbol-funcional.md)
+- [x] **Botones juntos y textual o contextual:** la tabla de elementos de navegación agrupa
+      los botones en una fila y tiene la columna Tipo.
+      → [`docs/diagramas/navegacion.md`](diagramas/navegacion.md)
+- [x] **Wireframes:** se sacó lo que no tenía sentido (Accesibilidad y Ayuda en el pie,
+      Institucional en el menú, fecha de vuelta, "Directo", la caja de reserva duplicada,
+      Imprimir detalle, Cerrar sesión en los menús laterales, teléfono inventado) y se
+      rehicieron en Mermaid. → [`docs/bocetos/01-wireframes/`](bocetos/01-wireframes/)
+- [x] El sitio sigue a los wireframes nuevos: Institucional pasó del menú al pie, se
+      borraron las páginas de Ayuda, Privacidad y Accesibilidad, y el botón Imprimir del
+      detalle del vuelo. Los campos de tarjeta del pago se mantienen
+- [ ] Reemplazar en el informe (puntos 5.a, 5.b, 5.c y 6) las figuras viejas por las de
+      `docs/diagramas/png/` y `docs/bocetos/01-wireframes/png/`, y la tabla de navegación
 
 ## 9. Despliegue
 
