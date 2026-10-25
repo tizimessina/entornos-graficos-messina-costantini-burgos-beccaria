@@ -29,5 +29,6 @@ return [
         'timezone'              => 'America/Argentina/Buenos_Aires',
         'token_ttl_horas'       => 24,
         'horas_min_cancelacion' => 72,
+        'horas_para_pagar'      => 24, // después de esto, la reserva pendiente se cancela sola
     ],
 ];

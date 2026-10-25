@@ -34,8 +34,7 @@ class ContactoController
     public function enviar(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $datos = [

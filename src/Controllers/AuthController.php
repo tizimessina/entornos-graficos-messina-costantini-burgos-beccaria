@@ -43,8 +43,7 @@ class AuthController
     public function registrar(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $datos = [
@@ -172,8 +171,7 @@ class AuthController
     public function login(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $email = trim((string) ($_POST['email'] ?? ''));
@@ -205,8 +203,7 @@ class AuthController
     public function logout(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido.');
+            Csrf::rechazar();
         }
 
         Auth::logout();
@@ -225,6 +222,7 @@ class AuthController
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/recuperar.php', [
             'exito'     => Session::getFlash('exito'),
+            'error'     => Session::getFlash('error'),
             'errores'   => Session::getFlash('errores', []),
             'enlaceDev' => Session::getFlash('enlaceDev'),
         ]);
@@ -235,8 +233,7 @@ class AuthController
     public function enviarRecuperacion(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $email = trim((string) ($_POST['email'] ?? ''));
@@ -304,8 +301,7 @@ class AuthController
     public function restablecer(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $token = trim((string) ($_POST['token'] ?? ''));

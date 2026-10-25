@@ -42,6 +42,7 @@ $usuarioEnSesion = $haySesion ? \App\Core\Auth::user() : null;
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/mi-cuenta">Mi perfil</a></li>
                         <li><a class="dropdown-item" href="/mi-cuenta/reservas">Mis reservas</a></li>
+                        <li><a class="dropdown-item" href="/mi-cuenta/compras">Mis compras</a></li>
 
                         <?php if (\App\Core\Auth::hasRole('ceo de aerolinea')): ?>
                             <li><a class="dropdown-item" href="/panel">Panel de aerolínea</a></li>

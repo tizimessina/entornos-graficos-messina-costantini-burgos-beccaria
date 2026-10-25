@@ -6,12 +6,18 @@ pantalla que pide la cátedra se pegan en el informe (sección 17).
 
 ## HTML — W3C Nu Html Checker
 
-Se validaron **39 páginas**, que es el sitio completo: todas las del sitio público (con
+Se validaron **48 páginas**, que es el sitio completo: todas las del sitio público (con
 sus estados vacíos), las del circuito de reserva, las del panel de la aerolínea, las de
-administración y la página de error 404.
+administración y las páginas de error 400, 403 y 404.
 
 La pasada que está guardada es posterior al rediseño visual: vale sobre el sitio tal
 como está hoy, no sobre la versión sin estilos.
+
+El 25/10/2026 se revalidaron las páginas que cambiaron con la edición de promociones,
+el vencimiento de reservas, el historial de compras y la promoción vigente en la ficha
+del vuelo, y se sumaron las 9 nuevas (`ceo-promocion-editar`, `compras-listado`,
+`compras-vacio`, `error-400`, `error-403`, `recuperar-con-error`,
+`reserva-detalle-vencida`, `vuelo-detalle-cancelado` y `vuelo-detalle-logueado`).
 
 | Resultado | Cantidad |
 |---|---|

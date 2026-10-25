@@ -2,6 +2,7 @@
 /**
  * @var array $vuelo
  * @var int $maxAsientos
+ * @var array|null $promocion
  * @var string|null $error
  * @var array $datos
  */
@@ -80,6 +81,11 @@ $pasoActual = 2;
                            value="<?= htmlspecialchars($datos['codigoPromo'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     <p id="ayuda-promo">
                         Si tenés un código vigente de esta aerolínea, el descuento se aplica al total.
+                        <?php if ($promocion !== null): ?>
+                            Hoy está vigente <strong><?= htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8') ?></strong>:
+                            <?= htmlspecialchars($promocion['descripcionPromocion'], ENT_QUOTES, 'UTF-8') ?>
+                            (<?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?> % de descuento).
+                        <?php endif; ?>
                     </p>
                 </div>
 
