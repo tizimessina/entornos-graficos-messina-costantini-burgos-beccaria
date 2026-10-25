@@ -297,6 +297,29 @@ class AdminController
             exit;
         }
 
+        // Solo puede haber una promoción vigente por aerolínea. El CEO ya lo
+        // controla al proponerla, pero dos pendientes pueden pisarse entre sí:
+        // la que se aprueba primero gana y la segunda se frena acá.
+        if ($decision === 'aprobada') {
+            $promocion = Promocion::find((int) $id);
+
+            $choca = $promocion === null ? null : Promocion::aprobadaSuperpuesta(
+                (int) $promocion['codAerolinea'],
+                (string) $promocion['fechaInicioPromocion'],
+                (string) $promocion['fechaFinPromocion'],
+                (int) $promocion['codPromocion']
+            );
+
+            if ($choca !== null) {
+                Session::flash('errores', [(int) $id => 'No se puede aprobar: la aerolínea ya tiene aprobada '
+                    . $choca['codigoPromocion'] . ' del ' . date('d/m/Y', strtotime($choca['fechaInicioPromocion']))
+                    . ' al ' . date('d/m/Y', strtotime($choca['fechaFinPromocion']))
+                    . ', y solo puede haber una promoción vigente por aerolínea. Denegala indicando ese motivo.']);
+                header('Location: /admin/promociones');
+                exit;
+            }
+        }
+
         if (!Promocion::resolver((int) $id, $decision, $motivo !== '' ? $motivo : null, (int) Auth::id())) {
             Session::flash('errores', ['general' => 'Esa promoción ya había sido resuelta.']);
             header('Location: /admin/promociones');
@@ -529,8 +552,7 @@ class AdminController
     private function exigirCsrf(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar la página e intentá de nuevo.');
+            Csrf::rechazar();
         }
     }
 

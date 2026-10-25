@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Paginator;
 use App\Core\Vista;
+use App\Models\Promocion;
 use App\Models\Vuelo;
 
 class VueloController
@@ -72,7 +73,8 @@ class VueloController
             ['texto' => $ruta, 'url' => null],
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/vuelo-detalle.php', [
-            'vuelo' => $vuelo,
+            'vuelo'     => $vuelo,
+            'promocion' => Promocion::vigenteDeAerolinea((int) $vuelo['codAerolinea']),
         ]);
 
         require dirname(__DIR__) . '/Views/layouts/base.php';

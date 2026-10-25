@@ -80,6 +80,39 @@ class Auth
         Session::destroy();
     }
 
+    /**
+     * La sesión guarda una copia del usuario tomada al loguearse. Si después
+     * la administración suspende la cuenta, esa copia no se entera: sin este
+     * control, el usuario suspendido seguiría operando hasta cerrar sesión.
+     * Se llama al principio de cada pedido (public/index.php).
+     */
+    public static function verificarCuentaVigente(): void
+    {
+        $id = self::id();
+
+        if ($id === null) {
+            return;
+        }
+
+        $actual = Usuario::find($id);
+
+        if ($actual === null || $actual['estadoCuenta'] !== 'activo') {
+            Session::remove('usuario');
+            Session::regenerate();
+            Session::flash('error', 'Tu sesión se cerró porque la cuenta ya no está activa. Si creés que es un error, escribinos.');
+            header('Location: /login');
+            exit;
+        }
+    }
+
+    /** Corta el pedido con la página 403. */
+    public static function prohibir(?string $mensajeError = null): never
+    {
+        http_response_code(403);
+        require dirname(__DIR__) . '/Views/errores/403.php';
+        exit;
+    }
+
     public static function check(): bool
     {
         return Session::has('usuario');
@@ -118,8 +151,7 @@ class Auth
         self::requireLogin();
 
         if (!self::hasRole(...$roles)) {
-            http_response_code(403);
-            exit('No tenés permiso para acceder a esta página.');
+            self::prohibir();
         }
     }
 }

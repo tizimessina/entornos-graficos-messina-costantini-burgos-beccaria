@@ -42,6 +42,7 @@
             <ul>
                 <li>Mi perfil</li>
                 <li>Mis reservas</li>
+                <li>Mis compras</li>
             </ul>
         </li>
 

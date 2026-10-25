@@ -1,5 +1,8 @@
 <?php
-/** @var array $vuelo */
+/**
+ * @var array $vuelo
+ * @var array|null $promocion
+ */
 $ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'];
 $disponibles = (int) $vuelo['asientosDisponibles'];
 $vendidos = (int) $vuelo['capacidadTotal'] - $disponibles;
@@ -87,12 +90,26 @@ $vendidos = (int) $vuelo['capacidadTotal'] - $disponibles;
                 <?php endif; ?>
             </p>
 
-            <?php if ($disponibles === 0): ?>
+            <?php if (!\App\Models\Vuelo::sePuedeReservar($vuelo)): ?>
+                <p class="ae-apagado mb-3">
+                    Este vuelo ya no está a la venta: se canceló o ya salió.
+                </p>
+                <a class="btn btn-outline-secondary w-100" href="/vuelos">Buscar otro vuelo</a>
+            <?php elseif ($disponibles === 0): ?>
                 <p class="ae-apagado mb-3">
                     Este vuelo está completo. Probá con otra fecha o con otra aerolínea.
                 </p>
                 <a class="btn btn-outline-secondary w-100" href="/vuelos">Buscar otro vuelo</a>
             <?php elseif (\App\Core\Auth::check()): ?>
+                <?php if ($promocion !== null): ?>
+                    <p class="ae-nota">
+                        <strong>Promoción vigente de <?= htmlspecialchars($vuelo['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>:</strong>
+                        <?= htmlspecialchars($promocion['descripcionPromocion'], ENT_QUOTES, 'UTF-8') ?>.
+                        Ingresá el código <strong><?= htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8') ?></strong>
+                        al reservar y tenés un <?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?> % de descuento
+                        (hasta el <?= htmlspecialchars(date('d/m/Y', strtotime($promocion['fechaFinPromocion'])), ENT_QUOTES, 'UTF-8') ?>).
+                    </p>
+                <?php endif; ?>
                 <a class="btn btn-primary w-100" href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>/reservar">
                     Reservar este vuelo
                 </a>
@@ -100,6 +117,15 @@ $vendidos = (int) $vuelo['capacidadTotal'] - $disponibles;
                     En el próximo paso elegís la cantidad de asientos y podés aplicar un código de promoción.
                 </p>
             <?php else: ?>
+                <?php if ($promocion !== null): ?>
+                    <p class="ae-nota">
+                        <strong>Promoción vigente de <?= htmlspecialchars($vuelo['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>:</strong>
+                        <?= htmlspecialchars($promocion['descripcionPromocion'], ENT_QUOTES, 'UTF-8') ?>.
+                        Ingresá el código <strong><?= htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8') ?></strong>
+                        al reservar y tenés un <?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?> % de descuento
+                        (hasta el <?= htmlspecialchars(date('d/m/Y', strtotime($promocion['fechaFinPromocion'])), ENT_QUOTES, 'UTF-8') ?>).
+                    </p>
+                <?php endif; ?>
                 <a class="btn btn-primary w-100" href="/login">Iniciar sesión para reservar</a>
                 <p class="ae-nota mb-0">
                     ¿Todavía no tenés cuenta? <a href="/registro">Creá una</a>, se hace en un minuto.

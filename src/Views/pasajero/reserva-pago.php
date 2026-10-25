@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $reserva
+ * @var \DateTimeImmutable $vencimiento
  * @var string|null $exito
  */
 $pasoActual = 3;
@@ -64,6 +65,12 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
 
             <p class="ae-metrica-rotulo">Total a pagar</p>
             <p class="ae-vuelo-precio ae-dato mb-4">$<?= number_format($total, 2, ',', '.') ?></p>
+
+            <p>
+                Tenés tiempo de pagar hasta el
+                <strong><?= $vencimiento->format('d/m/Y') ?> a las <?= $vencimiento->format('H:i') ?></strong>.
+                Después la reserva se cancela sola y los asientos se liberan.
+            </p>
 
             <p class="ae-apagado">
                 Aeroeb no procesa pagos reales: el pago es una simulación para el trabajo

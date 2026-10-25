@@ -1,6 +1,7 @@
 <?php
 /**
  * @var string|null $exito
+ * @var string|null $error
  * @var array $errores
  * @var string|null $enlaceDev
  */
@@ -12,6 +13,10 @@
 
 <?php if (!empty($exito)): ?>
     <p role="status"><?= htmlspecialchars($exito, ENT_QUOTES, 'UTF-8') ?></p>
+<?php endif; ?>
+
+<?php if (!empty($error)): ?>
+    <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
 <?php endif; ?>
 
 <?php if (!empty($enlaceDev)): ?>

@@ -108,4 +108,5 @@
         comprobante de las confirmadas y la opción de cancelar.
     </p>
     <a class="btn btn-primary" href="/mi-cuenta/reservas">Ver mis reservas</a>
+    <a class="btn btn-outline-secondary" href="/mi-cuenta/compras">Ver mis compras</a>
 </section>
