@@ -20,6 +20,43 @@
     </p>
 </section>
 
+<section class="ae-panel mt-4" aria-labelledby="titulo-mision">
+    <h2 id="titulo-mision" class="h5 mt-0">Misión</h2>
+    <p>
+        Que cualquier persona pueda buscar, comparar y reservar pasajes de varias
+        aerolíneas desde un solo lugar, de forma accesible y sin trámites de más.
+    </p>
+
+    <h2 class="h5">Visión</h2>
+    <p>
+        Ser el punto de consulta de referencia para comparar la oferta aérea, con
+        información confiable y un sitio que pueda usar todo el mundo.
+    </p>
+
+    <h2 class="h5">Objetivos</h2>
+    <ul class="mb-0">
+        <li>Comparar vuelos de distintas aerolíneas para una misma ruta en pocos clics.</li>
+        <li>Que el sitio se pueda usar con cualquier dispositivo y con tecnologías de apoyo.</li>
+        <li>Que cada aerolínea administre su propia oferta, con promociones revisadas antes de publicarse.</li>
+        <li>Confirmar cada operación en pantalla y por correo.</li>
+    </ul>
+</section>
+
+<section class="ae-panel mt-4" aria-labelledby="titulo-equipo">
+    <h2 id="titulo-equipo" class="h5 mt-0">Equipo</h2>
+    <p>
+        AeroEB lo desarrolló el Grupo 9 de Entornos Gráficos. Para cualquier consulta,
+        escribinos desde el <a href="/contacto">formulario de contacto</a> o a
+        <a href="mailto:contacto@aeroeb.com.ar">contacto@aeroeb.com.ar</a>.
+    </p>
+    <ul class="mb-0">
+        <li>Eugenia Beccaria</li>
+        <li>Mateo Burgos</li>
+        <li>Jeremías Costantini</li>
+        <li>Tiziano Messina</li>
+    </ul>
+</section>
+
 <section class="ae-panel mt-4" aria-labelledby="titulo-proyecto">
     <h2 id="titulo-proyecto" class="h5 mt-0">Un proyecto académico</h2>
     <p>
@@ -27,9 +64,5 @@
         Universidad Tecnológica Nacional, Facultad Regional Rosario (ciclo lectivo 2026).
         Las aerolíneas y los vuelos que se ven son de prueba, y el pago es una simulación:
         no se cobra nada ni se emiten pasajes reales.
-    </p>
-    <p class="mb-0">
-        Lo desarrollamos Eugenia Beccaria, Mateo Burgos, Jeremías Costantini y
-        Tiziano Messina.
     </p>
 </section>

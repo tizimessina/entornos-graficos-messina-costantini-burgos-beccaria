@@ -13,6 +13,11 @@
                     Comparamos la oferta de las aerolíneas adheridas en un solo lugar.
                     AeroEB no opera vuelos: intermedia entre las aerolíneas y los pasajeros.
                 </p>
+                <address class="ae-bajada mt-3 mb-0">
+                    <a href="mailto:contacto@aeroeb.com.ar">contacto@aeroeb.com.ar</a><br>
+                    Rosario, Santa Fe, Argentina<br>
+                    Lunes a viernes, de 9 a 18 h
+                </address>
             </div>
 
             <div class="col-6 col-lg-4">
@@ -35,6 +40,7 @@
                         <li><a href="/institucional/quienes-somos">Quiénes somos</a></li>
                         <li><a href="/institucional/preguntas-frecuentes">Preguntas frecuentes</a></li>
                         <li><a href="/institucional/terminos">Términos y condiciones</a></li>
+                        <li><a href="/ayuda">Ayuda</a></li>
                         <li><a href="/contacto">Contacto</a></li>
                     </ul>
                 </nav>
