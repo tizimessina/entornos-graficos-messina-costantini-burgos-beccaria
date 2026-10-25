@@ -8,13 +8,10 @@
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-lg-4">
-                <a class="ae-marca" href="/">
-                    <span class="ae-marca-punto" aria-hidden="true"></span>
-                    Aeroeb
-                </a>
+                <?php require __DIR__ . '/marca.php'; ?>
                 <p class="ae-bajada mt-2">
                     Comparamos la oferta de las aerolíneas adheridas en un solo lugar.
-                    Aeroeb no opera vuelos: intermedia entre las aerolíneas y los pasajeros.
+                    AeroEB no opera vuelos: intermedia entre las aerolíneas y los pasajeros.
                 </p>
             </div>
 
@@ -46,7 +43,7 @@
 
     <div class="ae-pie-legal">
         <div class="container py-3 d-flex flex-wrap justify-content-between gap-2">
-            <p class="mb-0">&copy; <?= date('Y') ?> Aeroeb · Trabajo práctico integrador, UTN FRR</p>
+            <p class="mb-0">&copy; <?= date('Y') ?> AeroEB · Trabajo práctico integrador, UTN FRR</p>
             <p class="mb-0">Entornos Gráficos 2026</p>
         </div>
     </div>

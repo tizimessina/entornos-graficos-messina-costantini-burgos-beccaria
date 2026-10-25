@@ -48,16 +48,17 @@ Versión del validador usada: `26.10.18`.
 
 | Archivo | Perfil | Errores | Advertencias |
 |---|---|---|---|
-| `public/assets/css/estilos.css` | CSS3 + SVG | **0** | 25 |
+| `public/assets/css/estilos.css` | CSS3 + SVG | **0** | 23 |
 
-Las 25 advertencias no son defectos y no hay nada que corregir:
+Las 23 advertencias no son defectos y no hay nada que corregir: son todas la misma nota
+repetida, *"Due to their dynamic nature, CSS variables are currently not statically
+checked"*. El validador avisa que no puede analizar el valor de una variable CSS. Todo
+el sistema de diseño está hecho con variables, así que la nota aparece una vez por cada
+una.
 
-- **23** son la misma nota repetida: *"Due to their dynamic nature, CSS variables are
-  currently not statically checked"*. El validador avisa que no puede analizar el valor
-  de una variable CSS. Todo el sistema de diseño está hecho con variables, así que la
-  nota aparece una vez por cada una.
-- **2** avisan que un elemento usa el mismo color de fondo y de borde. Es a propósito:
-  son el botón primario y la pastilla del paso activo de la reserva, que son sólidos.
+Revalidado el 25/10/2026, después de agregar el logo. En la pasada anterior había 2
+advertencias más, por el botón primario y la pastilla del paso activo de la reserva,
+que usan el mismo color de fondo y de borde; esa versión del validador ya no las marca.
 
 Reporte en [`css-w3c.json`](css-w3c.json).
 

@@ -10,10 +10,7 @@ $usuarioEnSesion = $haySesion ? \App\Core\Auth::user() : null;
 <header class="ae-encabezado">
     <div class="container py-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
         <div>
-            <a class="ae-marca" href="/">
-                <span class="ae-marca-punto" aria-hidden="true"></span>
-                Aeroeb
-            </a>
+            <?php require __DIR__ . '/marca.php'; ?>
             <p class="ae-bajada d-none d-sm-block">Compará y reservá vuelos de todas las aerolíneas</p>
         </div>
 

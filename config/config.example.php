@@ -20,7 +20,7 @@ return [
         'password'   => '', // contraseña de aplicación, no la de la cuenta
         'encryption' => 'tls',
         'from_email' => 'no-reply@aeroeb.com.ar',
-        'from_name'  => 'Aeroeb',
+        'from_name'  => 'AeroEB',
     ],
 
     'app' => [

@@ -34,7 +34,7 @@ class AdminController
     {
         $this->exigirAdmin();
 
-        $tituloPagina = 'Administración — Aeroeb';
+        $tituloPagina = 'Administración — AeroEB';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/admin/panel.php', [
             'resumen' => Reporte::resumenGlobal(),
@@ -437,11 +437,11 @@ class AdminController
             $cuerpo = '<p>Hola, ' . htmlspecialchars($suscripto['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
                 . '<h1>' . $titulo . '</h1>'
                 . '<p>' . $texto . '</p>'
-                . '<p><a href="' . htmlspecialchars($enlace, ENT_QUOTES, 'UTF-8') . '">Ver la novedad en Aeroeb</a></p>'
+                . '<p><a href="' . htmlspecialchars($enlace, ENT_QUOTES, 'UTF-8') . '">Ver la novedad en AeroEB</a></p>'
                 . '<p>Recibís este correo porque lo pediste en las preferencias de tu cuenta. '
                 . 'Para dejar de recibirlo, desactivalo en Mi cuenta.</p>';
 
-            if (Mailer::enviar($suscripto['emailUsuario'], $suscripto['nombreUsuario'], 'Novedad de Aeroeb: ' . $datos['tituloNovedad'], $cuerpo)) {
+            if (Mailer::enviar($suscripto['emailUsuario'], $suscripto['nombreUsuario'], 'Novedad de AeroEB: ' . $datos['tituloNovedad'], $cuerpo)) {
                 $enviados++;
             }
         }
@@ -719,14 +719,14 @@ class AdminController
     {
         $cuerpo = $estado === 'activo'
             ? '<p>Hola, ' . htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
-                . '<p>Habilitamos tu cuenta en Aeroeb. Ya podés iniciar sesión.</p>'
+                . '<p>Habilitamos tu cuenta en AeroEB. Ya podés iniciar sesión.</p>'
             : '<p>Hola, ' . htmlspecialchars($usuario['nombreUsuario'], ENT_QUOTES, 'UTF-8') . ':</p>'
-                . '<p>Suspendimos tu cuenta en Aeroeb. Si creés que es un error, escribinos desde el formulario de contacto.</p>';
+                . '<p>Suspendimos tu cuenta en AeroEB. Si creés que es un error, escribinos desde el formulario de contacto.</p>';
 
         Mailer::enviar(
             $usuario['emailUsuario'],
             $usuario['nombreUsuario'],
-            $estado === 'activo' ? 'Tu cuenta de Aeroeb fue habilitada' : 'Tu cuenta de Aeroeb fue suspendida',
+            $estado === 'activo' ? 'Tu cuenta de AeroEB fue habilitada' : 'Tu cuenta de AeroEB fue suspendida',
             $cuerpo
         );
     }

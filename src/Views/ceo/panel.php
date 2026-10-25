@@ -13,7 +13,7 @@ $pendientes = (int) $resumen['promocionesPendientes'];
 <h1>Panel de <?= htmlspecialchars($aerolinea['nombreAerolinea'] ?? 'tu aerolínea', ENT_QUOTES, 'UTF-8') ?></h1>
 
 <p class="ae-entrada">
-    Desde acá administrás la oferta de tu aerolínea en Aeroeb. Todo lo que ves
+    Desde acá administrás la oferta de tu aerolínea en AeroEB. Todo lo que ves
     es solo de tu compañía.
 </p>
 
@@ -65,7 +65,7 @@ $pendientes = (int) $resumen['promocionesPendientes'];
     <p class="mt-4" role="status">
         Tenés <?= $pendientes ?>
         <?= $pendientes === 1 ? 'promoción esperando' : 'promociones esperando' ?>
-        que la administración de Aeroeb las apruebe. Hasta que eso pase, el código
+        que la administración de AeroEB las apruebe. Hasta que eso pase, el código
         no descuenta nada al reservar.
     </p>
 <?php endif; ?>

@@ -1,7 +1,7 @@
 <h1>Mapa del sitio</h1>
 
 <p class="ae-entrada">
-    Estas son todas las secciones de Aeroeb. Las áreas privadas se habilitan
+    Estas son todas las secciones de AeroEB. Las áreas privadas se habilitan
     según el tipo de cuenta con la que inicies sesión.
 </p>
 

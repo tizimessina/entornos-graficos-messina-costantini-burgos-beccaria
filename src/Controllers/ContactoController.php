@@ -15,7 +15,7 @@ class ContactoController
 {
     public function mostrar(): void
     {
-        $tituloPagina = 'Contacto — Aeroeb';
+        $tituloPagina = 'Contacto — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Contacto', 'url' => null],
@@ -88,7 +88,7 @@ class ContactoController
 
         Mailer::enviar(
             'admin@aeroeb.com.ar',
-            'Administración de Aeroeb',
+            'Administración de AeroEB',
             'Nuevo mensaje de contacto: ' . $datos['asunto'],
             "<p><strong>De:</strong> $nombre ($email)</p><p>$mensaje</p>"
         );

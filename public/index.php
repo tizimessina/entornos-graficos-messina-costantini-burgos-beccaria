@@ -56,7 +56,7 @@ error_reporting(E_ALL);
 ob_start();
 
 $mostrarError500 = static function (string $detalle) use ($config): void {
-    error_log('Aeroeb: ' . $detalle);
+    error_log('AeroEB: ' . $detalle);
 
     while (ob_get_level() > 0) {
         ob_end_clean();

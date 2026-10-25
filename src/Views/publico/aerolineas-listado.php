@@ -7,7 +7,7 @@
 <h1>Aerolíneas adheridas</h1>
 
 <p class="ae-entrada">
-    Estas son las compañías que publican su oferta en Aeroeb. Entrá a cualquiera
+    Estas son las compañías que publican su oferta en AeroEB. Entrá a cualquiera
     para ver sus próximos vuelos.
 </p>
 

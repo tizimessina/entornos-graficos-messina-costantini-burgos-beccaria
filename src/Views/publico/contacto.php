@@ -62,7 +62,7 @@
     </div>
 
     <p class="ae-nota">
-        El mensaje lo lee la administración de Aeroeb. No compartimos tu correo con las aerolíneas.
+        El mensaje lo lee la administración de AeroEB. No compartimos tu correo con las aerolíneas.
     </p>
 
     <button class="btn btn-primary" type="submit">Enviar mensaje</button>

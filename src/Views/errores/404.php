@@ -3,7 +3,7 @@
  * Página 404. La arma el Router cuando ninguna ruta coincide, así que no
  * pasa por un controlador: se incluye el layout desde acá.
  */
-$tituloPagina = 'Página no encontrada — Aeroeb';
+$tituloPagina = 'Página no encontrada — AeroEB';
 $contenidoHtml = <<<'HTML'
 <div class="ae-vacio"><p class="ae-vacio-icono" aria-hidden="true">404</p><h1>No encontramos esa página</h1>
 

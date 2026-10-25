@@ -8,7 +8,7 @@
     <h1 id="titulo-portada">Compará y reservá vuelos de todas las aerolíneas</h1>
 
     <p>
-        Aeroeb reúne la oferta de las aerolíneas adheridas en un solo lugar, para que
+        AeroEB reúne la oferta de las aerolíneas adheridas en un solo lugar, para que
         compares precios y horarios sin tener que entrar al sitio de cada una.
     </p>
 

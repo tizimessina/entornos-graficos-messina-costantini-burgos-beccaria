@@ -34,7 +34,7 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Reservar vuelo — Aeroeb';
+        $tituloPagina = 'Reservar vuelo — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Vuelos', 'url' => '/vuelos'],
@@ -100,7 +100,7 @@ class ReservaController
             exit;
         }
 
-        $tituloPagina = 'Pagar reserva ' . $reserva['codigoReserva'] . ' — Aeroeb';
+        $tituloPagina = 'Pagar reserva ' . $reserva['codigoReserva'] . ' — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
@@ -151,7 +151,7 @@ class ReservaController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis reservas — Aeroeb';
+        $tituloPagina = 'Mis reservas — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mi cuenta', 'url' => '/mi-cuenta'],
@@ -177,7 +177,7 @@ class ReservaController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Mis compras — Aeroeb';
+        $tituloPagina = 'Mis compras — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mi cuenta', 'url' => '/mi-cuenta'],
@@ -201,7 +201,7 @@ class ReservaController
             return;
         }
 
-        $tituloPagina = 'Reserva ' . $reserva['codigoReserva'] . ' — Aeroeb';
+        $tituloPagina = 'Reserva ' . $reserva['codigoReserva'] . ' — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
@@ -235,7 +235,7 @@ class ReservaController
             exit;
         }
 
-        $tituloPagina = 'Comprobante ' . $reserva['codigoReserva'] . ' — Aeroeb';
+        $tituloPagina = 'Comprobante ' . $reserva['codigoReserva'] . ' — AeroEB';
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/pasajero/comprobante.php', [
             'reserva' => $reserva,
         ]);
@@ -328,7 +328,7 @@ class ReservaController
     private function paginaNoEncontrada(string $mensaje): void
     {
         http_response_code(404);
-        $tituloPagina = 'No encontrado — Aeroeb';
+        $tituloPagina = 'No encontrado — AeroEB';
         $contenidoHtml = '<h1>No encontrado</h1><p>' . htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8') . '</p>'
             . '<p><a href="/mi-cuenta/reservas">Ver mis reservas</a></p>';
 

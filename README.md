@@ -1,8 +1,8 @@
-# Aeroeb
+# AeroEB
 
 Trabajo Práctico Integrador de la materia Entornos Gráficos (UTN FRR, 2026).
 
-Aeroeb es un sitio donde varias aerolíneas publican sus vuelos y los pasajeros
+AeroEB es un sitio donde varias aerolíneas publican sus vuelos y los pasajeros
 pueden buscarlos, compararlos y reservarlos desde un solo lugar. La idea es que cada
 aerolínea administre su propia oferta (vuelos, promociones) y que la administración de
 la plataforma modere ese contenido antes de que se publique.

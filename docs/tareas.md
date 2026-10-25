@@ -157,7 +157,7 @@ entre 30 y 90 días después de la carga.
 
 Se hizo después del punto 8, a partir de los wireframes del informe.
 
-- [x] El sitio pasa a llamarse **Aeroeb**. Se renombró en todo el repo: código, scripts,
+- [x] El sitio pasa a llamarse **AeroEB**. Se renombró en todo el repo: código, scripts,
       documentación, el nombre de la base de datos y el correo del administrador
       (`admin@aeroeb.com.ar`)
 - [x] Sistema de diseño propio en `public/assets/css/estilos.css`, construido sobre las
