@@ -8,6 +8,7 @@
  * @var \App\Core\Paginator $paginador
  * @var array $filtros
  * @var bool $huboBusqueda
+ * @var array $aerolineas
  */
 
 /** Resumen de la búsqueda, para encabezar los resultados. */
@@ -21,15 +22,27 @@ if ($filtros['destino'] !== '') {
     $resumen[] = 'hacia ' . $filtros['destino'];
 }
 
-if ($filtros['fecha'] !== '') {
-    $resumen[] = 'el ' . date('d/m/Y', strtotime($filtros['fecha']));
+if ($filtros['fecha'] !== '' && $filtros['fechaHasta'] !== '') {
+    $resumen[] = date('d/m/Y', strtotime($filtros['fecha'])) . ' al ' . date('d/m/Y', strtotime($filtros['fechaHasta']));
+} elseif ($filtros['fecha'] !== '') {
+    $resumen[] = 'desde el ' . date('d/m/Y', strtotime($filtros['fecha']));
+} elseif ($filtros['fechaHasta'] !== '') {
+    $resumen[] = 'hasta el ' . date('d/m/Y', strtotime($filtros['fechaHasta']));
+}
+
+if ($filtros['precioMin'] !== '') {
+    $resumen[] = 'desde $' . number_format((float) $filtros['precioMin'], 2, ',', '.');
 }
 
 if ($filtros['precioMax'] !== '') {
     $resumen[] = 'hasta $' . number_format((float) $filtros['precioMax'], 2, ',', '.');
 }
+
+if ($filtros['pasajeros'] > 1) {
+    $resumen[] = $filtros['pasajeros'] . ' pasajeros';
+}
 ?>
-<h1>Vuelos</h1>
+<h1><?= $huboBusqueda ? 'Resultados de búsqueda' : 'Vuelos' ?></h1>
 
 <p class="ae-entrada">
     <?php if ($resumen !== []): ?>
@@ -42,7 +55,7 @@ if ($filtros['precioMax'] !== '') {
 
 <div class="row g-4 mt-1">
     <div class="col-12 col-lg-4 col-xl-3">
-        <form class="ae-panel" role="search" method="get" action="/vuelos">
+        <form class="ae-panel ae-filtros" role="search" method="get" action="/vuelos">
             <h2 class="h6 mt-0">Filtros</h2>
 
             <div>
@@ -60,9 +73,31 @@ if ($filtros['precioMax'] !== '') {
             </div>
 
             <div>
-                <label class="form-label" for="fecha">Fecha de salida</label>
+                <label class="form-label" for="fecha">Salida desde</label>
                 <input class="form-control" type="date" id="fecha" name="fecha"
                        value="<?= htmlspecialchars($filtros['fecha'], ENT_QUOTES, 'UTF-8') ?>">
+            </div>
+
+            <div>
+                <label class="form-label" for="fechaHasta">Salida hasta</label>
+                <input class="form-control" type="date" id="fechaHasta" name="fechaHasta"
+                       value="<?= htmlspecialchars($filtros['fechaHasta'], ENT_QUOTES, 'UTF-8') ?>">
+            </div>
+
+            <div>
+                <label class="form-label" for="pasajeros">Pasajeros</label>
+                <select class="form-select" id="pasajeros" name="pasajeros">
+                    <?php for ($n = 1; $n <= 9; $n++): ?>
+                        <option value="<?= $n ?>" <?= $filtros['pasajeros'] === $n ? 'selected' : '' ?>><?= $n ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+
+            <div>
+                <label class="form-label" for="precioMin">Precio mínimo</label>
+                <input class="form-control" type="number" id="precioMin" name="precioMin" min="0" step="0.01"
+                       placeholder="$"
+                       value="<?= htmlspecialchars($filtros['precioMin'], ENT_QUOTES, 'UTF-8') ?>">
             </div>
 
             <div>
@@ -71,6 +106,37 @@ if ($filtros['precioMax'] !== '') {
                        placeholder="$"
                        value="<?= htmlspecialchars($filtros['precioMax'], ENT_QUOTES, 'UTF-8') ?>">
             </div>
+
+            <fieldset>
+                <legend class="form-label">Horario de salida</legend>
+                <?php foreach (\App\Models\Vuelo::FRANJAS_HORARIAS as $clave => $franja): ?>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="horario-<?= $clave ?>"
+                               name="horario[]" value="<?= $clave ?>"
+                               <?= in_array($clave, $filtros['horario'], true) ? 'checked' : '' ?>>
+                        <label class="form-check-label" for="horario-<?= $clave ?>">
+                            <?= htmlspecialchars($franja['texto'], ENT_QUOTES, 'UTF-8') ?>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+            </fieldset>
+
+            <?php if (count($aerolineas) > 1): ?>
+                <fieldset>
+                    <legend class="form-label">Aerolínea</legend>
+                    <?php foreach ($aerolineas as $aerolinea): ?>
+                        <?php $cod = (int) $aerolinea['codAerolinea']; ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="aerolinea-<?= $cod ?>"
+                                   name="aerolineas[]" value="<?= $cod ?>"
+                                   <?= in_array($cod, $filtros['aerolineas'], true) ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="aerolinea-<?= $cod ?>">
+                                <?= htmlspecialchars($aerolinea['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?>
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+                </fieldset>
+            <?php endif; ?>
 
             <div>
                 <label class="form-label" for="orden">Ordenar por</label>
@@ -153,7 +219,7 @@ if ($filtros['precioMax'] !== '') {
                             </p>
                         </div>
 
-                        <a class="btn btn-primary" href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>">
+                        <a class="btn btn-primary" href="/vuelos/<?= (int) $vuelo['codVuelo'] ?><?= $filtros['pasajeros'] > 1 ? '?asientos=' . $filtros['pasajeros'] : '' ?>">
                             Ver detalle
                             <span class="visually-hidden">
                                 del vuelo <?= htmlspecialchars($ruta, ENT_QUOTES, 'UTF-8') ?>

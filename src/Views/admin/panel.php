@@ -1,6 +1,9 @@
 <?php
 /**
  * @var array $resumen
+ * @var array $promociones       promociones pendientes de aprobación
+ * @var array $ceosPorAutorizar  cuentas de aerolínea esperando autorización
+ * @var array $mensajes          mensajes de contacto sin leer, los más viejos primero
  * @var string|null $exito
  * @var string|null $error
  */
@@ -60,6 +63,123 @@ $hayPendientes = $ceosPendientes > 0 || $promosPendientes > 0 || $mensajesSinLee
         <p class="mt-3" role="status">No hay nada esperando resolución. Todo al día.</p>
     <?php endif; ?>
 </section>
+
+<?php if (!empty($promociones)): ?>
+    <section class="ae-panel mt-4" aria-labelledby="titulo-promos-pendientes">
+        <h2 id="titulo-promos-pendientes" class="h5 mt-0">Promociones pendientes de aprobación</h2>
+
+        <div class="table-responsive">
+            <table class="table align-middle mb-2">
+                <caption>Promociones que propusieron las aerolíneas y todavía no se resolvieron</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Aerolínea</th>
+                        <th scope="col">Descuento</th>
+                        <th scope="col">Vigencia</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($promociones as $promocion): ?>
+                        <?php $codigo = htmlspecialchars($promocion['codigoPromocion'], ENT_QUOTES, 'UTF-8'); ?>
+                        <tr>
+                            <th scope="row" class="ae-dato"><?= $codigo ?></th>
+                            <td><?= htmlspecialchars($promocion['nombreAerolinea'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= number_format((float) $promocion['descuentoPromocion'], 0, ',', '.') ?> %</td>
+                            <td class="ae-dato">
+                                <?= htmlspecialchars(Formato::fecha($promocion['fechaInicioPromocion']) . ' al ' . Formato::fecha($promocion['fechaFinPromocion']), ENT_QUOTES, 'UTF-8') ?>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <form method="post" action="/admin/promociones/<?= (int) $promocion['codPromocion'] ?>/resolver">
+                                        <?= \App\Core\Csrf::field() ?>
+                                        <button class="btn btn-primary" type="submit" name="decision" value="aprobada">
+                                            Aprobar<span class="visually-hidden"> <?= $codigo ?></span>
+                                        </button>
+                                    </form>
+                                    <a class="btn btn-outline-secondary" href="/admin/promociones#motivo-<?= (int) $promocion['codPromocion'] ?>">
+                                        Denegar<span class="visually-hidden"> <?= $codigo ?></span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <p class="ae-nota mb-0">Para denegar hay que escribir el motivo, que es lo que después ve la aerolínea.</p>
+    </section>
+<?php endif; ?>
+
+<?php if (!empty($ceosPorAutorizar)): ?>
+    <section class="mt-4" aria-labelledby="titulo-ceos">
+        <h2 id="titulo-ceos">Cuentas de CEO por autorizar</h2>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <caption>Cuentas de aerolínea que validaron el correo y esperan autorización</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Aerolínea</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($ceosPorAutorizar as $ceo): ?>
+                        <?php $nombre = htmlspecialchars($ceo['nombreUsuario'], ENT_QUOTES, 'UTF-8'); ?>
+                        <tr>
+                            <th scope="row"><?= $nombre ?></th>
+                            <td><?= htmlspecialchars($ceo['emailUsuario'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars($ceo['nombreAerolinea'] ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <form method="post" action="/admin/usuarios/<?= (int) $ceo['codusuario'] ?>/estado">
+                                        <?= \App\Core\Csrf::field() ?>
+                                        <input type="hidden" name="estado" value="activo">
+                                        <button class="btn btn-primary" type="submit">
+                                            Autorizar<span class="visually-hidden"> la cuenta de <?= $nombre ?></span>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="/admin/usuarios/<?= (int) $ceo['codusuario'] ?>/estado"
+                                          onsubmit="return confirm('¿Rechazar esta cuenta? Queda suspendida y no va a poder iniciar sesión.');">
+                                        <?= \App\Core\Csrf::field() ?>
+                                        <input type="hidden" name="estado" value="suspendido">
+                                        <button class="btn btn-outline-secondary" type="submit">
+                                            Rechazar<span class="visually-hidden"> la cuenta de <?= $nombre ?></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+<?php endif; ?>
+
+<?php if (!empty($mensajes)): ?>
+    <section class="mt-4" aria-labelledby="titulo-mensajes">
+        <h2 id="titulo-mensajes">Mensajes de contacto sin leer</h2>
+
+        <ul class="list-unstyled d-grid gap-2">
+            <?php foreach ($mensajes as $mensaje): ?>
+                <li>
+                    <a href="/admin/mensajes/<?= (int) $mensaje['codContacto'] ?>">
+                        <?= htmlspecialchars($mensaje['asuntoContacto'], ENT_QUOTES, 'UTF-8') ?></a>
+                    <span class="ae-apagado">
+                        — <?= htmlspecialchars($mensaje['nombreContacto'], ENT_QUOTES, 'UTF-8') ?>,
+                        <?= htmlspecialchars(Formato::fecha($mensaje['fechaContacto']), ENT_QUOTES, 'UTF-8') ?>
+                    </span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <p class="mb-0"><a href="/admin/mensajes">Ver todos los mensajes</a></p>
+    </section>
+<?php endif; ?>
 
 <section aria-labelledby="titulo-estado">
     <h2 id="titulo-estado">Estado de la plataforma</h2>

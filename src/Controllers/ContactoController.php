@@ -13,6 +13,15 @@ use App\Models\Contacto;
 
 class ContactoController
 {
+    /** Opciones del campo Asunto. Se guardan tal cual en contacto.asuntoContacto. */
+    public const ASUNTOS = [
+        'Consulta sobre una reserva',
+        'Problema con mi cuenta',
+        'Quiero sumar mi aerolínea',
+        'Sugerencia sobre el sitio',
+        'Problema de accesibilidad',
+        'Otro',
+    ];
     public function mostrar(): void
     {
         $tituloPagina = 'Contacto — AeroEB';
@@ -49,6 +58,7 @@ class ContactoController
             ->required('nombre', 'El nombre')->maxLength('nombre', 100, 'El nombre')
             ->required('email', 'El email')->email('email')->maxLength('email', 100, 'El email')
             ->required('asunto', 'El asunto')->maxLength('asunto', 120, 'El asunto')
+            ->in('asunto', self::ASUNTOS, 'Elegí un asunto de la lista.')
             ->required('mensaje', 'El mensaje')->maxLength('mensaje', 2000, 'El mensaje');
 
         // Patrón POST/Redirect/GET: se redirige siempre, así recargar la página

@@ -5,6 +5,7 @@
  * @var array|null $vuelo
  * @var array $datos
  * @var array $errores
+ * @var array|null $duplicando  vuelo que se está copiando, si se llegó desde "Duplicar"
  */
 $esEdicion = $vuelo !== null;
 $accion = $esEdicion ? '/panel/vuelos/' . (int) $vuelo['codVuelo'] . '/editar' : '/panel/vuelos/nuevo';
@@ -15,6 +16,14 @@ $valor = static function (string $campo, string $porDefecto = '') use ($datos, $
 };
 ?>
 <h1><?= $esEdicion ? 'Editar vuelo' : 'Cargar un vuelo' ?></h1>
+
+<?php if (!empty($duplicando)): ?>
+    <p class="ae-entrada">
+        Copiamos los datos del vuelo
+        <?= htmlspecialchars(($duplicando['numeroVuelo'] ?: 's/n') . ' ' . $duplicando['origenVuelo'] . ' → ' . $duplicando['destinoVuelo'], ENT_QUOTES, 'UTF-8') ?>.
+        Elegí la fecha de la nueva salida y revisá el resto antes de guardar.
+    </p>
+<?php endif; ?>
 
 <?php if (!empty($errores)): ?>
     <p role="alert">Revisá los datos marcados: hay <?= count($errores) ?> error(es) en el formulario.</p>
@@ -65,7 +74,7 @@ $valor = static function (string $campo, string $porDefecto = '') use ($datos, $
 
     <div>
         <label class="form-label" for="horaSalidaVuelo">Hora de salida</label>
-        <input type="time" id="horaSalidaVuelo" name="horaSalidaVuelo" required
+        <input class="form-control" type="time" id="horaSalidaVuelo" name="horaSalidaVuelo" required
                value="<?= htmlspecialchars(substr($valor('horaSalidaVuelo'), 0, 5), ENT_QUOTES, 'UTF-8') ?>"
                <?= isset($errores['horaSalidaVuelo']) ? 'aria-invalid="true" aria-describedby="error-hora"' : '' ?>>
         <?php if (isset($errores['horaSalidaVuelo'])): ?>

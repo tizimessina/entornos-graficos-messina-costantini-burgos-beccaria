@@ -99,4 +99,27 @@ class Formato
 
         return substr($hora, 0, 5);
     }
+
+    /**
+     * Fecha de la "Última actualización" del pie: la del archivo de código o
+     * de vista modificado más recientemente. Al subir el sitio al hosting es
+     * la fecha de la última publicación, sin tener que acordarse de cambiarla.
+     */
+    public static function ultimaActualizacion(): int
+    {
+        static $ultima = null;
+
+        if ($ultima === null) {
+            $ultima = 0;
+            $archivos = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator(dirname(__DIR__), \FilesystemIterator::SKIP_DOTS)
+            );
+
+            foreach ($archivos as $archivo) {
+                $ultima = max($ultima, $archivo->getMTime());
+            }
+        }
+
+        return $ultima;
+    }
 }

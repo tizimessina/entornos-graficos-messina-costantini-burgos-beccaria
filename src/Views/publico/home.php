@@ -17,25 +17,39 @@
 
         <form role="search" method="get" action="/vuelos">
             <div class="row g-3 align-items-end">
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-xl-3">
                     <label class="form-label" for="origen">Origen</label>
                     <input class="form-control" type="text" id="origen" name="origen"
                            maxlength="50" placeholder="Ciudad o aeropuerto">
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-xl-3">
                     <label class="form-label" for="destino">Destino</label>
                     <input class="form-control" type="text" id="destino" name="destino"
                            maxlength="50" placeholder="Ciudad o aeropuerto">
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-3">
-                    <label class="form-label" for="fecha">Fecha de salida</label>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <label class="form-label" for="fecha">Salida desde</label>
                     <input class="form-control" type="date" id="fecha" name="fecha">
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-3">
-                    <button class="btn btn-primary w-100" type="submit">Buscar vuelos</button>
+                <div class="col-6 col-md-4 col-xl-2">
+                    <label class="form-label" for="fechaHasta">Salida hasta</label>
+                    <input class="form-control" type="date" id="fechaHasta" name="fechaHasta">
+                </div>
+
+                <div class="col-12 col-md-4 col-xl-2">
+                    <label class="form-label" for="pasajeros">Pasajeros</label>
+                    <select class="form-select" id="pasajeros" name="pasajeros">
+                        <?php for ($n = 1; $n <= 9; $n++): ?>
+                            <option value="<?= $n ?>"><?= $n ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="btn btn-primary px-5" type="submit">Buscar vuelos</button>
                 </div>
             </div>
         </form>

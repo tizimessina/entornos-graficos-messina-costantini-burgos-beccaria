@@ -37,9 +37,12 @@ class AdminController
         $tituloPagina = 'Administración — AeroEB';
         $breadcrumbs = $this->breadcrumbs();
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/admin/panel.php', [
-            'resumen' => Reporte::resumenGlobal(),
-            'exito'   => Session::getFlash('exito'),
-            'error'   => Session::getFlash('error'),
+            'resumen'          => Reporte::resumenGlobal(),
+            'promociones'      => Promocion::pendientes(),
+            'ceosPorAutorizar' => Usuario::todos('ceo de aerolinea', 'pendiente_autorizacion', 10, 0),
+            'mensajes'         => Contacto::sinLeer(5),
+            'exito'            => Session::getFlash('exito'),
+            'error'            => Session::getFlash('error'),
         ]);
 
         $menuLateral = $this->menuLateral();

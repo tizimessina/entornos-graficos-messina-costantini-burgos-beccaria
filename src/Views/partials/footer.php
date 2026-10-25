@@ -31,10 +31,12 @@
                 <nav aria-label="Ayuda y contacto">
                     <h2 class="h6 text-white">Ayuda</h2>
                     <ul class="list-unstyled d-grid gap-2 mb-0">
+                        <li><a href="/ayuda">Ayuda</a></li>
                         <li><a href="/contacto">Contacto</a></li>
+                        <li><a href="/institucional/accesibilidad">Accesibilidad</a></li>
+                        <li><a href="/institucional/terminos">Términos y condiciones</a></li>
+                        <li><a href="/institucional/privacidad">Privacidad</a></li>
                         <li><a href="/buscar">Buscador del sitio</a></li>
-                        <li><a href="/registro">Crear una cuenta</a></li>
-                        <li><a href="/login">Iniciar sesión</a></li>
                     </ul>
                 </nav>
             </div>
@@ -44,7 +46,10 @@
     <div class="ae-pie-legal">
         <div class="container py-3 d-flex flex-wrap justify-content-between gap-2">
             <p class="mb-0">&copy; <?= date('Y') ?> AeroEB · Trabajo práctico integrador, UTN FRR</p>
-            <p class="mb-0">Entornos Gráficos 2026</p>
+            <p class="mb-0">
+                Última actualización:
+                <time datetime="<?= date('Y-m-d', \App\Helpers\Formato::ultimaActualizacion()) ?>"><?= date('d/m/Y', \App\Helpers\Formato::ultimaActualizacion()) ?></time>
+            </p>
         </div>
     </div>
 </footer>
