@@ -39,8 +39,6 @@
                 <li><a href="/institucional/quienes-somos">Quiénes somos</a></li>
                 <li><a href="/institucional/preguntas-frecuentes">Preguntas frecuentes</a></li>
                 <li><a href="/institucional/terminos">Términos y condiciones</a></li>
-                <li><a href="/institucional/privacidad">Política de privacidad</a></li>
-                <li><a href="/institucional/accesibilidad">Política de accesibilidad</a></li>
             </ul>
         </li>
 
@@ -53,13 +51,9 @@
             </ul>
         </li>
 
-        <li class="col">
-            <a href="/contacto">Contacto</a>
-            <ul>
-                <li><a href="/ayuda">Ayuda</a></li>
-                <li><a href="/buscar">Buscador interno del sitio</a></li>
-            </ul>
-        </li>
+        <li class="col"><a href="/contacto">Contacto</a></li>
+
+        <li class="col"><a href="/buscar">Buscador interno del sitio</a></li>
 
         <li class="col">
             Mi cuenta <em>(requiere iniciar sesión)</em>
