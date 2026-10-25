@@ -1,6 +1,6 @@
 # AeroEB
 
-Trabajo Práctico Integrador de la materia Entornos Gráficos (UTN FRR, 2026).
+Trabajo Práctico Integrador de la materia Entornos Gráficos (UTN FRRo, 2026).
 
 AeroEB es un sitio donde varias aerolíneas publican sus vuelos y los pasajeros
 pueden buscarlos, compararlos y reservarlos desde un solo lugar. La idea es que cada
@@ -24,12 +24,12 @@ URL de producción: _(se agrega cuando el sitio esté desplegado)_
 
 ## Integrantes
 
-| Apellido y nombre    | Legajo        | E-mail                    |
-| -------------------- | ------------- | ------------------------- |
-| Messina, Tiziano     | 52911         | tizilmessina@gmail.com    |
-| Costantini, Jeremias | _(completar)_ | _(completar)_             |
-| Burgos, Mateo        | 52978         | mateoburgosrc22@gmail.com |
-| Beccaria, Eugenia    | _(completar)_ | _(completar)_             |
+| Apellido y nombre    | Legajo | E-mail                      |
+| -------------------- | ------ | --------------------------- |
+| Messina, Tiziano     | 52911  | tizilmessina@gmail.com      |
+| Costantini, Jeremías | 53112  | jerecostantini123@gmail.com |
+| Burgos, Mateo        | 52978  | mateoburgosrc22@gmail.com   |
+| Beccaria, Eugenia    | 53275  | beccariaeugee@gmail.com     |
 
 ## Stack
 
@@ -81,7 +81,7 @@ entornos-graficos-messina-costantini-burgos-beccaria/
 │   ├── index.php               # front controller: rutas, sesión y manejo de errores
 │   ├── assets/
 │   │   ├── css/estilos.css     # sistema de diseño propio sobre Bootstrap
-│   │   ├── js/app.js           # evita el doble envío de los formularios
+│   │   ├── js/app.js           # mensajes de validación en español y evita el doble envío
 │   │   └── vendor/bootstrap/   # Bootstrap 5.3.3, servido desde acá y no desde un CDN
 │   └── uploads/                # imágenes que se cargan desde el panel
 ├── src/
