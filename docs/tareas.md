@@ -271,8 +271,21 @@ y el código con el enunciado del TP y la guía general de la cátedra. Lo que f
       Imprimir detalle, Cerrar sesión en los menús laterales, teléfono inventado) y se
       rehicieron en Mermaid. → [`docs/bocetos/01-wireframes/`](bocetos/01-wireframes/)
 - [x] El sitio sigue a los wireframes nuevos: Institucional pasó del menú al pie, se
-      borraron las páginas de Ayuda, Privacidad y Accesibilidad, y el botón Imprimir del
-      detalle del vuelo. Los campos de tarjeta del pago se mantienen
+      borraron las páginas de Privacidad y Accesibilidad, y el botón Imprimir del detalle
+      del vuelo. Los campos de tarjeta del pago se mantienen
+
+### Checklist de la cátedra (Guía Web)
+
+Completado ítem por ítem en [`checklists/comprobacion-guia-web.md`](checklists/comprobacion-guia-web.md),
+para el punto 14 del informe. Lo que no se cumplía y se corrigió:
+
+- [x] Página de **Ayuda** (el checklist la pide dos veces): vuelve, ahora con un glosario
+- [x] **Campos obligatorios destacados** con asterisco y aclaración, en todos los formularios
+- [x] **Enlaces visitados** diferenciados (violeta)
+- [x] **Contacto virtual y físico en el pie** de todas las páginas
+- [x] **Misión, visión, objetivos y equipo** en Quiénes somos
+- [ ] Teléfono de contacto: queda como "No", justificado (no hay una línea real)
+- [ ] Los ítems "Pendiente" del checklist, que dependen de la URL pública
 - [ ] Reemplazar en el informe (puntos 5.a, 5.b, 5.c y 6) las figuras viejas por las de
       `docs/diagramas/png/` y `docs/bocetos/01-wireframes/png/`, y la tabla de navegación
 
