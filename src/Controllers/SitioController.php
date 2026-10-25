@@ -17,7 +17,7 @@ class SitioController
 
     public function mapa(): void
     {
-        $tituloPagina = 'Mapa del sitio — Aeroeb';
+        $tituloPagina = 'Mapa del sitio — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Mapa del sitio', 'url' => null],
@@ -38,7 +38,7 @@ class SitioController
             self::POR_PAGINA
         );
 
-        $tituloPagina = 'Buscar — Aeroeb';
+        $tituloPagina = 'Buscar — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Buscar', 'url' => null],

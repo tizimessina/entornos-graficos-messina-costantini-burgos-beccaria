@@ -6,12 +6,21 @@ pantalla que pide la cátedra se pegan en el informe (sección 17).
 
 ## HTML — W3C Nu Html Checker
 
-Se validaron **39 páginas**, que es el sitio completo: todas las del sitio público (con
+Se validaron **52 páginas**, que es el sitio completo: todas las del sitio público (con
 sus estados vacíos), las del circuito de reserva, las del panel de la aerolínea, las de
-administración y la página de error 404.
+administración y las páginas de error 400, 403 y 404.
 
 La pasada que está guardada es posterior al rediseño visual: vale sobre el sitio tal
 como está hoy, no sobre la versión sin estilos.
+
+El 25/10/2026 se revalidaron las páginas que cambiaron con la edición de promociones,
+el vencimiento de reservas, el historial de compras y la promoción vigente en la ficha
+del vuelo, y se sumaron las 9 nuevas (`ceo-promocion-editar`, `compras-listado`,
+`compras-vacio`, `error-400`, `error-403`, `recuperar-con-error`,
+`reserva-detalle-vencida`, `vuelo-detalle-cancelado` y `vuelo-detalle-logueado`).
+Después, con la preferencia de recibir novedades por correo y el bloqueo por intentos
+fallidos, se revalidaron `perfil` y `admin-novedad-form` y se sumaron
+`admin-novedad-form-error-envio`, `admin-novedad-editar`, `login-bloqueado` y `perfil-ceo`.
 
 | Resultado | Cantidad |
 |---|---|
@@ -39,16 +48,17 @@ Versión del validador usada: `26.10.18`.
 
 | Archivo | Perfil | Errores | Advertencias |
 |---|---|---|---|
-| `public/assets/css/estilos.css` | CSS3 + SVG | **0** | 25 |
+| `public/assets/css/estilos.css` | CSS3 + SVG | **0** | 23 |
 
-Las 25 advertencias no son defectos y no hay nada que corregir:
+Las 23 advertencias no son defectos y no hay nada que corregir: son todas la misma nota
+repetida, *"Due to their dynamic nature, CSS variables are currently not statically
+checked"*. El validador avisa que no puede analizar el valor de una variable CSS. Todo
+el sistema de diseño está hecho con variables, así que la nota aparece una vez por cada
+una.
 
-- **23** son la misma nota repetida: *"Due to their dynamic nature, CSS variables are
-  currently not statically checked"*. El validador avisa que no puede analizar el valor
-  de una variable CSS. Todo el sistema de diseño está hecho con variables, así que la
-  nota aparece una vez por cada una.
-- **2** avisan que un elemento usa el mismo color de fondo y de borde. Es a propósito:
-  son el botón primario y la pastilla del paso activo de la reserva, que son sólidos.
+Revalidado el 25/10/2026, después de agregar el logo. En la pasada anterior había 2
+advertencias más, por el botón primario y la pastilla del paso activo de la reserva,
+que usan el mismo color de fondo y de borde; esa versión del validador ya no las marca.
 
 Reporte en [`css-w3c.json`](css-w3c.json).
 

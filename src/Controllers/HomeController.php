@@ -12,7 +12,7 @@ class HomeController
 {
     public function index(): void
     {
-        $tituloPagina = 'Aeroeb — Compará y reservá vuelos';
+        $tituloPagina = 'AeroEB — Compará y reservá vuelos';
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/home.php', [
             'novedades'   => Novedad::destacadas(3),
             'promociones' => Promocion::vigentes(3),

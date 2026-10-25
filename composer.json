@@ -1,6 +1,6 @@
 {
     "name": "utn-frr/aeroeb",
-    "description": "Aeroeb - Plataforma de reserva de pasajes aereos. TP Integrador, Entornos Graficos, UTN FRR 2026.",
+    "description": "AeroEB - Plataforma de reserva de pasajes aereos. TP Integrador, Entornos Graficos, UTN FRR 2026.",
     "type": "project",
     "license": "MIT",
     "require": {

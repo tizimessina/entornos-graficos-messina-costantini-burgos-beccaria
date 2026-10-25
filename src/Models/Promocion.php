@@ -34,6 +34,28 @@ class Promocion
     }
 
     /**
+     * La promoción que hoy se puede usar en los vuelos de una aerolínea, para
+     * mostrarla en la ficha del vuelo y al reservar. Como hay una sola vigente
+     * por aerolínea, devuelve una o ninguna.
+     */
+    public static function vigenteDeAerolinea(int $codAerolinea): ?array
+    {
+        $stmt = Database::getInstance()->prepare(
+            "SELECT codigoPromocion, descripcionPromocion, descuentoPromocion, fechaFinPromocion
+               FROM promociones
+              WHERE codAerolinea = :aerolinea
+                AND estadoPromocion = 'aprobada'
+                AND CURDATE() BETWEEN fechaInicioPromocion AND fechaFinPromocion
+                AND (usosMaximos IS NULL OR usosRealizados < usosMaximos)
+              ORDER BY fechaInicioPromocion DESC
+              LIMIT 1"
+        );
+        $stmt->execute(['aerolinea' => $codAerolinea]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    /**
      * Devuelve la promoción solo si se puede aplicar a un vuelo de esa aerolínea:
      * aprobada por la administración, vigente hoy y con usos disponibles.
      *
@@ -105,12 +127,89 @@ class Promocion
         return (int) $stmt->fetchColumn();
     }
 
-    public static function existeCodigo(string $codigo): bool
+    /** Busca la promoción solo si es de esa aerolínea: un CEO no puede tocar las de otra. */
+    public static function findDeAerolinea(int $codPromocion, int $codAerolinea): ?array
     {
-        $stmt = Database::getInstance()->prepare('SELECT 1 FROM promociones WHERE codigoPromocion = :codigo');
-        $stmt->execute(['codigo' => $codigo]);
+        $stmt = Database::getInstance()->prepare(
+            'SELECT codPromocion, codigoPromocion, descripcionPromocion, descuentoPromocion, codAerolinea,
+                    estadoPromocion, fechaInicioPromocion, fechaFinPromocion, usosMaximos, usosRealizados
+               FROM promociones
+              WHERE codPromocion = :cod AND codAerolinea = :aerolinea'
+        );
+        $stmt->execute([
+            'cod'       => $codPromocion,
+            'aerolinea' => $codAerolinea,
+        ]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    public static function find(int $codPromocion): ?array
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT codPromocion, codigoPromocion, codAerolinea, estadoPromocion,
+                    fechaInicioPromocion, fechaFinPromocion
+               FROM promociones
+              WHERE codPromocion = :cod'
+        );
+        $stmt->execute(['cod' => $codPromocion]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    /** Al editar se pasa la propia promoción en $exceptoCod, si no choca consigo misma. */
+    public static function existeCodigo(string $codigo, ?int $exceptoCod = null): bool
+    {
+        $stmt = Database::getInstance()->prepare(
+            'SELECT 1 FROM promociones WHERE codigoPromocion = :codigo AND codPromocion <> :excepto'
+        );
+        $stmt->execute([
+            'codigo'  => $codigo,
+            'excepto' => $exceptoCod ?? 0,
+        ]);
 
         return (bool) $stmt->fetchColumn();
+    }
+
+    /**
+     * El enunciado admite una sola promoción vigente por aerolínea a la vez.
+     * Devuelve la promoción aprobada de esa aerolínea cuyas fechas se pisan con
+     * el período pedido, o null si no hay ninguna.
+     *
+     * Dos períodos se superponen cuando cada uno empieza antes de que el otro
+     * termine. Las fechas son inclusivas: una que termina el 30 y otra que
+     * empieza el 30 se pisan ese día.
+     */
+    public static function aprobadaSuperpuesta(int $codAerolinea, string $inicio, string $fin, ?int $exceptoCod = null): ?array
+    {
+        $stmt = Database::getInstance()->prepare(
+            "SELECT codPromocion, codigoPromocion, fechaInicioPromocion, fechaFinPromocion
+               FROM promociones
+              WHERE codAerolinea = :aerolinea
+                AND estadoPromocion = 'aprobada'
+                AND codPromocion <> :excepto
+                AND fechaInicioPromocion <= :fin
+                AND fechaFinPromocion >= :inicio
+              ORDER BY fechaInicioPromocion
+              LIMIT 1"
+        );
+        $stmt->execute([
+            'aerolinea' => $codAerolinea,
+            'excepto'   => $exceptoCod ?? 0,
+            'inicio'    => $inicio,
+            'fin'       => $fin,
+        ]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    /** Cuántas reservas (de cualquier estado) usaron el código. */
+    public static function reservasQueLaUsaron(int $codPromocion): int
+    {
+        $stmt = Database::getInstance()->prepare('SELECT COUNT(*) FROM reservas WHERE codPromocion = :cod');
+        $stmt->execute(['cod' => $codPromocion]);
+
+        return (int) $stmt->fetchColumn();
     }
 
     // --- Gestión del administrador ----------------------------------------
@@ -190,5 +289,53 @@ class Promocion
         ]);
 
         return (int) $pdo->lastInsertId();
+    }
+
+    /**
+     * Cualquier cambio vuelve a dejar la promoción pendiente y borra la
+     * resolución anterior: si no, el CEO podría cambiar el descuento de una
+     * promoción ya aprobada sin que la administración se entere.
+     */
+    public static function actualizar(int $codPromocion, int $codUsuarioSolicita, array $datos): void
+    {
+        $stmt = Database::getInstance()->prepare(
+            "UPDATE promociones
+                SET codigoPromocion = :codigo,
+                    descripcionPromocion = :descripcion,
+                    descuentoPromocion = :descuento,
+                    fechaInicioPromocion = :inicio,
+                    fechaFinPromocion = :fin,
+                    usosMaximos = :usos,
+                    estadoPromocion = 'pendiente',
+                    codUsuarioSolicita = :solicita,
+                    fechaSolicitud = NOW(),
+                    codUsuarioResuelve = NULL,
+                    fechaResolucion = NULL,
+                    motivoResolucion = NULL
+              WHERE codPromocion = :cod"
+        );
+        $stmt->execute([
+            'cod'         => $codPromocion,
+            'codigo'      => $datos['codigoPromocion'],
+            'descripcion' => $datos['descripcionPromocion'],
+            'descuento'   => $datos['descuentoPromocion'],
+            'inicio'      => $datos['fechaInicioPromocion'],
+            'fin'         => $datos['fechaFinPromocion'],
+            'usos'        => $datos['usosMaximos'] !== '' ? (int) $datos['usosMaximos'] : null,
+            'solicita'    => $codUsuarioSolicita,
+        ]);
+    }
+
+    public static function eliminar(int $codPromocion, int $codAerolinea): bool
+    {
+        $stmt = Database::getInstance()->prepare(
+            'DELETE FROM promociones WHERE codPromocion = :cod AND codAerolinea = :aerolinea'
+        );
+        $stmt->execute([
+            'cod'       => $codPromocion,
+            'aerolinea' => $codAerolinea,
+        ]);
+
+        return $stmt->rowCount() > 0;
     }
 }

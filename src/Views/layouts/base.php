@@ -15,9 +15,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aeroeb: compará y reservá vuelos de todas las aerolíneas adheridas.">
+    <meta name="description" content="AeroEB: compará y reservá vuelos de todas las aerolíneas adheridas.">
     <meta name="theme-color" content="#1e1b4b">
-    <title><?= htmlspecialchars($tituloPagina ?? 'Aeroeb', ENT_QUOTES, 'UTF-8') ?></title>
+    <title><?= htmlspecialchars($tituloPagina ?? 'AeroEB', ENT_QUOTES, 'UTF-8') ?></title>
+    <link rel="icon" href="/assets/img/icono.svg" type="image/svg+xml">
+    <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
     <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/estilos.css">
 </head>

@@ -3,6 +3,7 @@
  * @var array $reserva
  * @var bool $sePuedeCancelar
  * @var int $horasMinimas
+ * @var \DateTimeImmutable $vencimiento
  * @var string|null $exito
  * @var string|null $error
  */
@@ -105,7 +106,9 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
             <?php if ($estado === 'pendiente de pago'): ?>
                 <p class="ae-apagado">
                     Los asientos ya están reservados a tu nombre, pero la reserva no queda
-                    confirmada hasta que pagues.
+                    confirmada hasta que pagues. Tenés tiempo hasta el
+                    <?= $vencimiento->format('d/m/Y') ?> a las <?= $vencimiento->format('H:i') ?>:
+                    después se cancela sola y los asientos se liberan.
                 </p>
                 <a class="btn btn-primary w-100 mb-3" href="/reservas/<?= (int) $reserva['codReserva'] ?>/pago">
                     Pagar esta reserva
@@ -120,6 +123,9 @@ $subtotal = (float) $reserva['precioUnitario'] * (int) $reserva['cantidadAsiento
             <?php else: ?>
                 <p class="ae-apagado">
                     Esta reserva está cancelada y los asientos volvieron al vuelo.
+                    <?php if (!empty($reserva['motivoCancelacion'])): ?>
+                        Motivo: <?= htmlspecialchars($reserva['motivoCancelacion'], ENT_QUOTES, 'UTF-8') ?>
+                    <?php endif; ?>
                 </p>
                 <a class="btn btn-primary w-100 mb-3" href="/vuelos">Buscar otro vuelo</a>
             <?php endif; ?>

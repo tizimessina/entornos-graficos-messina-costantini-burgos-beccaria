@@ -20,7 +20,7 @@ return [
         'password'   => '', // contraseña de aplicación, no la de la cuenta
         'encryption' => 'tls',
         'from_email' => 'no-reply@aeroeb.com.ar',
-        'from_name'  => 'Aeroeb',
+        'from_name'  => 'AeroEB',
     ],
 
     'app' => [
@@ -29,5 +29,6 @@ return [
         'timezone'              => 'America/Argentina/Buenos_Aires',
         'token_ttl_horas'       => 24,
         'horas_min_cancelacion' => 72,
+        'horas_para_pagar'      => 24, // después de esto, la reserva pendiente se cancela sola
     ],
 ];

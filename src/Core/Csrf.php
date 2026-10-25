@@ -35,4 +35,12 @@ class Csrf
             && Session::has(self::CLAVE_SESION)
             && hash_equals(Session::get(self::CLAVE_SESION), $token);
     }
+
+    /** Corta el pedido con la página 400 cuando el token no es válido. */
+    public static function rechazar(): never
+    {
+        http_response_code(400);
+        require dirname(__DIR__) . '/Views/errores/400.php';
+        exit;
+    }
 }

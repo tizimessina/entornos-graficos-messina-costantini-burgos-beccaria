@@ -1,5 +1,5 @@
 -- =====================================================================
---  Aeroeb — Esquema físico de base de datos
+--  AeroEB — Esquema físico de base de datos
 --  TP Integrador · Entornos Gráficos · UTN FRR · 2026
 --  Motor: InnoDB · Juego de caracteres: utf8mb4
 --
@@ -62,6 +62,10 @@ CREATE TABLE usuarios (
                                             NOT NULL DEFAULT 'usuario',
     emailUsuario              VARCHAR(100)  NOT NULL,
     telefonoUsuario           VARCHAR(20)       NULL,
+
+    -- Preferencias (regla de negocio 7). Por defecto no se manda nada: el
+    -- pasajero tiene que pedirlo desde su perfil.
+    recibeNovedades           TINYINT(1)    NOT NULL DEFAULT 0 COMMENT 'Recibir las novedades por correo',
 
     -- Vínculo CEO ↔ aerolínea (NULL para administradores y pasajeros)
     codAerolinea              INT UNSIGNED      NULL,

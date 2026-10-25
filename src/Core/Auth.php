@@ -15,21 +15,45 @@ class Auth
 {
     public const OK = 'ok';
     public const CREDENCIALES_INVALIDAS = 'credenciales';
+    public const BLOQUEADO = 'bloqueado';
+
+    /** Intentos fallidos seguidos antes de bloquear el ingreso, y por cuánto tiempo. */
+    public const MAX_INTENTOS = 5;
+    public const MINUTOS_BLOQUEO = 15;
 
     /**
-     * Intenta loguear. Devuelve self::OK, self::CREDENCIALES_INVALIDAS, o el
-     * estado de la cuenta ('pendiente_email', 'pendiente_autorizacion',
-     * 'suspendido') para poder explicarle al usuario por qué no entró.
+     * Intenta loguear. Devuelve self::OK, self::CREDENCIALES_INVALIDAS,
+     * self::BLOQUEADO, o el estado de la cuenta ('pendiente_email',
+     * 'pendiente_autorizacion', 'suspendido') para poder explicarle al
+     * usuario por qué no entró.
      *
      * Si el email o la contraseña están mal devuelve siempre lo mismo, sin
      * decir cuál de los dos falló: de lo contrario se podría averiguar qué
      * direcciones están registradas.
+     *
+     * Después de MAX_INTENTOS contraseñas incorrectas seguidas la cuenta no
+     * deja entrar por MINUTOS_BLOQUEO minutos, ni siquiera con la contraseña
+     * correcta: es lo que frena a quien prueba contraseñas una tras otra.
+     * Contrapartida asumida: el aviso de bloqueo deja saber que la dirección
+     * existe, y alguien podría bloquear a propósito una cuenta ajena por un
+     * rato. Se acepta porque el bloqueo es corto y restablecer la contraseña
+     * lo levanta en el momento.
      */
     public static function intentar(string $email, string $password): string
     {
         $usuario = Usuario::findPorEmail($email);
 
-        if (!$usuario || !password_verify($password, $usuario['claveUsuario'])) {
+        if (!$usuario) {
+            return self::CREDENCIALES_INVALIDAS;
+        }
+
+        if ((int) $usuario['bloqueado'] === 1) {
+            return self::BLOQUEADO;
+        }
+
+        if (!password_verify($password, $usuario['claveUsuario'])) {
+            Usuario::registrarIntentoFallido((int) $usuario['codusuario'], self::MAX_INTENTOS, self::MINUTOS_BLOQUEO);
+
             return self::CREDENCIALES_INVALIDAS;
         }
 
@@ -37,6 +61,7 @@ class Auth
             return $usuario['estadoCuenta'];
         }
 
+        Usuario::registrarAccesoCorrecto((int) $usuario['codusuario']);
         self::iniciarSesionDe($usuario);
 
         return self::OK;
@@ -80,6 +105,39 @@ class Auth
         Session::destroy();
     }
 
+    /**
+     * La sesión guarda una copia del usuario tomada al loguearse. Si después
+     * la administración suspende la cuenta, esa copia no se entera: sin este
+     * control, el usuario suspendido seguiría operando hasta cerrar sesión.
+     * Se llama al principio de cada pedido (public/index.php).
+     */
+    public static function verificarCuentaVigente(): void
+    {
+        $id = self::id();
+
+        if ($id === null) {
+            return;
+        }
+
+        $actual = Usuario::find($id);
+
+        if ($actual === null || $actual['estadoCuenta'] !== 'activo') {
+            Session::remove('usuario');
+            Session::regenerate();
+            Session::flash('error', 'Tu sesión se cerró porque la cuenta ya no está activa. Si creés que es un error, escribinos.');
+            header('Location: /login');
+            exit;
+        }
+    }
+
+    /** Corta el pedido con la página 403. */
+    public static function prohibir(?string $mensajeError = null): never
+    {
+        http_response_code(403);
+        require dirname(__DIR__) . '/Views/errores/403.php';
+        exit;
+    }
+
     public static function check(): bool
     {
         return Session::has('usuario');
@@ -118,8 +176,7 @@ class Auth
         self::requireLogin();
 
         if (!self::hasRole(...$roles)) {
-            http_response_code(403);
-            exit('No tenés permiso para acceder a esta página.');
+            self::prohibir();
         }
     }
 }

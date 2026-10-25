@@ -26,7 +26,7 @@ class AuthController
             exit;
         }
 
-        $tituloPagina = 'Crear cuenta — Aeroeb';
+        $tituloPagina = 'Crear cuenta — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Crear cuenta', 'url' => null],
@@ -43,8 +43,7 @@ class AuthController
     public function registrar(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $datos = [
@@ -105,9 +104,9 @@ class AuthController
         $seEnvio = Mailer::enviar(
             $datos['email'],
             $datos['nombre'],
-            'Validá tu cuenta de Aeroeb',
+            'Validá tu cuenta de AeroEB',
             '<p>¡Hola, ' . htmlspecialchars($datos['nombre'], ENT_QUOTES, 'UTF-8') . '!</p>'
-            . '<p>Para terminar de crear tu cuenta en Aeroeb, entrá a este enlace:</p>'
+            . '<p>Para terminar de crear tu cuenta en AeroEB, entrá a este enlace:</p>'
             . '<p><a href="' . $enlace . '">' . $enlace . '</a></p>'
             . '<p>El enlace vence en 24 horas. Si no creaste esta cuenta, ignorá este mensaje.</p>'
         );
@@ -154,7 +153,7 @@ class AuthController
             exit;
         }
 
-        $tituloPagina = 'Iniciar sesión — Aeroeb';
+        $tituloPagina = 'Iniciar sesión — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Iniciar sesión', 'url' => null],
@@ -172,8 +171,7 @@ class AuthController
     public function login(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $email = trim((string) ($_POST['email'] ?? ''));
@@ -198,6 +196,9 @@ class AuthController
             'pendiente_email' => 'Todavía no validaste tu cuenta. Entrá al enlace que te enviamos por correo.',
             'pendiente_autorizacion' => 'Tu cuenta está esperando la autorización de la administración.',
             'suspendido' => 'Tu cuenta está suspendida. Escribinos desde el formulario de contacto.',
+            Auth::BLOQUEADO => 'Por seguridad bloqueamos el ingreso a esta cuenta durante ' . Auth::MINUTOS_BLOQUEO
+                . ' minutos, después de ' . Auth::MAX_INTENTOS . ' contraseñas incorrectas seguidas. '
+                . 'Probá más tarde o restablecé la contraseña, que también levanta el bloqueo.',
             default => 'El email o la contraseña no son correctos.',
         };
     }
@@ -205,8 +206,7 @@ class AuthController
     public function logout(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido.');
+            Csrf::rechazar();
         }
 
         Auth::logout();
@@ -218,13 +218,14 @@ class AuthController
 
     public function mostrarRecuperar(): void
     {
-        $tituloPagina = 'Recuperar contraseña — Aeroeb';
+        $tituloPagina = 'Recuperar contraseña — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Recuperar contraseña', 'url' => null],
         ];
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/publico/recuperar.php', [
             'exito'     => Session::getFlash('exito'),
+            'error'     => Session::getFlash('error'),
             'errores'   => Session::getFlash('errores', []),
             'enlaceDev' => Session::getFlash('enlaceDev'),
         ]);
@@ -235,8 +236,7 @@ class AuthController
     public function enviarRecuperacion(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $email = trim((string) ($_POST['email'] ?? ''));
@@ -262,7 +262,7 @@ class AuthController
             $seEnvio = Mailer::enviar(
                 $usuario['emailUsuario'],
                 $usuario['nombreUsuario'],
-                'Restablecer tu contraseña de Aeroeb',
+                'Restablecer tu contraseña de AeroEB',
                 '<p>Pediste restablecer tu contraseña. Entrá a este enlace para elegir una nueva:</p>'
                 . '<p><a href="' . $enlace . '">' . $enlace . '</a></p>'
                 . '<p>El enlace vence en 24 horas. Si no lo pediste vos, ignorá este mensaje.</p>'
@@ -288,7 +288,7 @@ class AuthController
             exit;
         }
 
-        $tituloPagina = 'Elegir nueva contraseña — Aeroeb';
+        $tituloPagina = 'Elegir nueva contraseña — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Elegir nueva contraseña', 'url' => null],
@@ -304,8 +304,7 @@ class AuthController
     public function restablecer(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $token = trim((string) ($_POST['token'] ?? ''));

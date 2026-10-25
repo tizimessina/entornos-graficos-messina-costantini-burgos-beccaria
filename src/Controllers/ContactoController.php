@@ -15,7 +15,7 @@ class ContactoController
 {
     public function mostrar(): void
     {
-        $tituloPagina = 'Contacto — Aeroeb';
+        $tituloPagina = 'Contacto — AeroEB';
         $breadcrumbs = [
             ['texto' => 'Inicio', 'url' => '/'],
             ['texto' => 'Contacto', 'url' => null],
@@ -34,8 +34,7 @@ class ContactoController
     public function enviar(): void
     {
         if (!Csrf::validate($_POST['csrf_token'] ?? null)) {
-            http_response_code(400);
-            exit('Token de seguridad inválido. Volvé a cargar el formulario e intentá de nuevo.');
+            Csrf::rechazar();
         }
 
         $datos = [
@@ -89,7 +88,7 @@ class ContactoController
 
         Mailer::enviar(
             'admin@aeroeb.com.ar',
-            'Administración de Aeroeb',
+            'Administración de AeroEB',
             'Nuevo mensaje de contacto: ' . $datos['asunto'],
             "<p><strong>De:</strong> $nombre ($email)</p><p>$mensaje</p>"
         );

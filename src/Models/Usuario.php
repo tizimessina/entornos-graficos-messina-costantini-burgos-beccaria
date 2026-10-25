@@ -12,8 +12,8 @@ class Usuario
     public static function find(int $id): ?array
     {
         $stmt = Database::getInstance()->prepare(
-            'SELECT codusuario, nombreUsuario, emailUsuario, telefonoUsuario, tipoUsuario,
-                    estadoCuenta, codAerolinea, fechaAltaUsuario
+            'SELECT codusuario, nombreUsuario, emailUsuario, telefonoUsuario, recibeNovedades,
+                    tipoUsuario, estadoCuenta, codAerolinea, fechaAltaUsuario
                FROM usuarios
               WHERE codusuario = :id'
         );
@@ -26,7 +26,8 @@ class Usuario
     {
         $stmt = Database::getInstance()->prepare(
             'SELECT codusuario, nombreUsuario, claveUsuario, emailUsuario, tipoUsuario,
-                    estadoCuenta, codAerolinea
+                    estadoCuenta, codAerolinea,
+                    (bloqueadoHasta IS NOT NULL AND bloqueadoHasta > NOW()) AS bloqueado
                FROM usuarios
               WHERE emailUsuario = :email'
         );
@@ -181,13 +182,79 @@ class Usuario
             'UPDATE usuarios
                 SET claveUsuario = :clave,
                     tokenRecuperacion = NULL,
-                    tokenRecuperacionExpira = NULL
+                    tokenRecuperacionExpira = NULL,
+                    intentosFallidos = 0,
+                    bloqueadoHasta = NULL
               WHERE codusuario = :id'
         );
         $stmt->execute([
             'id'    => $id,
             'clave' => $hashClave,
         ]);
+    }
+
+    /** Preferencias del usuario (regla de negocio 7). */
+    public static function actualizarPreferencias(int $id, bool $recibeNovedades): void
+    {
+        $stmt = Database::getInstance()->prepare(
+            'UPDATE usuarios SET recibeNovedades = :recibe WHERE codusuario = :id'
+        );
+        $stmt->execute([
+            'id'     => $id,
+            'recibe' => $recibeNovedades ? 1 : 0,
+        ]);
+    }
+
+    /** Pasajeros activos que pidieron recibir las novedades por correo. */
+    public static function suscriptosANovedades(): array
+    {
+        return Database::getInstance()->query(
+            "SELECT nombreUsuario, emailUsuario
+               FROM usuarios
+              WHERE tipoUsuario = 'usuario' AND estadoCuenta = 'activo' AND recibeNovedades = 1
+              ORDER BY codusuario"
+        )->fetchAll();
+    }
+
+    public static function contarSuscriptosANovedades(): int
+    {
+        return (int) Database::getInstance()->query(
+            "SELECT COUNT(*) FROM usuarios
+              WHERE tipoUsuario = 'usuario' AND estadoCuenta = 'activo' AND recibeNovedades = 1"
+        )->fetchColumn();
+    }
+
+    /**
+     * Suma un intento fallido de login. Al llegar a $maximo, bloquea la
+     * cuenta $minutos y vuelve el contador a cero, así el próximo bloqueo
+     * necesita otros $maximo intentos.
+     *
+     * MySQL asigna las columnas de izquierda a derecha: bloqueadoHasta va
+     * primero para que lea intentosFallidos todavía sin incrementar.
+     */
+    public static function registrarIntentoFallido(int $id, int $maximo, int $minutos): void
+    {
+        $stmt = Database::getInstance()->prepare(
+            'UPDATE usuarios
+                SET bloqueadoHasta = IF(intentosFallidos + 1 >= :maximo1, NOW() + INTERVAL :minutos MINUTE, bloqueadoHasta),
+                    intentosFallidos = IF(intentosFallidos + 1 >= :maximo2, 0, intentosFallidos + 1)
+              WHERE codusuario = :id'
+        );
+        $stmt->bindValue(':maximo1', $maximo, PDO::PARAM_INT);
+        $stmt->bindValue(':maximo2', $maximo, PDO::PARAM_INT);
+        $stmt->bindValue(':minutos', $minutos, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    /** Login correcto: se olvidan los intentos fallidos y se registra el acceso. */
+    public static function registrarAccesoCorrecto(int $id): void
+    {
+        Database::getInstance()
+            ->prepare('UPDATE usuarios
+                          SET intentosFallidos = 0, bloqueadoHasta = NULL, ultimoAccesoUsuario = NOW()
+                        WHERE codusuario = :id')
+            ->execute(['id' => $id]);
     }
 
     public static function actualizarPerfil(int $id, string $nombre, ?string $telefono): void
