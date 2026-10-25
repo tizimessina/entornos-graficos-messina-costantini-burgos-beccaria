@@ -86,6 +86,9 @@
             <dt>Correo</dt>
             <dd><a href="mailto:contacto@aeroeb.com.ar">contacto@aeroeb.com.ar</a></dd>
 
+            <dt>Teléfono</dt>
+            <dd>+54 341 000-0000</dd>
+
             <dt>Horario de atención</dt>
             <dd>Lunes a viernes, de 9 a 18 h</dd>
 

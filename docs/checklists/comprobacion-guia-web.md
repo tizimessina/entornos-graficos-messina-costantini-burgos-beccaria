@@ -20,7 +20,7 @@ Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
 | ¿La portada refleja la identidad y pertenencia de la institución? | Sí | Logo y nombre AeroEB en el encabezado, lema "Compará y reservá vuelos de todas las aerolíneas" y un primer bloque que explica qué es el sitio |
 | ¿Hay elementos de la imagen corporativa en la portada? ¿Se repiten en todas las páginas? | Sí | Logo, paleta y tipografía propias en el encabezado y el pie de todas las páginas |
 | ¿El logotipo está en un lugar importante en la portada y en las páginas interiores? | Sí | Arriba a la izquierda en todas las páginas, enlazado a la portada |
-| ¿Todas las páginas tienen un título con el nombre de la institución e información de contacto virtual y física al pie? | Sí | El `<title>` de cada página termina en "— AeroEB". El pie muestra el correo, la ciudad (Rosario, Santa Fe) y el horario de atención |
+| ¿Todas las páginas tienen un título con el nombre de la institución e información de contacto virtual y física al pie? | Sí | El `<title>` de cada página termina en "— AeroEB". El pie muestra el correo, el teléfono, la ciudad (Rosario, Santa Fe) y el horario de atención |
 
 ### Utilidad del sitio web
 
@@ -76,7 +76,7 @@ Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
 | Contenido | Cumple | Observaciones |
 |---|---|---|
 | ¿Hay una página explicativa para errores como el 404? | Sí | 404 con enlaces a la portada, a los vuelos, al mapa del sitio y a contacto |
-| ¿Da información de contacto fuera de Internet (teléfono, 0800, mesa de ayuda)? | No | Muestra la ciudad y el horario de atención, pero no un teléfono: es un proyecto académico sin línea telefónica, y poner un número inventado sería un dato falso |
+| ¿Da información de contacto fuera de Internet (teléfono, 0800, mesa de ayuda)? | Sí | Teléfono, ciudad y horario de atención en el pie de todas las páginas y en Contacto. El número (+54 341 000-0000) es de muestra: el proyecto es académico y no tiene una línea real |
 | ¿Tiene un área de preguntas frecuentes? | Sí | Institucional › Preguntas frecuentes |
 | ¿Tiene páginas de ayuda que explican cómo usar el sitio? | Sí | Página de Ayuda, paso a paso, con glosario |
 
