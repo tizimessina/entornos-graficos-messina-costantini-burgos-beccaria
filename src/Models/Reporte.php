@@ -142,9 +142,20 @@ class Reporte
                   WHERE codAerolinea = :a3 AND estadoPromocion = 'aprobada')  AS promocionesAprobadas,
                 (SELECT COALESCE(SUM(r.montoTotal), 0)
                    FROM reservas r JOIN vuelos v ON v.codVuelo = r.codVuelo
-                  WHERE v.codAerolinea = :a4 AND r.estadoReserva = 'confirmada') AS facturacionConfirmada"
+                  WHERE v.codAerolinea = :a4 AND r.estadoReserva = 'confirmada') AS facturacionConfirmada,
+                (SELECT COALESCE(SUM(r.montoTotal), 0)
+                   FROM reservas r JOIN vuelos v ON v.codVuelo = r.codVuelo
+                  WHERE v.codAerolinea = :a5 AND r.estadoReserva = 'confirmada'
+                    AND r.fechaPago >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))     AS ventasDelMes,
+                (SELECT ROUND(100 * SUM(capacidadTotal - asientosDisponibles) / NULLIF(SUM(capacidadTotal), 0), 1)
+                   FROM vuelos
+                  WHERE codAerolinea = :a6 AND estadoVuelo = 'programado'
+                    AND fechaSalidaVuelo >= CURDATE())                       AS ocupacionPromedio"
         );
-        $stmt->execute(['a1' => $codAerolinea, 'a2' => $codAerolinea, 'a3' => $codAerolinea, 'a4' => $codAerolinea]);
+        $stmt->execute([
+            'a1' => $codAerolinea, 'a2' => $codAerolinea, 'a3' => $codAerolinea,
+            'a4' => $codAerolinea, 'a5' => $codAerolinea, 'a6' => $codAerolinea,
+        ]);
 
         return $stmt->fetch();
     }

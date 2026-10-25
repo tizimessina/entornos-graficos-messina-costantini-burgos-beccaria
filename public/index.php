@@ -25,6 +25,7 @@ use App\Controllers\AuthController;
 use App\Controllers\CeoController;
 use App\Controllers\ContactoController;
 use App\Controllers\HomeController;
+use App\Controllers\InstitucionalController;
 use App\Controllers\NovedadController;
 use App\Controllers\PerfilController;
 use App\Controllers\ReservaController;
@@ -110,6 +111,10 @@ $router->get('/novedades/{id}', [NovedadController::class, 'detalle']);
 $router->get('/contacto', [ContactoController::class, 'mostrar']);
 $router->post('/contacto', [ContactoController::class, 'enviar']);
 
+$router->get('/institucional', [InstitucionalController::class, 'indice']);
+$router->get('/institucional/{slug}', [InstitucionalController::class, 'pagina']);
+$router->get('/ayuda', [InstitucionalController::class, 'ayuda']);
+
 $router->get('/mapa-sitio', [SitioController::class, 'mapa']);
 $router->get('/buscar', [SitioController::class, 'buscar']);
 
@@ -152,6 +157,7 @@ $router->post('/panel/vuelos/nuevo', [CeoController::class, 'crearVuelo']);
 $router->get('/panel/vuelos/{id}/editar', [CeoController::class, 'editarVuelo']);
 $router->post('/panel/vuelos/{id}/editar', [CeoController::class, 'actualizarVuelo']);
 $router->post('/panel/vuelos/{id}/cancelar', [CeoController::class, 'cancelarVuelo']);
+$router->post('/panel/vuelos/{id}/eliminar', [CeoController::class, 'eliminarVuelo']);
 
 $router->get('/panel/promociones', [CeoController::class, 'promociones']);
 $router->get('/panel/promociones/nueva', [CeoController::class, 'nuevaPromocion']);

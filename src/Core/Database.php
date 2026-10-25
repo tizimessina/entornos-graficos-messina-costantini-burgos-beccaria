@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use DateTimeImmutable;
 use PDO;
 use PDOException;
 use RuntimeException;
@@ -47,7 +48,7 @@ class Database
         );
 
         try {
-            return new PDO($dsn, $db['user'], $db['pass'], [
+            $pdo = new PDO($dsn, $db['user'], $db['pass'], [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
@@ -55,6 +56,16 @@ class Database
         } catch (PDOException $e) {
             throw new PDOException('No se pudo conectar a la base de datos: ' . $e->getMessage(), (int) $e->getCode());
         }
+
+        // La base usa la misma hora que PHP. Si no, en un hosting con MySQL en
+        // UTC el NOW() de las consultas (vencimiento de reservas, tokens,
+        // bloqueo del login) quedaría tres horas corrido respecto de las
+        // fechas que arma PHP con date(). Se pasa el desfasaje (-03:00) y no
+        // el nombre de la zona porque muchos hostings no cargan las tablas de
+        // zonas horarias de MySQL.
+        $pdo->exec('SET time_zone = ' . $pdo->quote((new DateTimeImmutable())->format('P')));
+
+        return $pdo;
     }
 
     private function __construct()

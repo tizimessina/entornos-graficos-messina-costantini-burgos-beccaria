@@ -33,8 +33,22 @@ class PerfilController
             'erroresClave' => Session::getFlash('erroresClave', []),
             'datos'        => Session::getFlash('datos', []),
         ]);
+        $menuLateral = self::menuLateral();
 
         require dirname(__DIR__) . '/Views/layouts/base.php';
+    }
+
+    /** Barra lateral de "Mi cuenta", la misma en el perfil, las reservas y las compras. */
+    public static function menuLateral(): array
+    {
+        return [
+            'titulo' => 'Mi cuenta',
+            'items'  => [
+                ['texto' => 'Mi perfil',    'url' => '/mi-cuenta'],
+                ['texto' => 'Mis reservas', 'url' => '/mi-cuenta/reservas'],
+                ['texto' => 'Mis compras',  'url' => '/mi-cuenta/compras'],
+            ],
+        ];
     }
 
     public function actualizar(): void

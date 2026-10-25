@@ -6,6 +6,11 @@
 $ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'];
 $disponibles = (int) $vuelo['asientosDisponibles'];
 $vendidos = (int) $vuelo['capacidadTotal'] - $disponibles;
+
+// Si viene de una búsqueda para varios pasajeros, la cantidad pasa al paso siguiente.
+$asientosPedidos = min(9, max(1, (int) ($_GET['asientos'] ?? 1)));
+$urlReservar = '/vuelos/' . (int) $vuelo['codVuelo'] . '/reservar'
+    . ($asientosPedidos > 1 ? '?asientos=' . $asientosPedidos : '');
 ?>
 <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
     <span class="ae-vuelo-logo" aria-hidden="true">
@@ -110,7 +115,7 @@ $vendidos = (int) $vuelo['capacidadTotal'] - $disponibles;
                         (hasta el <?= htmlspecialchars(date('d/m/Y', strtotime($promocion['fechaFinPromocion'])), ENT_QUOTES, 'UTF-8') ?>).
                     </p>
                 <?php endif; ?>
-                <a class="btn btn-primary w-100" href="/vuelos/<?= (int) $vuelo['codVuelo'] ?>/reservar">
+                <a class="btn btn-primary w-100" href="<?= htmlspecialchars($urlReservar, ENT_QUOTES, 'UTF-8') ?>">
                     Reservar este vuelo
                 </a>
                 <p class="ae-nota mb-0">

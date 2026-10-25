@@ -99,4 +99,68 @@ class Formato
 
         return substr($hora, 0, 5);
     }
+
+    /**
+     * Fecha de la "Última actualización" del pie: la del archivo de código o
+     * de vista modificado más recientemente. Al subir el sitio al hosting es
+     * la fecha de la última publicación, sin tener que acordarse de cambiarla.
+     */
+    public static function ultimaActualizacion(): int
+    {
+        static $ultima = null;
+
+        if ($ultima === null) {
+            $ultima = 0;
+            $archivos = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator(dirname(__DIR__), \FilesystemIterator::SKIP_DOTS)
+            );
+
+            foreach ($archivos as $archivo) {
+                $ultima = max($ultima, $archivo->getMTime());
+            }
+        }
+
+        return $ultima;
+    }
+
+    /**
+     * Marca con un asterisco la etiqueta de cada campo obligatorio y agrega la
+     * aclaración "Los campos con * son obligatorios" al principio del
+     * formulario. Se hace sobre el HTML ya armado, así ningún formulario se
+     * olvida: alcanza con que el campo tenga el atributo required, que es
+     * además lo que anuncia el lector de pantalla. Por eso el asterisco va
+     * con aria-hidden: no se lee dos veces.
+     */
+    public static function marcarObligatorios(string $html): string
+    {
+        preg_match_all('/<(?:input|select|textarea)\b[^>]*>/i', $html, $campos);
+
+        $ids = [];
+        foreach ($campos[0] as $campo) {
+            if (preg_match('/\srequired\b/i', $campo) && preg_match('/\sid="([^"]+)"/i', $campo, $id)) {
+                $ids[$id[1]] = true;
+            }
+        }
+
+        if ($ids === []) {
+            return $html;
+        }
+
+        $html = preg_replace_callback(
+            '/(<label\b[^>]*\sfor="([^"]+)"[^>]*>)(.*?)(<\/label>)/is',
+            static fn (array $m): string => isset($ids[$m[2]])
+                ? $m[1] . rtrim($m[3]) . '<span class="ae-obligatorio" aria-hidden="true">*</span>' . $m[4]
+                : $m[0],
+            $html
+        );
+
+        // La aclaración va solo en los formularios que tienen algún obligatorio.
+        return preg_replace_callback(
+            '/(<form\b[^>]*>)(.*?<\/form>)/is',
+            static fn (array $m): string => str_contains($m[2], 'ae-obligatorio')
+                ? $m[1] . '<p class="ae-nota mt-0 mb-3">Los campos marcados con <span class="ae-obligatorio" aria-hidden="true">*</span> son obligatorios.</p>' . $m[2]
+                : $m[0],
+            $html
+        );
+    }
 }

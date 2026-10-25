@@ -36,6 +36,8 @@ class CeoController
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/panel.php', [
             'aerolinea' => Aerolinea::find($codAerolinea),
             'resumen'   => Reporte::resumenDeAerolinea($codAerolinea),
+            'proximos'  => Vuelo::delAerolinea($codAerolinea, 5),
+            'ventas'    => array_slice(Reporte::ventasDeAerolinea($codAerolinea), 0, 6),
             'exito'     => Session::getFlash('exito'),
             'error'     => Session::getFlash('error'),
         ]);
@@ -73,14 +75,31 @@ class CeoController
 
     public function nuevoVuelo(): void
     {
-        $this->aerolineaDelCeo();
+        $codAerolinea = $this->aerolineaDelCeo();
+
+        $datos = Session::getFlash('datos', []);
+
+        // "Duplicar vuelo": se arranca con los datos de un vuelo propio, menos
+        // la fecha, que es lo que casi siempre cambia entre una salida y otra.
+        $original = isset($_GET['duplicar']) && $datos === []
+            ? Vuelo::findDeAerolinea((int) $_GET['duplicar'], $codAerolinea)
+            : null;
+
+        if ($original !== null) {
+            $datos = array_intersect_key($original, array_flip([
+                'numeroVuelo', 'origenVuelo', 'destinoVuelo', 'horaSalidaVuelo',
+                'duracionMinutos', 'precioVuelo', 'capacidadTotal',
+            ]));
+            $datos['horaSalidaVuelo'] = substr((string) $datos['horaSalidaVuelo'], 0, 5);
+        }
 
         $tituloPagina = 'Cargar vuelo — AeroEB';
         $breadcrumbs = $this->breadcrumbs('Mis vuelos', '/panel/vuelos', 'Cargar vuelo');
         $contenidoHtml = Vista::render(dirname(__DIR__) . '/Views/ceo/vuelo-form.php', [
-            'vuelo'   => null,
-            'datos'   => Session::getFlash('datos', []),
-            'errores' => Session::getFlash('errores', []),
+            'vuelo'      => null,
+            'datos'      => $datos,
+            'errores'    => Session::getFlash('errores', []),
+            'duplicando' => $original,
         ]);
 
         $menuLateral = $this->menuLateral();
@@ -329,6 +348,33 @@ class CeoController
             ? 'Guardamos los cambios. La promoción sigue pendiente de aprobación.'
             : 'Guardamos los cambios. La promoción volvió a quedar pendiente: hasta que la administración la apruebe de nuevo, el código no se puede usar.');
         header('Location: /panel/promociones');
+        exit;
+    }
+
+    public function eliminarVuelo(string $id): void
+    {
+        $codAerolinea = $this->aerolineaDelCeo();
+        $this->exigirCsrf();
+
+        $vuelo = Vuelo::findDeAerolinea((int) $id, $codAerolinea);
+
+        if ($vuelo === null) {
+            $this->noEncontrado('El vuelo que querés eliminar no existe o no es de tu aerolínea.');
+
+            return;
+        }
+
+        $ruta = $vuelo['origenVuelo'] . ' → ' . $vuelo['destinoVuelo'];
+
+        if (!Vuelo::eliminar((int) $vuelo['codVuelo'], $codAerolinea)) {
+            Session::flash('error', 'No se puede eliminar el vuelo ' . $ruta . ' porque ya tiene reservas: '
+                . 'forma parte del historial de compras. Si no va a salir, cancelalo.');
+            header('Location: /panel/vuelos');
+            exit;
+        }
+
+        Session::flash('exito', 'Eliminamos el vuelo ' . $ruta . '.');
+        header('Location: /panel/vuelos');
         exit;
     }
 

@@ -87,9 +87,20 @@ class Vuelo
             $params[':destino'] = '%' . $filtros['destino'] . '%';
         }
 
+        // Rango de fechas: "fecha" es desde cuándo y "fechaHasta" hasta cuándo.
         if (!empty($filtros['fecha'])) {
-            $condiciones[] = 'v.fechaSalidaVuelo = :fecha';
+            $condiciones[] = 'v.fechaSalidaVuelo >= :fecha';
             $params[':fecha'] = $filtros['fecha'];
+        }
+
+        if (!empty($filtros['fechaHasta'])) {
+            $condiciones[] = 'v.fechaSalidaVuelo <= :fechaHasta';
+            $params[':fechaHasta'] = $filtros['fechaHasta'];
+        }
+
+        if (!empty($filtros['precioMin'])) {
+            $condiciones[] = 'v.precioVuelo >= :precioMin';
+            $params[':precioMin'] = $filtros['precioMin'];
         }
 
         if (!empty($filtros['precioMax'])) {
@@ -97,8 +108,46 @@ class Vuelo
             $params[':precioMax'] = $filtros['precioMax'];
         }
 
+        // Si viajan varios, solo sirven los vuelos que tienen lugar para todos.
+        if (!empty($filtros['pasajeros']) && (int) $filtros['pasajeros'] > 1) {
+            $condiciones[] = 'v.asientosDisponibles >= :pasajeros';
+            $params[':pasajeros'] = (int) $filtros['pasajeros'];
+        }
+
+        // Las franjas salen de una lista blanca, igual que el orden.
+        $franjas = [];
+        foreach ($filtros['horario'] ?? [] as $franja) {
+            $sql = self::FRANJAS_HORARIAS[$franja]['sql'] ?? null;
+            if ($sql !== null) {
+                $franjas[] = $sql;
+            }
+        }
+        if ($franjas !== []) {
+            $condiciones[] = '(' . implode(' OR ', $franjas) . ')';
+        }
+
+        // Una marca de parámetro por aerolínea elegida: nunca se concatena el valor.
+        $marcas = [];
+        foreach (array_values($filtros['aerolineas'] ?? []) as $i => $codAerolinea) {
+            $marcas[] = ':aerolinea' . $i;
+            $params[':aerolinea' . $i] = (int) $codAerolinea;
+        }
+        if ($marcas !== []) {
+            $condiciones[] = 'v.codAerolinea IN (' . implode(', ', $marcas) . ')';
+        }
+
         return [implode(' AND ', $condiciones), $params];
     }
+
+    /**
+     * Franjas del filtro "Horario de salida". La noche cruza la medianoche,
+     * por eso es un OR y no un BETWEEN.
+     */
+    public const FRANJAS_HORARIAS = [
+        'manana' => ['texto' => 'Mañana (de 5 a 12 h)', 'sql' => "v.horaSalidaVuelo >= '05:00' AND v.horaSalidaVuelo < '12:00'"],
+        'tarde'  => ['texto' => 'Tarde (de 12 a 19 h)', 'sql' => "v.horaSalidaVuelo >= '12:00' AND v.horaSalidaVuelo < '19:00'"],
+        'noche'  => ['texto' => 'Noche (de 19 a 5 h)', 'sql' => "(v.horaSalidaVuelo >= '19:00' OR v.horaSalidaVuelo < '05:00')"],
+    ];
 
     /** El orden nunca sale de esta lista blanca, así no se puede inyectar SQL por la URL. */
     private static function ordenSql(string $orden): string
@@ -138,7 +187,7 @@ class Vuelo
     {
         $stmt = Database::getInstance()->prepare(
             'SELECT v.codVuelo, v.numeroVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                    v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles
+                    v.horaSalidaVuelo, v.precioVuelo, v.capacidadTotal, v.asientosDisponibles
                FROM vuelos v
                JOIN aerolineas a ON a.codAerolinea = v.codAerolinea
               WHERE v.codAerolinea = :codAerolinea
@@ -160,7 +209,8 @@ class Vuelo
     {
         $stmt = Database::getInstance()->prepare(
             'SELECT codVuelo, numeroVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo,
-                    horaSalidaVuelo, precioVuelo, capacidadTotal, asientosDisponibles, estadoVuelo
+                    horaSalidaVuelo, precioVuelo, capacidadTotal, asientosDisponibles, estadoVuelo,
+                    (SELECT COUNT(*) FROM reservas r WHERE r.codVuelo = vuelos.codVuelo) AS cantidadReservas
                FROM vuelos
               WHERE codAerolinea = :aerolinea
               ORDER BY fechaSalidaVuelo DESC, horaSalidaVuelo DESC
@@ -186,6 +236,23 @@ class Vuelo
      * Busca un vuelo exigiendo que sea de esa aerolínea. Devuelve null si no lo
      * es, así un CEO no puede editar vuelos de otra compañía cambiando el id.
      */
+    /**
+     * Borra el vuelo, pero solo si nunca tuvo reservas: un vuelo con reservas
+     * es parte del historial de compras y de los reportes de ventas, y la FK
+     * de reservas lo impide igual (ON DELETE RESTRICT). Ese vuelo se cancela.
+     */
+    public static function eliminar(int $codVuelo, int $codAerolinea): bool
+    {
+        $stmt = Database::getInstance()->prepare(
+            'DELETE FROM vuelos
+              WHERE codVuelo = :vuelo AND codAerolinea = :aerolinea
+                AND NOT EXISTS (SELECT 1 FROM reservas r WHERE r.codVuelo = :vuelo2)'
+        );
+        $stmt->execute(['vuelo' => $codVuelo, 'aerolinea' => $codAerolinea, 'vuelo2' => $codVuelo]);
+
+        return $stmt->rowCount() > 0;
+    }
+
     public static function findDeAerolinea(int $codVuelo, int $codAerolinea): ?array
     {
         $stmt = Database::getInstance()->prepare(

@@ -54,6 +54,7 @@ class AuthController
             'aerolinea' => (string) ($_POST['aerolinea'] ?? ''),
             'clave'     => (string) ($_POST['clave'] ?? ''),
             'clave2'    => (string) ($_POST['clave2'] ?? ''),
+            'terminos'  => isset($_POST['terminos']),
         ];
 
         $esCeo = $datos['tipo'] === 'ceo';
@@ -68,6 +69,10 @@ class AuthController
             ->matches('clave2', 'clave', 'La repetición de la contraseña');
 
         $errores = $validador->errors();
+
+        if (!$datos['terminos']) {
+            $errores['terminos'] = 'Para crear la cuenta tenés que aceptar los términos y condiciones.';
+        }
 
         // El CEO tiene que elegir a qué aerolínea pertenece: la base lo exige
         // con un CHECK, y sin eso no se sabría qué vuelos puede administrar.
