@@ -1,15 +1,15 @@
 # Comprobación de checklist (Guía Web) — AeroEB
 
 Checklist de la cátedra ("UTN_Cátedra de EG_Checklist"), completado contra el sitio para el
-**punto 14 del informe**. Comprobado el 25/10/2026 sobre el sitio en local (XAMPP, PHP 8.2 y
-MariaDB 10.4).
+**punto 14 del informe**. Comprobado el 25/10/2026 en local y el 26/10/2026 sobre el sitio
+publicado en <https://aeroeb.alwaysdata.net>.
 
 - **Sí:** se cumple, con cómo se comprobó.
 - **No:** no se cumple, con la justificación que pide la cátedra.
 - **No aplica:** el sitio no tiene ese tipo de elemento.
-- **Pendiente:** se puede comprobar recién con el sitio publicado.
+- **Pendiente:** falta comprobarlo.
 
-Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
+Los reportes de las validaciones están en [`../validaciones/`](../validaciones/).
 
 ## Checklist de usabilidad
 
@@ -51,9 +51,9 @@ Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
 
 | Contenido | Cumple | Observaciones |
 |---|---|---|
-| ¿El HTML fue validado en w3c.org? | Sí | 39 páginas con 0 errores (`docs/validaciones/`). **Pendiente:** revalidar las páginas nuevas y las modificadas en la revisión del 25/10 |
-| ¿Las hojas de estilo fueron aprobadas en w3c.org? | Sí | 0 errores. **Pendiente:** revalidar con los cambios del 25/10 |
-| ¿Comprobó la consistencia de los enlaces con el verificador del W3C? | Pendiente | El Link Checker necesita la URL pública |
+| ¿El HTML fue validado en w3c.org? | Sí | 68 páginas, 0 errores y 0 advertencias, con el validador Nu del W3C (22 públicas leídas desde producción y 46 con sesión) |
+| ¿Las hojas de estilo fueron aprobadas en w3c.org? | Sí | `estilos.css` publicado: válido, 0 errores. Las 23 advertencias son la nota del validador sobre variables CSS |
+| ¿Comprobó la consistencia de los enlaces con el verificador del W3C? | Pendiente | Se recorrieron los 34 enlaces internos en producción y ninguno está roto. Falta pasar el Link Checker del W3C, que tiene una verificación anti-robots y se usa desde el navegador |
 
 ### Atención de errores
 
@@ -85,7 +85,7 @@ Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
 | Contenido | Cumple | Observaciones |
 |---|---|---|
 | ¿El usuario puede contactar al encargado para hacer sugerencias o comentarios? | Sí | Formulario de contacto, con un asunto para sugerencias, y correo publicado |
-| ¿Funcionan los formularios de contacto? ¿Se probaron? | Sí | Probado: guarda el mensaje y valida en el cliente y el servidor. **Pendiente:** el aviso por correo a la administración, cuando haya SMTP |
+| ¿Funcionan los formularios de contacto? ¿Se probaron? | Sí | Probado en producción: guarda el mensaje, valida en el cliente y el servidor, y el aviso llega por correo a la casilla de la administración |
 | ¿Hay alguien encargado de recibir y contestar los mensajes? | Sí | El administrador los lee en Administración › Mensajes y responde con "Responder por correo" |
 
 ## Checklist de accesibilidad
@@ -124,7 +124,7 @@ Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
 | ¿Los íconos representan su función y tienen ALT? | Sí | Los íconos son símbolos que siempre van con su texto; los decorativos llevan `aria-hidden` |
 | ¿Todas las páginas tienen título con el nombre de la institución y contacto al pie? | Sí | Igual que en usabilidad |
 | ¿Hay organigrama, con nombres de las autoridades y forma de contactarlas? | Sí | Institucional › Quiénes somos › Equipo: los cuatro integrantes y cómo contactarlos. Al ser un proyecto académico, no hay una estructura de autoridades más amplia |
-| ¿La URL está vinculada con el nombre de la institución y aparece en la barra del navegador? | Pendiente | Depende del dominio del hosting. El nombre AeroEB sí aparece en el título de cada página |
+| ¿La URL está vinculada con el nombre de la institución y aparece en la barra del navegador? | Sí | `aeroeb.alwaysdata.net` lleva el nombre del sitio, y el título de cada página termina en "— AeroEB". En una puesta comercial se usaría `aeroeb.com.ar` |
 | ¿Hay contenidos sobre visión, misión, objetivos y plan estratégico? | Sí | Quiénes somos tiene misión, visión y objetivos. El plan estratégico no se publica: el plan de trabajo está en el informe (Gantt) |
 | Si hay palabras técnicas, ¿hay un glosario fácil de encontrar? | Sí | En la página de Ayuda, enlazada desde el pie |
 | ¿Hay páginas de ayuda que explican cómo usar el sitio? | Sí | Página de Ayuda |
@@ -173,5 +173,5 @@ Antes de entregar hay que volver a pasar por los ítems marcados **Pendiente**.
 
 | Contenido | Cumple | Observaciones |
 |---|---|---|
-| ¿El HTML es válido? | Sí | Validado en el W3C. **Pendiente:** revalidar los cambios del 25/10 |
+| ¿El HTML es válido? | Sí | 68 páginas validadas en el W3C con 0 errores |
 | ¿Las interfaces dinámicas (modales, desplegables, galerías) tienen ARIA? | Sí | El desplegable de la cuenta usa `aria-expanded` y `aria-labelledby`; no hay modales ni galerías |
