@@ -1,0 +1,14 @@
+{
+  "version": "26.10.12 (0a70d65)",
+  "messages": [
+    {
+      "type": "non-document-error",
+      "url": "https://aeroeb.alwaysdata.net/no-existe",
+      "subType": "io",
+      "message": "HTTP resource not retrievable. The HTTP status from the remote server was: 404."
+    }
+  ],
+  "pagina": "error-404",
+  "origen": "https://aeroeb.alwaysdata.net/no-existe",
+  "validador": "W3C Nu Html Checker (vnu.jar) 26.10.12 (0a70d65)"
+}
