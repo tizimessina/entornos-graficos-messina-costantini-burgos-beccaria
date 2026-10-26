@@ -291,11 +291,23 @@ para el punto 14 del informe. Lo que no se cumplía y se corrigió:
 
 ## 9. Despliegue
 
-- [ ] Conseguir un hosting y subir el sitio
-- [ ] Configurar la base de datos y el envío de correo en producción
-- [ ] Probar de punta a punta ya en producción: registro, correo, reserva completa
-- [ ] Actualizar la URL de producción en el `README.md`
+- [x] Conseguir un hosting y subir el sitio: <https://aeroeb.alwaysdata.net> (alwaysdata,
+      plan gratuito, PHP 8.4 y MariaDB 11.8, con la raíz del sitio en `public/`)
+- [x] Configurar la base de datos y el envío de correo en producción (SMTP del hosting)
+- [x] Probar de punta a punta ya en producción: registro, correo y reserva completa
+- [x] Actualizar la URL de producción en el `README.md`
+- [x] El aviso del formulario de contacto iba a `admin@aeroeb.com.ar`, un dominio que no es
+      del grupo: ahora va a la casilla de `mail.admin_email` del `config.php`
+- [ ] Probar en producción: recuperar contraseña, CEO, admin, y desde el celular con datos móviles
 - [ ] Commit y push
+
+Para actualizar el servidor después de un cambio, por SSH:
+
+```bash
+cd ~/aeroeb
+git pull
+composer install --no-dev --optimize-autoloader
+```
 
 ## 10. Cierre
 

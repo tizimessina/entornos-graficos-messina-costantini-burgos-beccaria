@@ -17,21 +17,25 @@ enteras en cero, y está bien que así sea.
 
 ## 1. Despliegue y acceso
 
-- [ ] El sistema está subido a un hosting y es accesible desde el navegador con una URL pública.
+- [x] El sistema está subido a un hosting y es accesible desde el navegador con una URL pública.
+  - *<https://aeroeb.alwaysdata.net>, en alwaysdata (PHP 8.4 y MariaDB 11.8).*
 - [ ] La URL funciona desde cualquier red y dispositivo (probalo desde el celular con datos, no desde tu wifi).
-- [ ] El sitio carga sin errores de certificado ni advertencias del navegador (HTTPS).
-- [ ] No quedan páginas rotas, links muertos ni rutas que devuelvan error 404 / 500.
-- [ ] Los archivos estáticos (imágenes, CSS, JS) cargan bien en producción, no solo en local.
-- [ ] El entorno de producción usa la base de datos de producción, no la de tu máquina.
-
-> Toda la sección depende del despliegue, que es el punto 9 de `docs/tareas.md`. Hoy el
-> sitio solo corre en local con `php -S localhost:8000 -t public`.
+  - *Falta probarlo desde un celular con datos móviles.*
+- [x] El sitio carga sin errores de certificado ni advertencias del navegador (HTTPS).
+  - *Certificado del hosting, y `http://` redirige a `https://`.*
+- [x] No quedan páginas rotas, links muertos ni rutas que devuelvan error 404 / 500.
+  - *Recorridos los 34 enlaces internos de las páginas públicas en producción: todos responden
+    (las páginas privadas redirigen al login, como corresponde).*
+- [x] Los archivos estáticos (imágenes, CSS, JS) cargan bien en producción, no solo en local.
+- [x] El entorno de producción usa la base de datos de producción, no la de tu máquina.
+  - *Base `aeroeb_db` en el MariaDB del hosting, cargada con `schema.sql` y `seed.sql`. Además,
+    `config/`, `src/`, `vendor/`, `scripts/` y `.git` no son accesibles desde el navegador:
+    la raíz del sitio es `public/`.*
 
 ## 2. Repositorio
 
 - [x] El repositorio es público y la URL está incluida en la entrega.
-- [ ] Tiene un `README.md` con: qué hace el sistema, URL de producción, tecnologías usadas, integrantes del grupo y usuarios de prueba.
-  - *Falta solo la URL de producción, que no existe hasta el despliegue. El resto ya está.*
+- [x] Tiene un `README.md` con: qué hace el sistema, URL de producción, tecnologías usadas, integrantes del grupo y usuarios de prueba.
 - [ ] Historial de commits real y distribuido entre los integrantes (no un único commit "final").
   - *Hay historial real y progresivo, pero hoy casi todos los commits salen de una sola
     cuenta. Cada integrante tiene que subir su parte con su propio usuario.*
@@ -60,19 +64,21 @@ enteras en cero, y está bien que así sea.
 
 ## 4. Emails
 
-- [ ] El email de registro / confirmación de cuenta **llega efectivamente** a la casilla.
+- [x] El email de registro / confirmación de cuenta **llega efectivamente** a la casilla.
+  - *Probado en producción: llegó y la cuenta se validó con el enlace.*
 - [ ] El email de recuperación de contraseña **llega** y el link funciona.
-- [ ] Los links dentro de los emails apuntan al dominio de producción, no a `localhost`.
+  - *Falta probarlo en producción.*
+- [x] Los links dentro de los emails apuntan al dominio de producción, no a `localhost`.
+  - *Salen de `app.url` del `config.php` de producción; el enlace de validación funcionó.*
 - [ ] Los emails no caen en spam (probalo con al menos dos proveedores distintos, ej. Gmail y Outlook).
-- [ ] El contenido del email está en español y sin textos de plantilla sin reemplazar, como variables sin reemplazar o "Lorem ipsum".
-- [ ] El remitente es identificable (no "no-reply@algo-raro").
+  - *Llegó bien a Gmail. Falta probar con Outlook.*
+- [x] El contenido del email está en español y sin textos de plantilla sin reemplazar, como variables sin reemplazar o "Lorem ipsum".
+- [x] El remitente es identificable (no "no-reply@algo-raro").
+  - *"AeroEB" &lt;aeroeb@alwaysdata.net&gt;.*
 
-> Los tres correos ya están escritos y en español (validación de cuenta, recuperación de
-> contraseña y aviso de contacto a la administración), pero **todavía no hay una cuenta SMTP
-> configurada**, así que no llega ninguno. Hasta que la haya, en desarrollo el enlace de
-> validación se muestra en pantalla para poder probar el circuito. Falta configurar el SMTP
-> y recién ahí se puede tildar esta sección entera. Conviene hacerlo pronto: el informe lo
-> marca como el riesgo más probable de aparecer tarde.
+> El correo sale por el SMTP del hosting (`smtp-aeroeb.alwaysdata.net`). Los avisos para la
+> administración (mensajes nuevos de contacto) van a la casilla de `mail.admin_email` del
+> `config.php`.
 
 ## 5. Navegación y usabilidad
 

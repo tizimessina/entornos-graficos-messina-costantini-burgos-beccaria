@@ -21,6 +21,9 @@ return [
         'encryption' => 'tls',
         'from_email' => 'no-reply@aeroeb.com.ar',
         'from_name'  => 'AeroEB',
+        // A dónde llegan los avisos para la administración (mensajes nuevos del
+        // formulario de contacto). Si se deja vacío, se usa from_email.
+        'admin_email' => '',
     ],
 
     'app' => [
