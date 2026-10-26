@@ -19,8 +19,8 @@ enteras en cero, y está bien que así sea.
 
 - [x] El sistema está subido a un hosting y es accesible desde el navegador con una URL pública.
   - *<https://aeroeb.alwaysdata.net>, en alwaysdata (PHP 8.4 y MariaDB 11.8).*
-- [ ] La URL funciona desde cualquier red y dispositivo (probalo desde el celular con datos, no desde tu wifi).
-  - *Falta probarlo desde un celular con datos móviles.*
+- [x] La URL funciona desde cualquier red y dispositivo (probalo desde el celular con datos, no desde tu wifi).
+  - *Probado desde un celular con datos móviles.*
 - [x] El sitio carga sin errores de certificado ni advertencias del navegador (HTTPS).
   - *Certificado del hosting, y `http://` redirige a `https://`.*
 - [x] No quedan páginas rotas, links muertos ni rutas que devuelvan error 404 / 500.
@@ -47,11 +47,10 @@ enteras en cero, y está bien que así sea.
 
 ## 3. Se puede testear sin instrucciones
 
-- [ ] Existe al menos un usuario de prueba con su contraseña documentado en el README y en el informe.
-  - *Ya está en el README. Falta copiarlo al informe, sección 13 (Puesta en funcionamiento).*
-- [ ] Si hay roles (admin, usuario, etc.), hay un usuario de prueba por cada rol lo cual debe contar en el informe en la sección de Puesta en Funcionamiento.
-  - *Los tres usuarios (administrador, CEO y pasajero) existen en `scripts/seed.sql` y están
-    documentados en el README; falta la sección 13 del informe.*
+- [x] Existe al menos un usuario de prueba con su contraseña documentado en el README y en el informe.
+  - *En el README y en el informe, punto 13 (Puesta en funcionamiento).*
+- [x] Si hay roles (admin, usuario, etc.), hay un usuario de prueba por cada rol lo cual debe contar en el informe en la sección de Puesta en Funcionamiento.
+  - *Administrador, CEO y pasajero, en el punto 13 del informe ([`docs/informe/AeroEB-Informe-Final.pdf`](../informe/AeroEB-Informe-Final.pdf)).*
 - [x] Hay datos de prueba cargados: el sistema no debe abrirse vacío.
   - *El seed carga 2 aerolíneas, 4 vuelos y 2 novedades.*
 - [x] El registro de un usuario nuevo funciona de punta a punta.
@@ -66,12 +65,12 @@ enteras en cero, y está bien que así sea.
 
 - [x] El email de registro / confirmación de cuenta **llega efectivamente** a la casilla.
   - *Probado en producción: llegó y la cuenta se validó con el enlace.*
-- [ ] El email de recuperación de contraseña **llega** y el link funciona.
-  - *Falta probarlo en producción.*
+- [x] El email de recuperación de contraseña **llega** y el link funciona.
+  - *Probado en producción.*
 - [x] Los links dentro de los emails apuntan al dominio de producción, no a `localhost`.
   - *Salen de `app.url` del `config.php` de producción; el enlace de validación funcionó.*
-- [ ] Los emails no caen en spam (probalo con al menos dos proveedores distintos, ej. Gmail y Outlook).
-  - *Llegó bien a Gmail. Falta probar con Outlook.*
+- [x] Los emails no caen en spam (probalo con al menos dos proveedores distintos, ej. Gmail y Outlook).
+  - *Probado con Gmail y con Outlook.*
 - [x] El contenido del email está en español y sin textos de plantilla sin reemplazar, como variables sin reemplazar o "Lorem ipsum".
 - [x] El remitente es identificable (no "no-reply@algo-raro").
   - *"AeroEB" &lt;aeroeb@alwaysdata.net&gt;.*
@@ -143,12 +142,11 @@ enteras en cero, y está bien que así sea.
 
 ## 9. Visual y responsive
 
-- [ ] Se ve bien en celular, tablet y escritorio.
-  - *Está hecho para eso: Bootstrap 5.3.3, menú que se colapsa en pantalla chica y tablas
-    envueltas en `.table-responsive`. Pero nadie lo abrió todavía en un celular de verdad,
-    así que no se tilda. Hay que mirarlo cuando esté desplegado (punto 9).*
-- [ ] Nada se superpone, se corta ni requiere scroll horizontal.
-  - *Mismo motivo que el anterior: falta la prueba en pantalla real.*
+- [x] Se ve bien en celular, tablet y escritorio.
+  - *Probado en un celular real y en escritorio. Además se midieron 12 páginas a 320 px y a
+    683 px de ancho (el 200 % de zoom de una pantalla de 1366 px).*
+- [x] Nada se superpone, se corta ni requiere scroll horizontal.
+  - *En esas mediciones ninguna página tiene scroll horizontal.*
 - [x] Estilo consistente entre pantallas (colores, tipografías, botones).
   - *Hay un sistema de diseño propio en `public/assets/css/estilos.css`: la paleta, el
     espaciado, los radios, las sombras y las transiciones salen de variables CSS, y el
@@ -171,10 +169,9 @@ enteras en cero, y está bien que así sea.
 
 ## 10. Última pasada antes de entregar
 
-- [ ] La consola del navegador no muestra errores en rojo.
-  - *Sin verificar: hace falta abrir el navegador y mirar. El JavaScript propio son 50 líneas
-    en `app.js` y el resto es Bootstrap, así que no debería haber nada, pero hasta que alguien
-    lo mire no se tilda.*
+- [x] La consola del navegador no muestra errores en rojo.
+  - *Revisada en producción (portada, resultados, detalle de vuelo, contacto, registro y mapa
+    del sitio): sin errores. Lighthouse lo confirma en "Buenas prácticas" (100).*
 - [x] No quedan `var_dump`, `console.log`, `dd()` ni mensajes de debug visibles.
 - [x] El modo debug está apagado en producción.
   - *`public/index.php` prende `display_errors` solo si `app.env` es `development`.*
@@ -190,10 +187,9 @@ enteras en cero, y está bien que así sea.
 ## 11. Formato General
 
 - [x] Posee carátula con datos de identificación del equipo como del trabajo
-  - *Legajos y correos de los cuatro integrantes completos en el README (sacados de la carátula del informe).*
-- [ ] Posee Indice completo navegable
-  - *El índice está, pero como texto plano. Hay que reemplazarlo por una tabla de contenido
-    navegable (en Google Docs: Insertar → Tabla de contenido).*
+  - *Nombre del sitio, integrantes con legajo y correo, URL del sitio y del repositorio.*
+- [x] Posee Indice completo navegable
+  - *Tabla de contenido de Word con enlaces, y marcadores en el PDF.*
 
 ## 12. Audiencia
 
@@ -220,30 +216,30 @@ enteras en cero, y está bien que así sea.
 - [x] Definió el sistema de navegación.
   - *Informe, sección 6: consistente, uniforme y visible, con la lista de elementos.*
 - [x] Listó todos los elementos de navegación del sitio clasificándolos en Textuales y Contextuales.
-  - *Tabla con la columna Tipo en `docs/diagramas/navegacion.md`. Falta pasarla al informe.*
+  - *Informe, punto 6, y `docs/diagramas/navegacion.md`.*
 
 ## 16. Diseño Visual
 
-- [ ] Realizó los bocetos o maquetas del sitio completo.
-  - *Pendiente. Las cuatro etapas (wireframe, boceto, prototipo, maqueta) están descriptas en
-    el informe pero todavía no se dibujó ninguna.*
+- [x] Realizó los bocetos o maquetas del sitio completo.
+  - *Informe, punto 7: las cuatro etapas con capturas reales de cada versión del sitio, sacadas
+    de su historial en Git. Las imágenes están en `docs/bocetos/`.*
 
 ## 17. Presupuesto Económico
 
 - [x] Realizó el diagrama de Gantt con las actividades que deben realizar para llevar a cabo el proyecto.
-  - *Informe, sección 8.3. Falta exportarlo a imagen.*
+  - *Informe, punto 8, y `docs/diagramas/planificacion.md`.*
 - [x] Definió los costos en recursos humanos para el proyecto.
-- [ ] Citó las fuentes de donde obtuvo los diferentes valores monetarios que se considera en el presupuesto (ejemplo: valor hora hombre, costo de hosting, costo de amortizaciones según valores reales de máquinas, etc).
-  - *Los montos que hay hoy son ilustrativos y están marcados como tales en el informe.*
+- [x] Citó las fuentes de donde obtuvo los diferentes valores monetarios que se considera en el presupuesto (ejemplo: valor hora hombre, costo de hosting, costo de amortizaciones según valores reales de máquinas, etc).
+  - *Informe, punto 9: siete fuentes con fecha (Sysarmy, alwaysdata, BNA, NIC Argentina, Capers Jones).*
 - [x] Realizó la estimación del tamaño del proyecto según Puntos de Función.
-  - *Informe, sección 9: 271 puntos sin ajustar, factor de ajuste 1,09, 295 puntos ajustados.*
+  - *Informe, punto 9: 281 puntos sin ajustar, factor de ajuste 1,07, 301 puntos ajustados.*
 - [x] Calculó el costo y el precio del sitio web.
 - [x] Armó y dejó plasmado en el informe un presupuesto modelo con la información que analizó para entregar a un cliente.
-- [ ] Los valores del presupuesto se citan de fuentes reales. Valor hora hombre, costo de hosting, amortizaciones y cualquier otro monto deben tener fuente
+- [x] Los valores del presupuesto se citan de fuentes reales. Valor hora hombre, costo de hosting, amortizaciones y cualquier otro monto deben tener fuente
       verificable y fecha. Un número generado por IA sin fuente se considera un dato inventado e invalida la sección.
-  - *Es el ítem más riesgoso de la lista: la cátedra invalida la sección si los números no
-    tienen fuente. Hay que reemplazar cada monto por uno con fuente y fecha (encuesta de
-    sueldos de sysarmy, precios reales de hosting, etc.) antes de entregar.*
+  - *Cada monto del punto 9 tiene su fuente y fecha. Las cifras de la proyección del ROI
+    (punto 10) están marcadas como supuestos. Antes de entregar, conviene volver a abrir cada
+    fuente por si algún valor cambió.*
 - [x] No se cargan credenciales, datos reales de usuarios ni volcados de la base de datos en herramientas públicas de IA. Vale como criterio profesional, no solo
       como regla de la materia.
 - [ ] Los diagramas, modelos y checklists los interpreta el grupo. Se puede usar IA para producirlos, pero la fundamentación tiene que ser propia y coherente con el
@@ -254,55 +250,47 @@ enteras en cero, y está bien que así sea.
 ## 18. Modelos
 
 - [x] Realizó y dejó plasmado en el informe el diagrama del MODELO lógico de Datos
-  - *Informe, sección 11.3. Falta exportar el diagrama entidad-relación a imagen.*
-- [ ] Realizó y dejó plasmado en el informe el diagrama del MODELO Físico
-  - *Falta. El DDL ya está en `scripts/schema.sql`, así que el diagrama se puede generar con
-    ingeniería inversa desde MySQL Workbench.*
+  - *Informe, punto 11, y `docs/diagramas/modelo-datos.md`.*
+- [x] Realizó y dejó plasmado en el informe el diagrama del MODELO Físico
+  - *Informe, punto 11. Se genera leyendo `scripts/schema.sql`, así que coincide con la base real.*
 
 ## 19. Check List
 
-- [ ] Realizó los check list de Usabilidad y fundamentó los items que no se cumplen o no aplican.
-- [ ] Realizó los check list de Accesibilidad y fundamentó los items que no se cumplen o no aplican.
-- [ ] Realizó los check list de Rapidez de Acceso y fundamentó los items que no se cumplen o no aplican.
-- [ ] Realizó los check list de Perceptibilidad y fundamentó los items que no se cumplen o no aplican.
-- [ ] Realizó los check list de Operabilidad y fundamentó los items que no se cumplen o no aplican.
-- [ ] Realizó los check list de Comprensibilidad y fundamentó los items que no se cumplen o no aplican.
-- [ ] Realizó los check list de Robustez y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Usabilidad y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Accesibilidad y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Rapidez de Acceso y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Perceptibilidad y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Operabilidad y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Comprensibilidad y fundamentó los items que no se cumplen o no aplican.
+- [x] Realizó los check list de Robustez y fundamentó los items que no se cumplen o no aplican.
 
-> Las siete listas ya están escritas en el informe (sección 14a), pero están contestadas
-> sobre el sitio **planificado**, no sobre el construido: afirman cosas que todavía no
-> existen, como el contraste medido, la navegación por teclado o el peso de la portada.
-> Quedan sin tildar a propósito hasta revalidarlas contra el sitio terminado, en el punto 8.
+> Contestadas sobre el sitio terminado y publicado, en el punto 14 del informe y en
+> [`comprobacion-guia-web.md`](comprobacion-guia-web.md).
 
 ## 20. Test de Validación de Estándares
 
 - [x] Realizó los test de validación de HTML.
-  - *39 páginas pasadas por el W3C Nu Html Checker, que es el sitio completo: público,
-    reservas, panel de aerolínea, administración y las páginas de error. **0 errores.**
-    Reportes en `docs/validaciones/html-w3c/`. Se volvió a pasar entero después del
-    rediseño visual.*
+  - *68 páginas con el W3C Nu Html Checker (22 públicas leídas desde producción y 46 con
+    sesión): **0 errores y 0 advertencias.** Reportes en `docs/validaciones/html-w3c/`.*
 - [x] Realizó los test de validación de CSS.
-  - *`estilos.css` pasado por el validador de CSS del W3C, perfil CSS3+SVG: **0 errores**
-    y 25 advertencias. 23 son la nota genérica de que las variables CSS no se chequean de
-    forma estática, y las otras 2 avisan que un elemento usa el mismo color de fondo y de
-    borde: es a propósito, son los botones y pastillas sólidas. Reporte en
-    `docs/validaciones/css-w3c.json`. Bootstrap no se valida porque es dependencia de
-    terceros sin modificar.*
-- [ ] Realizó los test de validación de ACCESIBLIDAD.
-  - *TAW valida contra una URL pública y el sitio todavía corre solo en local, así que queda
-    bloqueado hasta el despliegue (punto 9). Mientras tanto se revisó a mano criterio por
-    criterio de WCAG; está documentado en `docs/validaciones/README.md`.*
+  - *`estilos.css` publicado, validador de CSS del W3C, perfil CSS3+SVG: **válido, 0 errores**.
+    Las 23 advertencias son la nota genérica de que las variables CSS no se chequean de forma
+    estática. Reporte en `docs/validaciones/css-w3c.json`.*
+- [x] Realizó los test de validación de ACCESIBLIDAD.
+  - *TAW (WCAG 2.1 AA) sobre 6 páginas publicadas: **0 problemas automáticos**. Lighthouse:
+    100 en accesibilidad. Detalle en `docs/validaciones/taw/`.*
 - [ ] Pegó reportes de cada uno de los test de validación en el informe
-  - *Los reportes están en el repo, pero falta pegar las capturas en el informe (sección 17).*
-- [ ] Explicó lo mostrado en los reportes.
-  - *Va en el informe, junto con las capturas.*
+  - *El de Lighthouse ya está en el informe. Faltan las capturas del W3C (HTML y CSS) y de
+    TAW, que se sacan desde las páginas de cada servicio: están marcadas "COMPLETAR" en el
+    punto 14 del informe.*
+- [x] Explicó lo mostrado en los reportes.
+  - *Informe, punto 14, y `docs/validaciones/README.md`.*
 - [x] Realizó los cambios sugeridos por los test de validación.
-  - *Los test no sugirieron cambios: dieron cero errores en las dos pasadas. Sí hubo un cambio
-    que salió de la revisión manual de accesibilidad: las tablas anchas se habían resuelto con
-    `display: block`, que les saca la semántica de tabla a varios lectores de pantalla, y se
-    reemplazó por el envoltorio `.table-responsive`.*
-- [ ] Fundamentó los cambios realizados según lo solicitado por los test de validación.
-  - *Va en el informe.*
+  - *Lighthouse sugirió cachear los archivos estáticos: se configuró en `public/.htaccess`.
+    Antes, la revisión manual de accesibilidad llevó a reemplazar `display: block` en las tablas
+    por `.table-responsive`, para no perder la semántica de tabla.*
+- [x] Fundamentó los cambios realizados según lo solicitado por los test de validación.
+  - *Informe, punto 14.*
 - [x] En caso de haber tenido que realizar modificaciones, volvió a pasar los test, y pegó cada reporte.
   - *Los reportes guardados son de la última pasada, ya con todos los cambios aplicados.*
 
@@ -329,18 +317,19 @@ explicar, no deben entregarlo.
 El informe debe incluir una sección "Uso de herramientas de IA" (media carilla alcanza, no debe ser extenso) con:
 
 - [ ] *Qué herramientas usaron* (nombre y versión aproximada).
-- [ ] *Para qué las usaron*: código, redacción del informe, diagramas, estimaciones,
+  - *Informe, punto 15: está Claude Code. Cada integrante tiene que agregar las que haya usado
+    (marcado "COMPLETAR").*
+- [x] *Para qué las usaron*: código, redacción del informe, diagramas, estimaciones,
       debugging, traducción, etc.
-- [ ] *Qué verificaron y cómo*: para el código y los datos generados, qué chequearon
+- [x] *Qué verificaron y cómo*: para el código y los datos generados, qué chequearon
       a mano, qué corrigieron y por qué.
 
 Si el grupo no utilizó ninguna herramienta de IA, también debe declararlo.
 
-> La sección 15 del informe tiene la estructura armada pero los datos sin completar. Hay que
-> declarar el uso real: buena parte del andamiaje del repositorio, el esquema de base de
-> datos, el núcleo en PHP y el sitio público se desarrollaron con asistencia de Claude
-> (Claude Code), y la redacción del informe partió de una plantilla generada con IA. Eso se
-> declara y se explica qué verificó el grupo a mano.
+> El punto 15 del informe declara el uso de Claude Code: buena parte del andamiaje del
+> repositorio, el esquema de base de datos, el núcleo en PHP y el sitio público se
+> desarrollaron con su asistencia, y la redacción del informe partió de una plantilla generada
+> con IA. Falta que cada integrante agregue las otras herramientas que haya usado.
 
 ---
 
