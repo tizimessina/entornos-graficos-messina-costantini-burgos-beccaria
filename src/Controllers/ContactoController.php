@@ -97,7 +97,7 @@ class ContactoController
         $mensaje = nl2br(htmlspecialchars($datos['mensaje'], ENT_QUOTES, 'UTF-8'));
 
         Mailer::enviar(
-            'admin@aeroeb.com.ar',
+            Mailer::correoAdministracion(),
             'Administración de AeroEB',
             'Nuevo mensaje de contacto: ' . $datos['asunto'],
             "<p><strong>De:</strong> $nombre ($email)</p><p>$mensaje</p>"
