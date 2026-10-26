@@ -7,7 +7,7 @@ pueden buscarlos, compararlos y reservarlos desde un solo lugar. La idea es que 
 aerolínea administre su propia oferta (vuelos, promociones) y que la administración de
 la plataforma modere ese contenido antes de que se publique.
 
-URL de producción: _(se agrega cuando el sitio esté desplegado)_
+URL de producción: **<https://aeroeb.alwaysdata.net>** (hosting gratuito de alwaysdata)
 
 ## Índice
 
@@ -98,9 +98,9 @@ entornos-graficos-messina-costantini-burgos-beccaria/
 ```
 
 El sitio está funcionando de punta a punta en local: sitio público, cuentas, motor de
-reservas, panel de la aerolínea y panel de administración. Lo que falta es el despliegue
-en un hosting, configurar el SMTP para que los correos salgan de verdad, y cerrar el
-informe. El avance se sigue en [`docs/tareas.md`](docs/tareas.md) y lo que pide la
+reservas, panel de la aerolínea y panel de administración. Está publicado en
+<https://aeroeb.alwaysdata.net>, con base de datos MariaDB y correo propios del hosting.
+Lo que falta es pasar las validaciones con la URL pública (TAW, W3C) y cerrar el informe. El avance se sigue en [`docs/tareas.md`](docs/tareas.md) y lo que pide la
 cátedra, en [`docs/checklists/README.md`](docs/checklists/README.md).
 
 No se usa framework: el MVC es propio y chico. El `index.php` recibe todo, el `Router`
