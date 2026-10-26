@@ -18,11 +18,11 @@
     <meta name="description" content="AeroEB: compará y reservá vuelos de todas las aerolíneas adheridas.">
     <meta name="theme-color" content="#1e1b4b">
     <title><?= htmlspecialchars($tituloPagina ?? 'AeroEB', ENT_QUOTES, 'UTF-8') ?></title>
-    <link rel="icon" href="/assets/img/icono.svg" type="image/svg+xml">
-    <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
-    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/estilos.css">
+    <link rel="icon" href="<?= \App\Helpers\Formato::asset('/assets/img/icono.svg') ?>" type="image/svg+xml">
+    <link rel="icon" href="<?= \App\Helpers\Formato::asset('/assets/img/favicon-32.png') ?>" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="<?= \App\Helpers\Formato::asset('/assets/img/apple-touch-icon.png') ?>">
+    <link rel="stylesheet" href="<?= \App\Helpers\Formato::asset('/assets/vendor/bootstrap/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= \App\Helpers\Formato::asset('/assets/css/estilos.css') ?>">
 </head>
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -54,7 +54,7 @@
 
     <?php require __DIR__ . '/../partials/footer.php'; ?>
 
-    <script src="/assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/app.js"></script>
+    <script src="<?= \App\Helpers\Formato::asset('/assets/vendor/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+    <script src="<?= \App\Helpers\Formato::asset('/assets/js/app.js') ?>"></script>
 </body>
 </html>

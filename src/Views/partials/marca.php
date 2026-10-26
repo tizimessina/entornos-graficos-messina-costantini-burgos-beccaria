@@ -11,6 +11,6 @@
  */
 ?>
 <a class="ae-marca" href="/">
-    <img class="ae-marca-logo" src="/assets/img/icono-sobre-oscuro.svg" alt="" width="36" height="36">
+    <img class="ae-marca-logo" src="<?= \App\Helpers\Formato::asset('/assets/img/icono-sobre-oscuro.svg') ?>" alt="" width="36" height="36">
     <span>Aero<span class="ae-marca-eb">EB</span></span>
 </a>
