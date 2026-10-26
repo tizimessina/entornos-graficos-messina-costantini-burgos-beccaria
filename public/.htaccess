@@ -10,6 +10,15 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
+# CSS, JS e imágenes se guardan en el navegador por un año. Las vistas los piden
+# con su fecha de modificación (?v=...), así que un cambio cambia la URL y no
+# queda una versión vieja en caché.
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|svg|png|jpg|jpeg|webp|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
+
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
