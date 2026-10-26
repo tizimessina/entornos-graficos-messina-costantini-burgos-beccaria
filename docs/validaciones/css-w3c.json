@@ -1,0 +1,175 @@
+{
+  "uri": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+  "checkedby": "http://www.w3.org/2005/07/css-validator",
+  "csslevel": "css3",
+  "date": "2026-10-26T12:44:06Z",
+  "timestamp": "1792975446878",
+  "validity": true,
+  "result": {
+    "errorcount": 0,
+    "warningcount": 23
+  },
+  "warnings": [
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 135,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 266,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 274,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 333,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 336,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 342,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 350,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 365,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 399,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 449,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 535,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 606,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 685,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 795,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 870,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 897,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 928,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 931,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 936,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 1031,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 1068,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 1076,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    },
+    {
+      "source": "https://aeroeb.alwaysdata.net/assets/css/estilos.css",
+      "line": 1094,
+      "message": "Due to their dynamic nature, CSS variables are currently not statically checked",
+      "type": "css-variable",
+      "level": 0
+    }
+  ]
+}
