@@ -163,4 +163,17 @@ class Formato
             $html
         );
     }
+
+    /**
+     * URL de un archivo de public/assets con su fecha de modificación como
+     * versión (estilos.css?v=1729900000). El servidor le dice al navegador que
+     * guarde estos archivos un año (public/.htaccess); cuando el archivo
+     * cambia, cambia la URL y el navegador baja la versión nueva.
+     */
+    public static function asset(string $ruta): string
+    {
+        $archivo = dirname(__DIR__, 2) . '/public' . $ruta;
+
+        return is_file($archivo) ? $ruta . '?v=' . filemtime($archivo) : $ruta;
+    }
 }

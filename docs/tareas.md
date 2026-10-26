@@ -138,13 +138,10 @@ estado se aplica igual y el panel lo confirma en pantalla.
 - [x] Evitar el doble envío por doble clic (`public/assets/js/app.js`)
 - [x] Validar HTML y CSS en el W3C: **37 páginas, 0 errores y 0 advertencias** en HTML, y
       0 errores en CSS. Los reportes quedaron en `docs/validaciones/`
-- [ ] Pasar TAW y guardar las capturas
-      → bloqueado hasta el punto 9: TAW valida contra una URL pública y el sitio todavía
-      corre solo en local. La revisión manual de WCAG ya está en `docs/validaciones/README.md`
-- [ ] Mirarlo en un celular de verdad y revisar que la consola del navegador esté limpia
-      → son las dos cosas de esta lista que no se pueden comprobar sin abrir un navegador
-- [ ] Completar los checklists de usabilidad, accesibilidad y rapidez en el informe
-      → es trabajo del informe, va en el punto 10
+- [x] Pasar TAW sobre la URL pública: 0 problemas automáticos en 6 páginas
+      (`docs/validaciones/taw/`). Falta pegar la captura en el informe
+- [x] Mirarlo en un celular de verdad y revisar que la consola del navegador esté limpia
+- [x] Completar los checklists de usabilidad, accesibilidad y rapidez en el informe (punto 14)
 - [x] Ir tildando lo que corresponda en `docs/checklists/` (pasó de 45 a 55 de 101)
 - [x] Commit y push
 
@@ -245,12 +242,11 @@ y el código con el enunciado del TP y la guía general de la cátedra. Lo que f
 - [x] De paso: el título y la nota de la caja de búsqueda de la portada eran invisibles
       (blanco sobre blanco), y el menú lateral de los paneles marcaba dos ítems a la vez
 - [x] `composer.lock` actualizado (el content-hash no coincidía desde que se renombró el paquete)
-- [ ] Actualizar el informe: el wireframe 6 pide Nombre y Apellido separados, pero el modelo
-      mínimo del enunciado tiene un solo `nombreUsuario`, así que quedó un solo campo. Hay
-      que justificarlo o ajustar el wireframe. Lo mismo con la "encuesta de satisfacción en
-      el pie" del punto 6 del informe, que no se hizo: sacarla del informe o justificarla
-- [ ] Volver a pasar el validador del W3C sobre las páginas nuevas (institucionales) y
-      las modificadas, y guardar los reportes en `docs/validaciones/`
+- [x] Nombre y apellido en un solo campo: se ajustó el wireframe de registro al modelo
+      (`nombreUsuario`). La encuesta de satisfacción del pie se descartó y el informe lo
+      justifica (punto 6, sistemas de retroalimentación)
+- [x] Volver a pasar el validador del W3C: 68 páginas (22 públicas en producción y 46 con
+      sesión), 0 errores y 0 advertencias. Reportes en `docs/validaciones/html-w3c/`
 
 ### Correcciones de la profesora en la exposición
 
@@ -285,8 +281,9 @@ para el punto 14 del informe. Lo que no se cumplía y se corrigió:
 - [x] **Contacto virtual y físico en el pie** de todas las páginas
 - [x] **Misión, visión, objetivos y equipo** en Quiénes somos
 - [x] Teléfono de contacto de muestra (+54 341 000-0000) en el pie y en Contacto
-- [ ] Los ítems "Pendiente" del checklist, que dependen de la URL pública
-- [ ] Reemplazar en el informe (puntos 5.a, 5.b, 5.c y 6) las figuras viejas por las de
+- [x] Los ítems "Pendiente" del checklist, que dependían de la URL pública. Queda solo el
+      Link Checker del W3C, que tiene verificación anti-robots y se pasa a mano
+- [x] Reemplazar en el informe (puntos 5.a, 5.b, 5.c y 6) las figuras viejas por las de
       `docs/diagramas/png/` y `docs/bocetos/01-wireframes/png/`, y la tabla de navegación
 
 ## 9. Despliegue
@@ -298,8 +295,8 @@ para el punto 14 del informe. Lo que no se cumplía y se corrigió:
 - [x] Actualizar la URL de producción en el `README.md`
 - [x] El aviso del formulario de contacto iba a `admin@aeroeb.com.ar`, un dominio que no es
       del grupo: ahora va a la casilla de `mail.admin_email` del `config.php`
-- [ ] Probar en producción: recuperar contraseña, CEO, admin, y desde el celular con datos móviles
-- [ ] Commit y push
+- [x] Probar en producción: recuperar contraseña, CEO, admin, y desde el celular con datos móviles
+- [x] Commit y push
 
 Para actualizar el servidor después de un cambio, por SSH:
 
@@ -311,7 +308,13 @@ composer install --no-dev --optimize-autoloader
 
 ## 10. Cierre
 
-- [ ] Terminar de completar el informe con capturas y datos reales (nada de valores
-      inventados en el presupuesto)
-- [ ] Repasar la checklist completa de la cátedra en `docs/checklists/`
+- [x] Informe final en `docs/informe/` (Word y PDF, 61 páginas, puntos 1 a 17). El
+      presupuesto usa fuentes con fecha y el ROI marca sus supuestos como supuestos
+- [ ] Completar lo resaltado en amarillo en el informe: capturas de W3C y TAW, otras
+      herramientas de IA, conclusión en primera persona y revisar las fuentes
+- [ ] Pasar el Link Checker del W3C sobre la URL pública
+- [x] Repasar la checklist completa de la cátedra en `docs/checklists/`: quedan sin tildar
+      solo los ítems que dependen del grupo (commits por integrante, prueba con alguien de
+      afuera, entrega a tiempo, capturas pegadas, defensa individual)
+- [ ] Actualizar el servidor (`git pull`) para que tome la caché de archivos estáticos
 - [ ] Preparar la presentación oral
