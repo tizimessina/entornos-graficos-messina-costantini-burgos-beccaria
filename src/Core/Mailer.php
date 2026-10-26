@@ -16,15 +16,7 @@ class Mailer
 {
     public static function enviar(string $paraEmail, string $paraNombre, string $asunto, string $cuerpoHtml): bool
     {
-        $rutaConfig = dirname(__DIR__, 2) . '/config/config.php';
-
-        if (!file_exists($rutaConfig)) {
-            throw new RuntimeException(
-                'Falta config/config.php. Copiá config/config.example.php y completá tus datos locales.'
-            );
-        }
-
-        $mailConfig = (require $rutaConfig)['mail'];
+        $mailConfig = self::config();
 
         $mail = new PHPMailer(true);
 
@@ -55,5 +47,31 @@ class Mailer
 
             return false;
         }
+    }
+
+    /**
+     * Casilla de la administración, a la que llegan los avisos internos (por
+     * ejemplo, un mensaje nuevo del formulario de contacto). Sale de
+     * mail.admin_email; si no está, se usa la misma casilla que envía, que
+     * seguro existe porque es la cuenta SMTP del sitio.
+     */
+    public static function correoAdministracion(): string
+    {
+        $mailConfig = self::config();
+
+        return trim((string) ($mailConfig['admin_email'] ?? '')) ?: (string) $mailConfig['from_email'];
+    }
+
+    private static function config(): array
+    {
+        $rutaConfig = dirname(__DIR__, 2) . '/config/config.php';
+
+        if (!file_exists($rutaConfig)) {
+            throw new RuntimeException(
+                'Falta config/config.php. Copiá config/config.example.php y completá tus datos locales.'
+            );
+        }
+
+        return (require $rutaConfig)['mail'];
     }
 }
